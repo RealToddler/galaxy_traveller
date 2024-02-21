@@ -7,7 +7,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class DepIa : MonoBehaviour
+public class AiMovement : MonoBehaviour
 {
       //public Camera cam;
       [SerializeField]
