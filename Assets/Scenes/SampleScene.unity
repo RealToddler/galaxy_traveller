@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.447999, g: 0.49800694, b: 0.5755041, a: 1}
+  m_IndirectSpecularColor: {r: 0.44799918, g: 0.49800718, b: 0.57550466, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -263,6 +263,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b04cfe015b44cfc4fb97244a8ce150c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speedFloat: 0
+  behaviourManager: {fileID: 0}
+  behaviourCode: 0
+  canSprint: 0
   walkSpeed: 0.15
   runSpeed: 1
   sprintSpeed: 2
@@ -270,6 +274,12 @@ MonoBehaviour:
   jumpButton: Jump
   jumpHeight: 1.5
   jumpIntertialForce: 10
+  speed: 0
+  speedSeeker: 0
+  jumpBool: 0
+  groundedBool: 0
+  jump: 0
+  isColliding: 0
   canMove: 1
 --- !u!114 &196045215
 MonoBehaviour:
@@ -384,6 +394,27 @@ MonoBehaviour:
   inventory: {fileID: 2063882343}
   swordVisual: {fileID: 197522297}
   equippedSwordVisual: {fileID: 805594880}
+--- !u!114 &196045229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 196045212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 039bb8d7417bb404b81b234941f62050, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  walkSpeed: 0.15
+  runSpeed: 1
+  sprintSpeed: 2
+  speedDampTime: 0.1
+  jumpButton: Jump
+  rollButton: Roll
+  jumpHeight: 1.5
+  jumpIntertialForce: 10
+  canMove: 1
 --- !u!1 &197522297 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 399155619216309265, guid: 5214c645e8d34a5458d18ebef7e5cb1a,
@@ -814,6 +845,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 196045228}
+    - targetCorrespondingSourceObject: {fileID: 1097422683800303892, guid: 6ba31aba9a1c0844283fbc73423bbbcc,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 196045229}
   m_SourcePrefab: {fileID: 100100000, guid: 6ba31aba9a1c0844283fbc73423bbbcc, type: 3}
 --- !u!1001 &1887572502
 PrefabInstance:

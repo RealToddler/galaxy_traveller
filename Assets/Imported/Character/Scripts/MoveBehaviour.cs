@@ -8,13 +8,16 @@ public class MoveBehaviour : GenericBehaviour
 	public float sprintSpeed = 2.0f;                // Default sprint speed.
 	public float speedDampTime = 0.1f;              // Default damp time to change the animations based on current speed.
 	public string jumpButton = "Jump";              // Default jump button.
+	public string rollButton = "Roll";
 	public float jumpHeight = 1.5f;                 // Default jump height.
 	public float jumpIntertialForce = 10f;          // Default horizontal inertial force when jumping.
 
 	private float speed, speedSeeker;               // Moving speed.
 	private int jumpBool;                           // Animator variable related to jumping.
+	private int rollBool;
 	private int groundedBool;                       // Animator variable related to whether or not the player is on ground.
 	private bool jump;                              // Boolean to determine whether or not the player started a jump.
+	private bool roll;
 	private bool isColliding;                       // Boolean to determine if the player has collided with an obstacle.
 	public bool canMove = true;
 	// Start is always called after any Awake functions.
@@ -23,6 +26,7 @@ public class MoveBehaviour : GenericBehaviour
 		// Set up the references.
 		jumpBool = Animator.StringToHash("Jump");
 		groundedBool = Animator.StringToHash("Grounded");
+		rollBool=Animator.StringToHash("Roll");
 		behaviourManager.GetAnim.SetBool(groundedBool, true);
 
 		// Subscribe and register this behaviour as the default behaviour.
@@ -35,9 +39,13 @@ public class MoveBehaviour : GenericBehaviour
 	void Update()
 	{
 		// Get jump input.
-		if (!jump && Input.GetButtonDown(jumpButton) && behaviourManager.IsCurrentBehaviour(this.behaviourCode) && !behaviourManager.IsOverriding())
+		if (!roll && !jump && Input.GetButtonDown(jumpButton) && behaviourManager.IsCurrentBehaviour(this.behaviourCode) && !behaviourManager.IsOverriding())
 		{
 			jump = true;
+		}
+		if ( !roll && !jump && Input.GetButtonDown(rollButton)) 
+		{
+			roll=true;
 		}
 	}
 
@@ -49,8 +57,22 @@ public class MoveBehaviour : GenericBehaviour
 
 		// Call the jump manager.
 		JumpManagement();
-	}
 
+		doRoll();
+	}
+	public void doRoll()
+    {
+        //playeranimator.SetTrigger("Roll");
+		if (roll==true)
+		{
+			behaviourManager.LockTempBehaviour(this.behaviourCode);
+			behaviourManager.GetAnim.SetBool(rollBool, true);
+			roll=false;
+			//Debug.Log('é');
+		}
+		
+		
+    }
 	// Execute the idle and walk/run jump movements.
 	void JumpManagement()
 	{
@@ -61,27 +83,27 @@ public class MoveBehaviour : GenericBehaviour
 			behaviourManager.LockTempBehaviour(this.behaviourCode);
 			behaviourManager.GetAnim.SetBool(jumpBool, true);
 			// Is a locomotion jump?
-			if (behaviourManager.GetAnim.GetFloat(speedFloat) > 0.1)
-			{
-				// Temporarily change player friction to pass through obstacles.
-				GetComponent<CapsuleCollider>().material.dynamicFriction = 0f;
-				GetComponent<CapsuleCollider>().material.staticFriction = 0f;
-				// Remove vertical velocity to avoid "super jumps" on slope ends.
-				RemoveVerticalVelocity();
-				// Set jump vertical impulse velocity.
-				float velocity = 2f * Mathf.Abs(Physics.gravity.y) * jumpHeight;
-				velocity = Mathf.Sqrt(velocity);
-				behaviourManager.GetRigidBody.AddForce(Vector3.up * velocity, ForceMode.VelocityChange);
-			}
+			//if (behaviourManager.GetAnim.GetFloat(speedFloat) > 0.1)
+			//{
+			// Temporarily change player friction to pass through obstacles.
+			GetComponent<CapsuleCollider>().material.dynamicFriction = 0f;
+			GetComponent<CapsuleCollider>().material.staticFriction = 0f;
+			// Remove vertical velocity to avoid "super jumps" on slope ends.
+			RemoveVerticalVelocity();
+			// Set jump vertical impulse velocity.
+			float velocity = 2f * Mathf.Abs(Physics.gravity.y) * jumpHeight;
+			velocity = Mathf.Sqrt(velocity);
+			behaviourManager.GetRigidBody.AddForce(Vector3.up * velocity, ForceMode.VelocityChange);
+			//}
 		}
 		// Is already jumping?
 		else if (behaviourManager.GetAnim.GetBool(jumpBool))
 		{
 			// Keep forward movement while in the air.
-			if (!behaviourManager.IsGrounded() && !isColliding && behaviourManager.GetTempLockStatus())
+			/*if (!behaviourManager.IsGrounded() && !isColliding && behaviourManager.GetTempLockStatus())
 			{
 				behaviourManager.GetRigidBody.AddForce(transform.forward * jumpIntertialForce * Physics.gravity.magnitude * sprintSpeed, ForceMode.Acceleration);
-			}
+			}*/
 			// Has landed?
 			if ((behaviourManager.GetRigidBody.velocity.y < 0) && behaviourManager.IsGrounded())
 			{
