@@ -355,7 +355,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 196045212}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b04cfe015b44cfc4fb97244a8ce150c0, type: 3}
+  m_Script: {fileID: 11500000, guid: 039bb8d7417bb404b81b234941f62050, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   walkSpeed: 0.15
@@ -363,7 +363,8 @@ MonoBehaviour:
   sprintSpeed: 2
   speedDampTime: 0.1
   jumpButton: Jump
-  jumpHeight: 2.5
+  rollButton: Roll
+  jumpHeight: 1.5
   jumpIntertialForce: 10
   canMove: 1
 --- !u!114 &196045215
