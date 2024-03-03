@@ -27,7 +27,7 @@ public class ThirdPersonOrbitCamBasic : MonoBehaviour
 	private bool isCustomOffset;                                       // Boolean to determine whether or not a custom camera offset is being used.
 
 	// Get the camera horizontal angle.
-	public float GetH { get { return angleH; } }
+	public float GetH => angleH;
 
 	void Awake()
 	{

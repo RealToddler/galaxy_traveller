@@ -1,42 +1,44 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class PickupBehaviour : MonoBehaviour
 {
-    [SerializeField]
-    private MoveBehaviour playerMoveBehaviour;
+    [SerializeField] private MoveBehaviour playerMoveBehaviour;
 
-    [SerializeField]
-    private Animator playerAnimator;
+    [SerializeField] private Animator playerAnimator;
 
-    [SerializeField]
-    private Inventory inventory;
+    [SerializeField] private Inventory inventory;
+
+    private GameObject _equippedSwordVisual;
+    private Item _currentItem;
     
-    [SerializeField] 
-    private GameObject swordVisual;
+    private static readonly int Pickup = Animator.StringToHash("Pickup");
 
-    [SerializeField] 
-    private GameObject equippedSwordVisual;
-
-    private Item currentItem;
+    // Manage the "picking" up of an item
     public void DoPickup(Item item)
     {
-        currentItem = item;
-        playerAnimator.SetTrigger("Pickup");
+        if (inventory.IsFull() || !playerMoveBehaviour.canMove)
+        {
+            return;
+        }
+
+        _currentItem = item;
+        
+        playerAnimator.SetTrigger(Pickup);
+        _currentItem.gameObject.SetActive(false);
         playerMoveBehaviour.canMove = false;
         
-        currentItem.gameObject.SetActive(false);
-        equippedSwordVisual.SetActive(true);
+        // _equippedSwordVisual.SetActive(true); // on utilisera ca apres
     }
+    
+    // Add the item to inventory adn destroy it
     public void AddItemToInventory()
     {
-        inventory.AddItem(currentItem.itemData);
-        Destroy(currentItem.gameObject);
-        currentItem = null;
+        inventory.AddItem(_currentItem.itemData);
+        Destroy(_currentItem.gameObject);
+        _currentItem = null;
     }
+    
+    // Called by Animator at the end of animations playing
     public void ReEnablePlayerMovement()
     {
         playerMoveBehaviour.canMove = true;

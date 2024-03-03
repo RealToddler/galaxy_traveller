@@ -39,7 +39,7 @@ public class MoveBehaviour : GenericBehaviour
 	void Update()
 	{
 		// Get jump input.
-		if (!roll && !jump && Input.GetButtonDown(jumpButton) && behaviourManager.IsCurrentBehaviour(this.behaviourCode) && !behaviourManager.IsOverriding())
+		if (!roll && !jump && Input.GetButtonDown(jumpButton) && behaviourManager.IsCurrentBehaviour(this.behaviourCode) )
 		{
 			jump = true;
 		}
@@ -58,9 +58,9 @@ public class MoveBehaviour : GenericBehaviour
 		// Call the jump manager.
 		JumpManagement();
 
-		doRoll();
+		DoRoll();
 	}
-	public void doRoll()
+	void DoRoll()
     {
         //playeranimator.SetTrigger("Roll");
 		if (roll==true)
@@ -68,13 +68,12 @@ public class MoveBehaviour : GenericBehaviour
 			behaviourManager.LockTempBehaviour(this.behaviourCode);
 			behaviourManager.GetAnim.SetBool(rollBool, true);
 			roll=false;
-			//Debug.Log('é');
 		}
-		
-		
-    }
+	}
+	
 	// Execute the idle and walk/run jump movements.
-	void JumpManagement()
+	// ReSharper disable Unity.PerformanceAnalysis
+	private void JumpManagement()
 	{
 		// Start a new jump.
 		if (jump && !behaviourManager.GetAnim.GetBool(jumpBool) && behaviourManager.IsGrounded())
@@ -83,27 +82,27 @@ public class MoveBehaviour : GenericBehaviour
 			behaviourManager.LockTempBehaviour(this.behaviourCode);
 			behaviourManager.GetAnim.SetBool(jumpBool, true);
 			// Is a locomotion jump?
-			//if (behaviourManager.GetAnim.GetFloat(speedFloat) > 0.1)
-			//{
-			// Temporarily change player friction to pass through obstacles.
-			GetComponent<CapsuleCollider>().material.dynamicFriction = 0f;
-			GetComponent<CapsuleCollider>().material.staticFriction = 0f;
-			// Remove vertical velocity to avoid "super jumps" on slope ends.
-			RemoveVerticalVelocity();
-			// Set jump vertical impulse velocity.
-			float velocity = 2f * Mathf.Abs(Physics.gravity.y) * jumpHeight;
-			velocity = Mathf.Sqrt(velocity);
-			behaviourManager.GetRigidBody.AddForce(Vector3.up * velocity, ForceMode.VelocityChange);
-			//}
+			if (behaviourManager.GetAnim.GetFloat(speedFloat) > 0.1)
+			{
+				// Temporarily change player friction to pass through obstacles.
+				GetComponent<CapsuleCollider>().material.dynamicFriction = 0f;
+				GetComponent<CapsuleCollider>().material.staticFriction = 0f;
+				// Remove vertical velocity to avoid "super jumps" on slope ends.
+				RemoveVerticalVelocity();
+				// Set jump vertical impulse velocity.
+				float velocity = 2f * Mathf.Abs(Physics.gravity.y) * jumpHeight;
+				velocity = Mathf.Sqrt(velocity);
+				behaviourManager.GetRigidBody.AddForce(Vector3.up * velocity, ForceMode.VelocityChange);
+			}
 		}
 		// Is already jumping?
 		else if (behaviourManager.GetAnim.GetBool(jumpBool))
 		{
 			// Keep forward movement while in the air.
-			/*if (!behaviourManager.IsGrounded() && !isColliding && behaviourManager.GetTempLockStatus())
+			if (!behaviourManager.IsGrounded() && !isColliding && behaviourManager.GetTempLockStatus())
 			{
-				behaviourManager.GetRigidBody.AddForce(transform.forward * jumpIntertialForce * Physics.gravity.magnitude * sprintSpeed, ForceMode.Acceleration);
-			}*/
+				behaviourManager.GetRigidBody.AddForce(transform.forward * (jumpIntertialForce * Physics.gravity.magnitude * sprintSpeed), ForceMode.Acceleration);
+			}
 			// Has landed?
 			if ((behaviourManager.GetRigidBody.velocity.y < 0) && behaviourManager.IsGrounded())
 			{
@@ -179,7 +178,7 @@ public class MoveBehaviour : GenericBehaviour
 		targetDirection = forward * vertical + right * horizontal;
 
 		// Lerp current direction to calculated target direction.
-		if ((behaviourManager.IsMoving() && targetDirection != Vector3.zero))
+		if (behaviourManager.IsMoving() && targetDirection != Vector3.zero)
 		{
 			Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
 
