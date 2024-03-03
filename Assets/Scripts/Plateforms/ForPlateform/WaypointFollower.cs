@@ -29,7 +29,7 @@ public class WaypointFollower : MonoBehaviour
     {
         isWaiting = true;
 
-        yield return new WaitForSecondsRealtime(waypoints[currentWaypointIndex].GetComponent<WayPoint>().WaitTime);
+        yield return new WaitForSecondsRealtime(waypoints[currentWaypointIndex].GetComponent<WayPoint>().waitTime);
 
         isWaiting = false;
     }

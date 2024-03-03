@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Photon.Pun.Demo.SlotRacer;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,7 +14,7 @@ public class PlayerUI : MonoBehaviour
     {
         RefreshHealthAmount();
         RefreshOxygenAmount();
-        RefreshInventoryContent();
+        RefreshInventory();
         
         player.GetDamage(0.1f);
         player.LooseOxygen(0.05f);
@@ -37,11 +33,31 @@ public class PlayerUI : MonoBehaviour
     }
     
     // Refresh the visual of inventory
-    private void RefreshInventoryContent()
+    private void RefreshInventory()
     {
-        for (int i = 0; i < inventory.Content.Count; i++)
+        Color normalColor = inventorySlots.GetChild(0).GetComponent<Button>().colors.normalColor;
+        Color selectedColor = inventorySlots.GetChild(0).GetComponent<Button>().colors.selectedColor;
+
+        // visual of items
+        for (int i = 0; i < inventory.Content.Length; i++)
         {
-            inventorySlots.GetChild(i).GetChild(0).GetComponent<Image>().sprite = inventory.Content[i].visual;
+            if (inventory.Content[i] != null)
+            {
+                inventorySlots.GetChild(i).GetChild(0).GetComponent<Image>().sprite = inventory.Content[i].visual;
+            }
+        }
+        
+        // visual of slot
+        for (int i = 0; i < Inventory.InventorySize; i++)
+        {
+            if (i == inventory.CurrSelectedItem)
+            {
+                inventorySlots.GetChild(i).GetComponent<Image>().color = selectedColor;
+            }
+            else
+            {
+                inventorySlots.GetChild(i).GetComponent<Image>().color = normalColor;
+            }
         }
     }
 }

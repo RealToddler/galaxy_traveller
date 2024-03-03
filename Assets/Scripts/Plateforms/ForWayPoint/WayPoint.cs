@@ -1,11 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class WayPoint : MonoBehaviour
 {
-    [SerializeField]
-    int waitTime;
-
-    public int WaitTime => waitTime;
+    [SerializeField] public int waitTime;
 }

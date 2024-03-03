@@ -16,7 +16,7 @@ public class PickupBehaviour : MonoBehaviour
     // Manage the "picking" up of an item
     public void DoPickup(Item item)
     {
-        if (inventory.IsFull() || !playerMoveBehaviour.canMove)
+        if (!inventory.IsFree() || !playerMoveBehaviour.canMove)
         {
             return;
         }
