@@ -7,45 +7,46 @@ public class MoveBehaviour : GenericBehaviour
 	public float runSpeed = 1.0f;                   // Default run speed.
 	public float sprintSpeed = 2.0f;                // Default sprint speed.
 	public float speedDampTime = 0.1f;              // Default damp time to change the animations based on current speed.
-	public string jumpButton = "Jump";              // Default jump button.
-	public string rollButton = "Roll";
+	private string _jumpButton = "Jump";              // Default jump button.
+	private string _rollButton = "Roll";
 	public float jumpHeight = 1.5f;                 // Default jump height.
 	public float jumpIntertialForce = 10f;          // Default horizontal inertial force when jumping.
 
-	private float speed, speedSeeker;               // Moving speed.
-	private int jumpBool;                           // Animator variable related to jumping.
-	private int rollBool;
-	private int groundedBool;                       // Animator variable related to whether or not the player is on ground.
-	private bool jump;                              // Boolean to determine whether or not the player started a jump.
-	private bool roll;
-	private bool isColliding;                       // Boolean to determine if the player has collided with an obstacle.
+	private float _speed, _speedSeeker;               // Moving speed.
+	private int _jumpBool;                           // Animator variable related to jumping.
+	private int _rollBool;
+	private int _groundedBool;                       // Animator variable related to whether or not the player is on ground.
+	private bool _jump;                              // Boolean to determine whether or not the player started a jump.
+	private bool _roll;
+	private bool _isColliding;                       // Boolean to determine if the player has collided with an obstacle.
 	public bool canMove = true;
+	
 	// Start is always called after any Awake functions.
 	void Start()
 	{
 		// Set up the references.
-		jumpBool = Animator.StringToHash("Jump");
-		groundedBool = Animator.StringToHash("Grounded");
-		rollBool=Animator.StringToHash("Roll");
-		behaviourManager.GetAnim.SetBool(groundedBool, true);
+		_jumpBool = Animator.StringToHash("Jump");
+		_groundedBool = Animator.StringToHash("Grounded");
+		_rollBool = Animator.StringToHash("Roll");
+		behaviourManager.GetAnim.SetBool(_groundedBool, true);
 
 		// Subscribe and register this behaviour as the default behaviour.
 		behaviourManager.SubscribeBehaviour(this);
-		behaviourManager.RegisterDefaultBehaviour(this.behaviourCode);
-		speedSeeker = runSpeed;
+		behaviourManager.RegisterDefaultBehaviour(behaviourCode);
+		_speedSeeker = runSpeed;
 	}
 
 	// Update is used to set features regardless the active behaviour.
 	void Update()
 	{
 		// Get jump input.
-		if (!roll && !jump && Input.GetButtonDown(jumpButton) && behaviourManager.IsCurrentBehaviour(this.behaviourCode) )
+		if (Input.GetButtonDown(_jumpButton) && !_roll && !_jump && behaviourManager.IsCurrentBehaviour(behaviourCode) )
 		{
-			jump = true;
+			_jump = true;
 		}
-		if ( !roll && !jump && Input.GetButtonDown(rollButton)) 
+		if ( !_roll && !_jump && Input.GetButtonDown(_rollButton)) 
 		{
-			roll=true;
+			_roll = true;
 		}
 	}
 
@@ -63,11 +64,11 @@ public class MoveBehaviour : GenericBehaviour
 	void DoRoll()
     {
         //playeranimator.SetTrigger("Roll");
-		if (roll==true)
+		if (_roll)
 		{
 			behaviourManager.LockTempBehaviour(this.behaviourCode);
-			behaviourManager.GetAnim.SetBool(rollBool, true);
-			roll=false;
+			behaviourManager.GetAnim.SetBool(_rollBool, true);
+			_roll=false;
 		}
 	}
 	
@@ -76,11 +77,11 @@ public class MoveBehaviour : GenericBehaviour
 	private void JumpManagement()
 	{
 		// Start a new jump.
-		if (jump && !behaviourManager.GetAnim.GetBool(jumpBool) && behaviourManager.IsGrounded())
+		if (_jump && !behaviourManager.GetAnim.GetBool(_jumpBool) && behaviourManager.IsGrounded())
 		{
 			// Set jump related parameters.
 			behaviourManager.LockTempBehaviour(this.behaviourCode);
-			behaviourManager.GetAnim.SetBool(jumpBool, true);
+			behaviourManager.GetAnim.SetBool(_jumpBool, true);
 			// Is a locomotion jump?
 			if (behaviourManager.GetAnim.GetFloat(speedFloat) > 0.1)
 			{
@@ -96,23 +97,23 @@ public class MoveBehaviour : GenericBehaviour
 			}
 		}
 		// Is already jumping?
-		else if (behaviourManager.GetAnim.GetBool(jumpBool))
+		else if (behaviourManager.GetAnim.GetBool(_jumpBool))
 		{
 			// Keep forward movement while in the air.
-			if (!behaviourManager.IsGrounded() && !isColliding && behaviourManager.GetTempLockStatus())
+			if (!behaviourManager.IsGrounded() && !_isColliding && behaviourManager.GetTempLockStatus())
 			{
 				behaviourManager.GetRigidBody.AddForce(transform.forward * (jumpIntertialForce * Physics.gravity.magnitude * sprintSpeed), ForceMode.Acceleration);
 			}
 			// Has landed?
 			if ((behaviourManager.GetRigidBody.velocity.y < 0) && behaviourManager.IsGrounded())
 			{
-				behaviourManager.GetAnim.SetBool(groundedBool, true);
+				behaviourManager.GetAnim.SetBool(_groundedBool, true);
 				// Change back player friction to default.
 				GetComponent<CapsuleCollider>().material.dynamicFriction = 0.6f;
 				GetComponent<CapsuleCollider>().material.staticFriction = 0.6f;
 				// Set jump related parameters.
-				jump = false;
-				behaviourManager.GetAnim.SetBool(jumpBool, false);
+				_jump = false;
+				behaviourManager.GetAnim.SetBool(_jumpBool, false);
 				behaviourManager.UnlockTempBehaviour(this.behaviourCode);
 			}
 		}
@@ -131,7 +132,7 @@ public class MoveBehaviour : GenericBehaviour
 			behaviourManager.GetRigidBody.useGravity = true;
 
 		// Avoid takeoff when reached a slope end.
-		else if (!behaviourManager.GetAnim.GetBool(jumpBool) && behaviourManager.GetRigidBody.velocity.y > 0)
+		else if (!behaviourManager.GetAnim.GetBool(_jumpBool) && behaviourManager.GetRigidBody.velocity.y > 0)
 		{
 			RemoveVerticalVelocity();
 		}
@@ -141,17 +142,17 @@ public class MoveBehaviour : GenericBehaviour
 
 		// Set proper speed.
 		Vector2 dir = new Vector2(horizontal, vertical);
-		speed = Vector2.ClampMagnitude(dir, 1f).magnitude;
+		_speed = Vector2.ClampMagnitude(dir, 1f).magnitude;
 		// This is for PC only, gamepads control speed via analog stick.
-		speedSeeker += Input.GetAxis("Mouse ScrollWheel");
-		speedSeeker = Mathf.Clamp(speedSeeker, walkSpeed, runSpeed);
-		speed *= speedSeeker;
+		_speedSeeker += Input.GetAxis("Mouse ScrollWheel");
+		_speedSeeker = Mathf.Clamp(_speedSeeker, walkSpeed, runSpeed);
+		_speed *= _speedSeeker;
 		if (behaviourManager.IsSprinting())
 		{
-			speed = sprintSpeed;
+			_speed = sprintSpeed;
 		}
 
-		behaviourManager.GetAnim.SetFloat(speedFloat, speed, speedDampTime, Time.deltaTime);
+		behaviourManager.GetAnim.SetFloat(speedFloat, _speed, speedDampTime, Time.deltaTime);
 	}
 
 	// Remove vertical rigidbody velocity.
@@ -198,7 +199,7 @@ public class MoveBehaviour : GenericBehaviour
 	// Collision detection.
 	private void OnCollisionStay(Collision collision)
 	{
-		isColliding = true;
+		_isColliding = true;
 		// Slide on vertical obstacles
 		if (behaviourManager.IsCurrentBehaviour(this.GetBehaviourCode()) && collision.GetContact(0).normal.y <= 0.1f)
 		{
@@ -208,7 +209,7 @@ public class MoveBehaviour : GenericBehaviour
 	}
 	private void OnCollisionExit(Collision collision)
 	{
-		isColliding = false;
+		_isColliding = false;
 		GetComponent<CapsuleCollider>().material.dynamicFriction = 0.6f;
 		GetComponent<CapsuleCollider>().material.staticFriction = 0.6f;
 	}

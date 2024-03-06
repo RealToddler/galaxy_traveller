@@ -8,8 +8,8 @@ public class BasicBehaviour : MonoBehaviour
 	public Transform playerCamera;                        // Reference to the camera that focus the player.
 	public float turnSmoothing = 0.06f;                   // Speed of turn when moving to match camera facing.
 	public float sprintFOV = 100f;                        // the FOV to use on the camera when player is sprinting.
-	public string sprintButton = "Sprint";                // Default sprint button input name.
-
+	
+	private string sprintButton = "Sprint";               // Default sprint button input name.
 	private float h;                                      // Horizontal Axis.
 	private float v;                                      // Vertical Axis.
 	private int currentBehaviour;                         // Reference to the current player behaviour.
@@ -29,20 +29,20 @@ public class BasicBehaviour : MonoBehaviour
 	private Vector3 colExtents;                           // Collider extents for ground test. 
 
 	// Get current horizontal and vertical axes.
-	public float GetH { get { return h; } }
-	public float GetV { get { return v; } }
+	public float GetH => h;
+	public float GetV => v;
 
 	// Get the player camera script.
-	public ThirdPersonOrbitCamBasic GetCamScript { get { return camScript; } }
+	public ThirdPersonOrbitCamBasic GetCamScript => camScript;
 
 	// Get the player's rigid body.
-	public Rigidbody GetRigidBody { get { return rBody; } }
+	public Rigidbody GetRigidBody => rBody;
 
 	// Get the player's animator controller.
-	public Animator GetAnim { get { return anim; } }
+	public Animator GetAnim => anim;
 
 	// Get current default behaviour.
-	public int GetDefaultBehaviour {  get { return defaultBehaviour; } }
+	public int GetDefaultBehaviour => defaultBehaviour;
 
 	void Awake ()
 	{
