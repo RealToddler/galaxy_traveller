@@ -14,6 +14,9 @@ public class Player : MonoBehaviour
     {
         Health = maxHealth;
         Oxygen = maxOxygen;
+
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Confined;
     }
 
     

@@ -3,8 +3,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Object = UnityEngine.Object;
 
-public class WelcomeScreen : Menu
+public class WelcomeScreen : BasicMenu
 {
     [SerializeField] private Text title;
     [SerializeField] private Text start;
@@ -24,5 +25,10 @@ public class WelcomeScreen : Menu
             _alphaForButton += 0.01f;
             start.color = new Color(start.color.r, start.color.g, start.color.b, _alphaForButton);
         }
+    }
+
+    public void ActivateMenus(Object menuCanvas)
+    {
+        menuCanvas.GameObject().SetActive(true);
     }
 }

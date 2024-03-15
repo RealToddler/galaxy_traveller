@@ -4,10 +4,10 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
-public class StartScreen : Menu
+public class StartScreen : BasicMenu
 {
 
-    [SerializeField] private Menu welcomeScreen;
+    [SerializeField] private BasicMenu welcomeScreen;
     void Start()
     {
         Invoke(nameof(ToWelcomeScreen), 7.7f);
