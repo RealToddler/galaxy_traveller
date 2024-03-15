@@ -15,9 +15,6 @@ public class PlayerUI : MonoBehaviour
         RefreshHealthAmount();
         RefreshOxygenAmount();
         RefreshInventory();
-        
-        player.GetDamage(0.1f);
-        player.LooseOxygen(0.05f);
     }
     
     // Refresh Health Bar

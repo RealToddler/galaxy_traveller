@@ -46,6 +46,7 @@ public class Player : MonoBehaviour
         }
     }
     
+    // ==== Photon ====
     public string NickName { get; } // Photon oblige mais je pense emilien sait comment gerer ca
     
 }
