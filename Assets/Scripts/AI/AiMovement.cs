@@ -1,109 +1,85 @@
+using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class AiMovement : MonoBehaviour
 {
-    [Header("")]
-    [SerializeField] private Player _player;
-    [SerializeField] private NavMeshAgent _agent;
-    [SerializeField] private float _attackdistanceradius;
-    [SerializeField] private float _attackmeleeradius;
-    [SerializeField] private int _pv = 100;
-    private bool _isDead = false;
-    [SerializeField] private MonoBehaviour _ennemyMovement;
+    [Header("Objects")]
+    [SerializeField] private Player player;
+    [SerializeField] private NavMeshAgent agent;
+    
+    [Header("Attack Radius")]
+    [SerializeField] private float meleeAttackRadius = 5f;
+    [SerializeField] private float distanceAttackRadius = 10f;
+    
+    [Header("Others")]
+    [SerializeField] private float meleeDistance = 1f;
 
-    private bool _is_attacking = false;
-
-    /*public DepIa (int pv, float attdist ,float attmel) :base(pv)
-    {
-
-      pv=50;
-      _agent.speed=15;
-      _attackdistanceradius=attdist;
-      _attackmeleeradius=attmel;
-    }
-    */
-    void Start()
-    {
-        _agent.stoppingDistance = _attackdistanceradius;
-    }
+    private float _currentStoppingDistance;
+    private bool _isAttacking;
 
     void Update()
     {
-        if (!_isDead)
+        agent.stoppingDistance = _currentStoppingDistance;
+        
+        if (!_isAttacking)
         {
-            if (!_is_attacking)
+            float distance = Vector3.Distance(player.transform.position, transform.position);
+            
+            if (distance <= meleeAttackRadius)
             {
-                float distance = Vector3.Distance(_player.transform.position, transform.position);
-                //Debug.Log(Pv);
-                if (distance <= _attackmeleeradius)
+                _currentStoppingDistance = meleeDistance;
+                AttackMelee();
+            }
+            else
+            {
+                _currentStoppingDistance = distanceAttackRadius;
+                
+                if (distance <= distanceAttackRadius)
                 {
-                    Attackmelee();
-                }
-                else if (distance <= _attackdistanceradius && distance > _attackmeleeradius)
-                {
-                    Attackdistance();
+                    AttackDistance();
                 }
                 else
                 {
-                    Approche();
+                    Approach();
                 }
+
             }
         }
-
-        //Quaternion rot =Quaternion.LookRotation(_player.transform.position-transform.position);
-        //transform.rotation=Quaternion.Slerp(transform.rotation,rot,120*Time.deltaTime);
     }
 
-    void Attackmelee()
+    void AttackMelee()
     {
-        _agent.stoppingDistance = 4;
-        if (Vector3.Distance(_player.transform.position, transform.position) <= 4)
+        if (Vector3.Distance(player.transform.position, transform.position) < 2f)
         {
-            StartCoroutine(Attackplayer(10));
-        }
-        else
-            _agent.SetDestination(_player.transform.position);
-    }
-
-    void Attackdistance()
-    {
-        //Debug.Log ("attack distance");
-        _agent.stoppingDistance = 10;
-        StartCoroutine(Attackplayer(5));
-    }
-
-    void Approche()
-    {
-        //Debug.Log ("approche");
-        _agent.SetDestination(_player.transform.position);
-        _agent.stoppingDistance = 10;
-    }
-
-    void Retirepv(int rempv)
-    {
-        if (_pv > 0 && !_isDead)
-        {
-            _pv -= rempv;
-            Debug.Log(_pv);
-        }
-        else if (_pv <= 0 && !_isDead)
-        {
-            _isDead = true;
-            Debug.Log("died");
+            Debug.Log("Attaque melee");
+            StartCoroutine(AttackPlayer(10));
         }
     }
 
-    IEnumerator Attackplayer(int rempv)
+    void AttackDistance()
     {
-        Debug.Log("etr");
-        _is_attacking = true;
-        _agent.isStopped = true;
-        _player.GetDamage(rempv);
+        Debug.Log("Attaque a distance");
+        StartCoroutine(AttackPlayer(5));
+    }
+
+    void Approach()
+    {
+        agent.SetDestination(player.transform.position);
+    }
+
+    IEnumerator AttackPlayer(int damage)
+    {
+        _isAttacking = true;
+        agent.isStopped = true;
+        
+        player.GetDamage(damage);
+        
         yield return new WaitForSeconds(2);
-
-        _agent.isStopped = false;
-        _is_attacking = false;
+        
+        agent.isStopped = false;
+        _isAttacking = false;
     }
 }
