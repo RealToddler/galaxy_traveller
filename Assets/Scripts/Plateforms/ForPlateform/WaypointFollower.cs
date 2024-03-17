@@ -4,25 +4,49 @@ using UnityEngine;
 
 public class WaypointFollower : MonoBehaviour
 {
-    [SerializeField] GameObject[] waypoints;
-    int currentWaypointIndex = 0;
+    [SerializeField] private GameObject[] waypoints;
+    [SerializeField] private float speed = 1f;
+    [SerializeField] private bool activeOnContact;
 
-    [SerializeField] float speed = 1f;
+    private bool active;
+    private int currentWaypointIndex;
+    private bool isWaiting;
 
-    bool isWaiting = false;
     void Update()
     {
-        if (Vector3.Distance(transform.position, waypoints[currentWaypointIndex].transform.position) < .1f)
+        if (!activeOnContact || active)
         {
-            StartCoroutine(WaitAndChangePoint());
-
-            currentWaypointIndex++;
-            if (currentWaypointIndex >= waypoints.Length)
+            if (Vector3.Distance(transform.position, waypoints[currentWaypointIndex].transform.position) < .1f)
             {
-                currentWaypointIndex = 0;
+                StartCoroutine(WaitAndChangePoint());
+                
+                currentWaypointIndex++;
+
+                if (currentWaypointIndex >= waypoints.Length)
+                {
+                    currentWaypointIndex = 0;
+                }
+            }
+
+            if (!isWaiting)
+            {
+                transform.position = Vector3.MoveTowards(transform.position,
+                    waypoints[currentWaypointIndex].transform.position, speed * Time.deltaTime);
             }
         }
-        if (!isWaiting) transform.position = Vector3.MoveTowards(transform.position, waypoints[currentWaypointIndex].transform.position, speed * Time.deltaTime);
+    }
+    
+    private void OnCollisionEnter(Collision collision)
+    {
+        active = true;
+    }
+    
+    private void OnCollisionExit(Collision collision)
+    {
+        if (activeOnContact)
+        {
+            active = false;
+        }
     }
 
     IEnumerator WaitAndChangePoint()

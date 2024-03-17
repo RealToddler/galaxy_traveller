@@ -83,18 +83,18 @@ public class MoveBehaviour : GenericBehaviour
 			behaviourManager.LockTempBehaviour(this.behaviourCode);
 			behaviourManager.GetAnim.SetBool(_jumpBool, true);
 			// Is a locomotion jump?
-			if (behaviourManager.GetAnim.GetFloat(speedFloat) > 0.1)
-			{
-				// Temporarily change player friction to pass through obstacles.
-				GetComponent<CapsuleCollider>().material.dynamicFriction = 0f;
-				GetComponent<CapsuleCollider>().material.staticFriction = 0f;
-				// Remove vertical velocity to avoid "super jumps" on slope ends.
-				RemoveVerticalVelocity();
-				// Set jump vertical impulse velocity.
-				float velocity = 2f * Mathf.Abs(Physics.gravity.y) * jumpHeight;
-				velocity = Mathf.Sqrt(velocity);
-				behaviourManager.GetRigidBody.AddForce(Vector3.up * velocity, ForceMode.VelocityChange);
-			}
+			//if (behaviourManager.GetAnim.GetFloat(speedFloat) > 0.1)
+			//{
+            // Temporarily change player friction to pass through obstacles.
+            GetComponent<CapsuleCollider>().material.dynamicFriction = 0f;
+            GetComponent<CapsuleCollider>().material.staticFriction = 0f;
+            // Remove vertical velocity to avoid "super jumps" on slope ends.
+            RemoveVerticalVelocity();
+            // Set jump vertical impulse velocity.
+            float velocity = 2f * Mathf.Abs(Physics.gravity.y) * jumpHeight;
+            velocity = Mathf.Sqrt(velocity);
+            behaviourManager.GetRigidBody.AddForce(Vector3.up * velocity, ForceMode.VelocityChange);
+			//}
 		}
 		// Is already jumping?
 		else if (behaviourManager.GetAnim.GetBool(_jumpBool))
@@ -102,7 +102,7 @@ public class MoveBehaviour : GenericBehaviour
 			// Keep forward movement while in the air.
 			if (!behaviourManager.IsGrounded() && !_isColliding && behaviourManager.GetTempLockStatus())
 			{
-				behaviourManager.GetRigidBody.AddForce(transform.forward * (jumpIntertialForce * Physics.gravity.magnitude * sprintSpeed), ForceMode.Acceleration);
+				behaviourManager.GetRigidBody.AddForce(transform.forward * (jumpIntertialForce * Physics.gravity.magnitude *  _speed * 1.33f), ForceMode.Acceleration);
 			}
 			// Has landed?
 			if ((behaviourManager.GetRigidBody.velocity.y < 0) && behaviourManager.IsGrounded())
