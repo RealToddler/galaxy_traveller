@@ -1,10 +1,10 @@
 using UnityEngine;
 using UnityEngine.UI;
-using Photon.Realtime;
-using Photon.Pun;
-public class MyLauncher : MonoBehaviourPunCallbacks
+// using Photon.Realtime;
+// using Photon.Pun;
+public class MyLauncher //: MonoBehaviourPunCallbacks
 {
-    public Button btn;
+    /*public Button btn;
     public Text feedbackText;
     private byte maxPlayersPerRoom = 2;
     bool isConnecting;
@@ -78,7 +78,7 @@ public class MyLauncher : MonoBehaviourPunCallbacks
             UnityEngine.Debug.Log("We load the 'Room for 1'");
             PhotonNetwork.LoadLevel("MyRoom");
         }
-    }
+    }*/
 }
 
 

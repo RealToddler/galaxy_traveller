@@ -1,14 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon.Realtime;
-using Photon.Pun;
+// using Photon.Realtime;
+// using Photon.Pun;
 using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviourPunCallbacks
+public class GameManager //: MonoBehaviourPunCallbacks
 {
-    public GameObject playerPrefab;
+    /*public GameObject playerPrefab;
 
     void Update() {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -19,7 +19,8 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     // TODO :
     // 1. verifier que le joueur est connecte & vérifier que playerPrefab != null
-    void Start() {
+    void Start() 
+    {
         PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0, 1, 0), Quaternion.identity, 0);
     }
 
@@ -38,6 +39,6 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public void QuitApplication() {
         Application.Quit();
-    }
+    }*/
 
 }

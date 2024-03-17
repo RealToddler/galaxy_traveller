@@ -9,35 +9,39 @@ public class AiMovement : MonoBehaviour
     [Header("Objects")]
     [SerializeField] private Player player;
     [SerializeField] private NavMeshAgent agent;
+    [SerializeField] private Ennemy ennemy;
     
-    [Header("Attack Radius")]
+    [Header("Melee")]
     [SerializeField] private float meleeAttackRadius = 5f;
-    [SerializeField] private float distanceAttackRadius = 10f;
-    
-    [Header("Others")]
-    [SerializeField] private float meleeDistance = 1f;
+    [SerializeField] private float meleeStoppingDistance = 1f;
 
     private float _currentStoppingDistance;
-    private bool _isAttacking;
+    private float _distanceAttackRadius;
+
+
+    private void Start()
+    {
+        _distanceAttackRadius = ennemy.radiusAttackDistance;
+    }
 
     void Update()
     {
         agent.stoppingDistance = _currentStoppingDistance;
         
-        if (!_isAttacking)
+        if (!ennemy.IsAttacking)
         {
             float distance = Vector3.Distance(player.transform.position, transform.position);
             
             if (distance <= meleeAttackRadius)
             {
-                _currentStoppingDistance = meleeDistance;
+                _currentStoppingDistance = meleeStoppingDistance;
                 AttackMelee();
             }
             else
             {
-                _currentStoppingDistance = distanceAttackRadius;
+                _currentStoppingDistance = _distanceAttackRadius;
                 
-                if (distance <= distanceAttackRadius)
+                if (distance <= _distanceAttackRadius)
                 {
                     AttackDistance();
                 }
@@ -72,7 +76,7 @@ public class AiMovement : MonoBehaviour
 
     IEnumerator AttackPlayer(int damage)
     {
-        _isAttacking = true;
+        ennemy.IsAttacking = true;
         agent.isStopped = true;
         
         player.GetDamage(damage);
@@ -80,6 +84,6 @@ public class AiMovement : MonoBehaviour
         yield return new WaitForSeconds(2);
         
         agent.isStopped = false;
-        _isAttacking = false;
+        ennemy.IsAttacking = false;
     }
 }
