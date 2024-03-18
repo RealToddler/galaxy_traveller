@@ -5,42 +5,56 @@ using UnityEngine;
 
 public class Ennemy : MonoBehaviour
 {
-    [SerializeField] private int maxHealth = 100;
-    [SerializeField] public float radiusAttackDistance;
-    [SerializeField] private Dictionary<string, Attack> attacks;
-    public float Health { get; private set; }
-    public bool IsAttacking { get; set;}
+    [SerializeField] public Player player;
     
+    [Header("Proprieties")]
+    [SerializeField] public float radiusAttackDistance;
+    [SerializeField] List<Attack> attacks;
+    //[SerializeField] private PlatfromEnnemy plateform;
+    
+    public int _maxHealth = 100;
+
+    public float Health { get; private set; }
+    public bool IsAttacking { get; protected set;}
+
     private void Start()
     {
-        Health = maxHealth;
+        IsAttacking = false;
+        Health = _maxHealth;
     }
 
     private void Update()
     {
-        if (!IsAttacking)
+        AttackManager();
+    }
+
+    public virtual void AttackManager()
+    {
+        float distance = Vector3.Distance(player.transform.position, transform.position);
+
+        if (!IsAttacking && distance <= radiusAttackDistance)
         {
-            /*float distance = Vector3.Distance(player.transform.position, transform.position);
-
-            if (distance <= meleeAttackRadius)
-            {
-                _currentStoppingDistance = meleeStoppingDistance;
-                AttackMelee();
-            }
-            else
-            {
-                _currentStoppingDistance = _distanceAttackRadius;
-
-                if (distance <= _distanceAttackRadius)
-                {
-                    AttackDistance();
-                }
-                else
-                {
-                    Approach();
-                }
-
-            }*/
+            FindAndLaunchAttack("Distance");
         }
+    }
+
+    protected void FindAndLaunchAttack(string attackName)
+    {
+        foreach (var currAttack in attacks)
+        {
+            if (currAttack.name == attackName)
+            {
+                IsAttacking = true;
+
+                currAttack.LaunchAttack();
+                
+                Invoke(nameof(BackToFalse), 2);
+            }
+        }
+    }
+
+    private void BackToFalse()
+    {
+        IsAttacking = false;
     }
 }

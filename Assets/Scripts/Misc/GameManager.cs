@@ -1,44 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-// using Photon.Realtime;
-// using Photon.Pun;
-using Unity.VisualScripting;
-using UnityEngine.SceneManagement;
+using Photon.Realtime;
+using Photon.Pun;
 
-public class GameManager //: MonoBehaviourPunCallbacks
+
+public class GameManager : MonoBehaviourPunCallbacks
 {
-    /*public GameObject playerPrefab;
-
-    void Update() {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            QuitApplication();
-        }
-    }
-
-    // TODO :
-    // 1. verifier que le joueur est connecte & vérifier que playerPrefab != null
+    public GameObject playerPrefab;
     void Start() 
     {
-        PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0, 1, 0), Quaternion.identity, 0);
+        PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(0, 16, 0), Quaternion.identity, 0);
     }
 
-    public void OnPlayerEnterRoom(Player other) {
+    public void OnPlayerEnterRoom(Player other) 
+    {
         print(other.NickName + "s'est connecté");
     }
 
-    public override void OnLeftRoom()
+    public void LeaveRoom() 
     {
-        SceneManager.LoadScene("MyLauncherScene");
-    }
-
-    public void LeaveRoom() {
         PhotonNetwork.LeaveRoom();
     }
 
-    public void QuitApplication() {
+    public void QuitApplication() 
+    {
         Application.Quit();
-    }*/
-
+    }
 }

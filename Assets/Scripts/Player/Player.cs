@@ -7,6 +7,13 @@ public class Player : MonoBehaviour
 {
     [SerializeField] public int maxHealth = 100;
     [SerializeField] public int maxOxygen = 100;
+    [SerializeField] private Animator playerAnimator;
+    private int attackMelee=Animator.StringToHash("Attack");
+    
+    public string NickName { get; }
+    
+    //public int IsDistanceAttacking;
+    
     public float Health { get; private set ; }
     public float Oxygen { get; private set ; }
 
@@ -14,12 +21,23 @@ public class Player : MonoBehaviour
     {
         Health = maxHealth;
         Oxygen = maxOxygen;
-
+        //IsMeleeAttacking = Animator.StringToHash("Fire1");
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Confined;
     }
 
-    
+    private void Update()
+    {
+        AttackManager();
+    }
+
+    public void AttackManager()
+    {
+        if (Input.GetButtonDown("Fire1"))
+        {
+            playerAnimator.SetTrigger(attackMelee);
+        }
+    }
     // Remove damage to player health
     public void GetDamage(float damage)
     {
@@ -46,7 +64,6 @@ public class Player : MonoBehaviour
         }
     }
     
-    // ==== Photon ====
-    public string NickName { get; } // Photon oblige mais je pense emilien sait comment gerer ca
+    
     
 }

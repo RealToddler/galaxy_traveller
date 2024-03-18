@@ -7,83 +7,48 @@ using UnityEngine.AI;
 public class AiMovement : MonoBehaviour
 {
     [Header("Objects")]
-    [SerializeField] private Player player;
     [SerializeField] private NavMeshAgent agent;
-    [SerializeField] private Ennemy ennemy;
-    
-    [Header("Melee")]
-    [SerializeField] private float meleeAttackRadius = 5f;
-    [SerializeField] private float meleeStoppingDistance = 1f;
+    [SerializeField] private EnnemyAI ennemy;
 
     private float _currentStoppingDistance;
-    private float _distanceAttackRadius;
 
 
     private void Start()
     {
-        _distanceAttackRadius = ennemy.radiusAttackDistance;
+        _currentStoppingDistance = ennemy.radiusAttackDistance; 
     }
 
     void Update()
     {
-        agent.stoppingDistance = _currentStoppingDistance;
+        MovementManager();
+    }
+    
+    private void MovementManager()
+    {
+        agent.isStopped = ennemy.IsAttacking;
         
         if (!ennemy.IsAttacking)
         {
-            float distance = Vector3.Distance(player.transform.position, transform.position);
-            
-            if (distance <= meleeAttackRadius)
+            float distance = Vector3.Distance(ennemy.player.transform.position, transform.position);
+
+            if (distance <= ennemy.meleeAttackRadius)
             {
-                _currentStoppingDistance = meleeStoppingDistance;
-                AttackMelee();
+                _currentStoppingDistance = ennemy.meleeStoppingDistance;
             }
             else
             {
-                _currentStoppingDistance = _distanceAttackRadius;
-                
-                if (distance <= _distanceAttackRadius)
-                {
-                    AttackDistance();
-                }
-                else
+                _currentStoppingDistance = ennemy.radiusAttackDistance;
+
+                if (distance > ennemy.radiusAttackDistance)
                 {
                     Approach();
                 }
-
             }
         }
-    }
-
-    void AttackMelee()
-    {
-        if (Vector3.Distance(player.transform.position, transform.position) < 2f)
-        {
-            Debug.Log("Attaque melee");
-            StartCoroutine(AttackPlayer(10));
-        }
-    }
-
-    void AttackDistance()
-    {
-        Debug.Log("Attaque a distance");
-        StartCoroutine(AttackPlayer(5));
     }
 
     void Approach()
     {
-        agent.SetDestination(player.transform.position);
-    }
-
-    IEnumerator AttackPlayer(int damage)
-    {
-        ennemy.IsAttacking = true;
-        agent.isStopped = true;
-        
-        player.GetDamage(damage);
-        
-        yield return new WaitForSeconds(2);
-        
-        agent.isStopped = false;
-        ennemy.IsAttacking = false;
+        agent.SetDestination(ennemy.player.transform.position);
     }
 }
