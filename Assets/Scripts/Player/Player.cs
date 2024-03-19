@@ -39,7 +39,7 @@ public class Player : MonoBehaviour
         DiePv();
         DieOxy();
         AnimationManager();
-        GetDamage(0.04f);
+        //GetDamage(0.04f);
         AttackManager();
     }
 
@@ -63,8 +63,10 @@ public class Player : MonoBehaviour
 
         if (Physics.Raycast(transform.position + new Vector3(0,1,0), transform.forward, out hit, 2.2f, layerMask))
         {
+            Debug.Log("RayCast Touch something");
             if (hit.transform.CompareTag("AI"))
             {
+                Debug.Log("Ai loose health");
                 hit.collider.GetComponent<Ennemy>().LooseHealth(50f);
             }
         }
