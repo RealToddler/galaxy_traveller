@@ -27,8 +27,8 @@ public class WelcomeScreen : BasicMenu
         }
     }
 
-    public void ActivateMenus(Object menuCanvas)
+    public void SwitchToMenus()
     {
-        menuCanvas.GameObject().SetActive(true);
+        SceneManager.LoadScene("Menus");
     }
 }
