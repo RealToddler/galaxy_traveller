@@ -25,11 +25,11 @@ public class AiMovement : MonoBehaviour
     
     private void MovementManager()
     {
-        agent.isStopped = ennemy.IsAttacking;
-        
-        if (!ennemy.IsAttacking)
+        if (!ennemy.IsAttacking && ennemy.plateform.players.Count != 0)
         {
-            float distance = Vector3.Distance(ennemy.player.transform.position, transform.position);
+            agent.isStopped = ennemy.IsAttacking;
+
+            float distance = Vector3.Distance(ennemy.plateform.players[0].position, transform.position);
 
             if (distance <= ennemy.meleeAttackRadius)
             {
@@ -49,6 +49,6 @@ public class AiMovement : MonoBehaviour
 
     void Approach()
     {
-        agent.SetDestination(ennemy.player.transform.position);
+        agent.SetDestination(ennemy.plateform.players[0].position);
     }
 }

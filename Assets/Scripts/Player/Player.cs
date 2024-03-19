@@ -5,23 +5,22 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] public int maxHealth = 100000;
-    [SerializeField] public int maxOxygen = 100;
     [SerializeField] private Animator playerAnimator;
-    private int attackMelee = Animator.StringToHash("Attack");
-    private bool is_attacking;
-    private int deadPv = Animator.StringToHash("DiePv");
-    private int deadOxy = Animator.StringToHash("DieOxy");
-    private bool isDeadPv = false;
-    private bool isDeadOxy = false;
     [SerializeField] private MoveBehaviour moveBehaviour;
     [SerializeField] private Transform respawnPoint;
-    private bool isRespawning = false;
-
-
-    public string NickName { get; }
-
-    //public int IsDistanceAttacking;
+    [SerializeField] private LayerMask layerMask;
+    
+    private int _attackMelee = Animator.StringToHash("Attack");
+    private int deadPv = Animator.StringToHash("DiePv");
+    private int deadOxy = Animator.StringToHash("DieOxy");
+    
+    private bool isAttacking;
+    private bool isDeadPv;
+    private bool isDeadOxy;
+    private bool isRespawning;
+    
+    public int maxHealth = 100;
+    public int maxOxygen = 100;
 
     public float Health { get; private set; }
     public float Oxygen { get; private set; }
@@ -36,27 +35,49 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        //LooseOxygen();
-        //DiePv();
-        //DieOxy();
+        LooseOxygen();
+        DiePv();
+        DieOxy();
         AnimationManager();
-        // GetDamage(0.04f);
+        GetDamage(0.04f);
+        AttackManager();
+    }
+
+    public void AttackManager()
+    {
+        Debug.DrawRay(transform.position + new Vector3(0,1,0), transform.forward *2.2f, Color.white);
+        if (!isDeadPv && !isAttacking && Input.GetButtonDown("Fire1"))
+        {
+            isAttacking = true;
+            SendAttackMelee();
+            playerAnimator.SetTrigger(_attackMelee);
+            Invoke(nameof(SetAttackingToFalse), 0.5f);
+        }
+    }
+
+    public void SendAttackMelee()
+    {
+        Debug.Log("Attack sent");
+
+        RaycastHit hit;
+
+        if (Physics.Raycast(transform.position + new Vector3(0,1,0), transform.forward, out hit, 2.2f, layerMask))
+        {
+            if (hit.transform.CompareTag("AI"))
+            {
+                hit.collider.GetComponent<Ennemy>().LooseHealth(50f);
+            }
+        }
     }
 
     public void AnimationManager()
     {
-        if (!isDeadPv && !is_attacking && Input.GetButtonDown("Fire1"))
-        {
-            is_attacking = true;
-            playerAnimator.SetTrigger(attackMelee);
-            Invoke(nameof(SetAttackingToFalse), 0.5f);
-        }
+        
         if (isDeadPv)
         {
             playerAnimator.SetBool(deadPv,true);
             isDeadPv = false;
         }
-
         if (isDeadOxy)
         {
             playerAnimator.SetBool(deadOxy, true);
@@ -66,7 +87,7 @@ public class Player : MonoBehaviour
     }
     public void SetAttackingToFalse()
     {
-        is_attacking = false;
+        isAttacking = false;
     }
     public void DiePv()
     {
@@ -112,7 +133,6 @@ public class Player : MonoBehaviour
     {
         playerAnimator.SetBool(deadPv, false);
         Health = maxHealth;
-        // isDeadPv = false;
         isRespawning = false;
         transform.position = respawnPoint.transform.position;
         moveBehaviour.enabled = true;

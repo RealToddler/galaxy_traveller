@@ -2,13 +2,16 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Object = System.Object;
 
 public class PlateformEnnemy : MonoBehaviour
 {
-    private List<Player> players;
-    private void OnTriggerEnter(Collider player)
+    public List<Transform> players;
+    private void OnTriggerEnter(Collider obj)
     {
-       //  player
-       // players.Add(other.);
+        if (obj.gameObject.CompareTag("Player"))
+        {
+            players.Add(obj.gameObject.transform);
+        }
     }
 }
