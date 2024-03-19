@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnnemyAI : Ennemy
 {
+
     [Header("Melee")]
     [SerializeField] public float meleeAttackRadius = 5f;
     [SerializeField] public float meleeStoppingDistance = 1f;

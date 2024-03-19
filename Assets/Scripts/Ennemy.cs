@@ -5,17 +5,18 @@ using UnityEngine;
 
 public class Ennemy : MonoBehaviour
 {
+
     [SerializeField] public Player player;
-    
+
     [Header("Proprieties")]
     [SerializeField] public float radiusAttackDistance;
     [SerializeField] List<Attack> attacks;
     //[SerializeField] private PlatfromEnnemy plateform;
-    
+
     public int _maxHealth = 100;
 
     public float Health { get; private set; }
-    public bool IsAttacking { get; protected set;}
+    public bool IsAttacking { get; protected set; }
 
     private void Start()
     {
@@ -47,11 +48,12 @@ public class Ennemy : MonoBehaviour
                 IsAttacking = true;
 
                 currAttack.LaunchAttack();
-                
+
                 Invoke(nameof(BackToFalse), 2);
             }
         }
     }
+
 
     private void BackToFalse()
     {
