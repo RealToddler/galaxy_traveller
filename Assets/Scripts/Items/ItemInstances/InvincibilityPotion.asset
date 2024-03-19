@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0925a9a5397e1e046b73c36cc719d2a3, type: 3}
   m_Name: InvincibilityPotion
   m_EditorClassIdentifier: 
-  name: 
-  visual: {fileID: 0}
-  prefab: {fileID: 0}
+  name: InvincibilityPotion
+  visual: {fileID: 21300000, guid: 03871af7764df5244983ec46ee0a2830, type: 3}
+  prefab: {fileID: 1000012970591572, guid: 3aba571600cc4964da96ff8c8f3ca1b7, type: 3}
