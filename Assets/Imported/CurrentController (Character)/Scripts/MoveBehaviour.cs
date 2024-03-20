@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
+using Photon.Pun;
 
 // MoveBehaviour inherits from GenericBehaviour. This class corresponds to basic walk and run behaviour, it is the default behaviour.
 public class MoveBehaviour : GenericBehaviour
 {
+	public PhotonView view;
 	public float walkSpeed = 0.15f;                 // Default walk speed.
 	public float runSpeed = 1.0f;                   // Default run speed.
 	public float sprintSpeed = 2.0f;                // Default sprint speed.
@@ -34,32 +36,39 @@ public class MoveBehaviour : GenericBehaviour
 		behaviourManager.SubscribeBehaviour(this);
 		behaviourManager.RegisterDefaultBehaviour(behaviourCode);
 		_speedSeeker = runSpeed;
+		view = GetComponent<PhotonView>();
 	}
 
 	// Update is used to set features regardless the active behaviour.
 	void Update()
 	{
-		// Get jump input.
-		if (Input.GetButtonDown(_jumpButton) && !_roll && !_jump && behaviourManager.IsCurrentBehaviour(behaviourCode) )
+		if (view.IsMine)
 		{
-			_jump = true;
-		}
-		if ( !_roll && !_jump && Input.GetButtonDown(_rollButton)) 
-		{
-			_roll = true;
+			// Get jump input.
+			if (Input.GetButtonDown(_jumpButton) && !_roll && !_jump && behaviourManager.IsCurrentBehaviour(behaviourCode) )
+			{
+				_jump = true;
+			}
+			if ( !_roll && !_jump && Input.GetButtonDown(_rollButton)) 
+			{
+				_roll = true;
+			}
 		}
 	}
 
 	// LocalFixedUpdate overrides the virtual function of the base class.
 	public override void LocalFixedUpdate()
 	{
-		// Call the basic movement manager.
-		MovementManagement(behaviourManager.GetH, behaviourManager.GetV);
+		if (view.IsMine)
+		{
+			// Call the basic movement manager.
+			MovementManagement(behaviourManager.GetH, behaviourManager.GetV);
 
-		// Call the jump manager.
-		JumpManagement();
+			// Call the jump manager.
+			JumpManagement();
 
-		DoRoll();
+			DoRoll();
+		}
 	}
 	void DoRoll()
     {

@@ -2,9 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class Player : MonoBehaviour
 {
+    public PhotonView view;
     [SerializeField] private Animator playerAnimator;
     [SerializeField] private MoveBehaviour moveBehaviour;
     [SerializeField] private Transform respawnPoint;
@@ -31,16 +33,20 @@ public class Player : MonoBehaviour
         Oxygen = maxOxygen;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Confined;
+        view = GetComponent<PhotonView>();
     }
 
     private void Update()
     {
-        LooseOxygen();
-        DiePv();
-        DieOxy();
-        AnimationManager();
-        //GetDamage(0.04f);
-        AttackManager();
+        if (view.IsMine)
+        {
+            LooseOxygen();
+            DiePv();
+            DieOxy();
+            AnimationManager();
+            //GetDamage(0.04f);
+            AttackManager();   
+        }
     }
 
     public void AttackManager()

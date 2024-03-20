@@ -1,10 +1,13 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections.Generic;
+using Photon.Pun;
 
 // This class manages which player behaviour is active or overriding, and call its local functions.
 // Contains basic setup and common functions used by all the player behaviours.
 public class BasicBehaviour : MonoBehaviour
 {
+	public PhotonView view;
 	public Transform playerCamera;                        // Reference to the camera that focus the player.
 	public float turnSmoothing = 0.06f;                   // Speed of turn when moving to match camera facing.
 	public float sprintFOV = 100f;                        // the FOV to use on the camera when player is sprinting.
@@ -60,87 +63,101 @@ public class BasicBehaviour : MonoBehaviour
 		colExtents = GetComponent<Collider>().bounds.extents;
 	}
 
+	private void Start()
+	{
+		view = GetComponent<PhotonView>();
+	}
+
 	void Update()
 	{
-		// Store the input axes.
-		h = Input.GetAxis("Horizontal");
-		v = Input.GetAxis("Vertical");
-
-		// Set the input axes on the Animator Controller.
-		anim.SetFloat(hFloat, h, 0.1f, Time.deltaTime);
-		anim.SetFloat(vFloat, v, 0.1f, Time.deltaTime);
-
-		// Toggle sprint by input.
-		sprint = Input.GetButton (sprintButton);
-
-		// Set the correct camera FOV for sprint mode.
-		if(IsSprinting())
+		if (view.IsMine)
 		{
-			changedFOV = true;
-			camScript.SetFOV(sprintFOV);
+			// Store the input axes.
+			h = Input.GetAxis("Horizontal");
+			v = Input.GetAxis("Vertical");
+
+			// Set the input axes on the Animator Controller.
+			anim.SetFloat(hFloat, h, 0.1f, Time.deltaTime);
+			anim.SetFloat(vFloat, v, 0.1f, Time.deltaTime);
+
+			// Toggle sprint by input.
+			sprint = Input.GetButton (sprintButton);
+
+			// Set the correct camera FOV for sprint mode.
+			if(IsSprinting())
+			{
+				changedFOV = true;
+				camScript.SetFOV(sprintFOV);
+			}
+			else if(changedFOV)
+			{
+				camScript.ResetFOV();
+				changedFOV = false;
+			}
+			// Set the grounded test on the Animator Controller.
+			anim.SetBool(groundedBool, IsGrounded());
 		}
-		else if(changedFOV)
-		{
-			camScript.ResetFOV();
-			changedFOV = false;
-		}
-		// Set the grounded test on the Animator Controller.
-		anim.SetBool(groundedBool, IsGrounded());
 	}
 
 	// Call the FixedUpdate functions of the active or overriding behaviours.
 	void FixedUpdate()
 	{
-		// Call the active behaviour if no other is overriding.
-		bool isAnyBehaviourActive = false;
-		if (behaviourLocked > 0 || overridingBehaviours.Count == 0)
+		if (view.IsMine)
 		{
-			foreach (GenericBehaviour behaviour in behaviours)
+			// Call the active behaviour if no other is overriding.
+			bool isAnyBehaviourActive = false;
+			if (behaviourLocked > 0 || overridingBehaviours.Count == 0)
 			{
-				if (behaviour.isActiveAndEnabled && currentBehaviour == behaviour.GetBehaviourCode())
+				foreach (GenericBehaviour behaviour in behaviours)
 				{
-					isAnyBehaviourActive = true;
+					if (behaviour.isActiveAndEnabled && currentBehaviour == behaviour.GetBehaviourCode())
+					{
+						isAnyBehaviourActive = true;
+						behaviour.LocalFixedUpdate();
+					}
+				}
+			}
+			// Call the overriding behaviours if any.
+			else
+			{
+				foreach (GenericBehaviour behaviour in overridingBehaviours)
+				{
 					behaviour.LocalFixedUpdate();
 				}
 			}
-		}
-		// Call the overriding behaviours if any.
-		else
-		{
-			foreach (GenericBehaviour behaviour in overridingBehaviours)
-			{
-				behaviour.LocalFixedUpdate();
-			}
-		}
 
-		// Ensure the player will stand on ground if no behaviour is active or overriding.
-		if (!isAnyBehaviourActive && overridingBehaviours.Count == 0)
-		{
-			rBody.useGravity = true;
-			Repositioning ();
+			// Ensure the player will stand on ground if no behaviour is active or overriding.
+			if (!isAnyBehaviourActive && overridingBehaviours.Count == 0)
+			{
+				rBody.useGravity = true;
+				Repositioning ();
+			}
 		}
 	}
 
 	// Call the LateUpdate functions of the active or overriding behaviours.
 	private void LateUpdate()
 	{
-		// Call the active behaviour if no other is overriding.
-		if (behaviourLocked > 0 || overridingBehaviours.Count == 0)
+		if (view.IsMine)
 		{
-			foreach (GenericBehaviour behaviour in behaviours)
+			// Call the active behaviour if no other is overriding.
+			if (behaviourLocked > 0 || overridingBehaviours.Count == 0)
 			{
-				if (behaviour.isActiveAndEnabled && currentBehaviour == behaviour.GetBehaviourCode())
+				foreach (GenericBehaviour behaviour in behaviours)
+				{
+					if (behaviour.isActiveAndEnabled && currentBehaviour == behaviour.GetBehaviourCode())
+					{
+						behaviour.LocalLateUpdate();
+					}
+				}
+			}
+			// Call the overriding behaviours if any.
+			else
+			{
+				foreach (GenericBehaviour behaviour in overridingBehaviours)
 				{
 					behaviour.LocalLateUpdate();
 				}
-			}
-		}
-		// Call the overriding behaviours if any.
-		else
-		{
-			foreach (GenericBehaviour behaviour in overridingBehaviours)
-			{
-				behaviour.LocalLateUpdate();
 			}
 		}
 

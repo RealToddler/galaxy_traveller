@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using Photon.Pun;
 // AimBehaviour inherits from GenericBehaviour. This class corresponds to aim and strafe behaviour.
 public class AimBehaviourBasic : GenericBehaviour
 {
+	public PhotonView view;
 	public string aimButton = "Aim", shoulderButton = "Aim Shoulder";     // Default aim and switch shoulders buttons.
 	public Texture2D crosshair;                                           // Crosshair texture.
 	public float aimTurnSmoothing = 0.15f;                                // Speed of turn response when aiming to match camera facing.
@@ -18,33 +19,38 @@ public class AimBehaviourBasic : GenericBehaviour
 	{
 		// Set up the references.
 		aimBool = Animator.StringToHash("Aim");
+		view = GetComponent<PhotonView>();
 	}
 
 	// Update is used to set features regardless the active behaviour.
 	void Update ()
 	{
+		if (view.IsMine)
+		{		
 		// Activate/deactivate aim by input.
-		if (Input.GetAxisRaw(aimButton) != 0 && !aim)
-		{
-			StartCoroutine(ToggleAimOn());
-		}
-		else if (aim && Input.GetAxisRaw(aimButton) == 0)
-		{
-			StartCoroutine(ToggleAimOff());
+         	if (Input.GetAxisRaw(aimButton) != 0 && !aim)
+         	{
+         		StartCoroutine(ToggleAimOn());
+         	}
+         	else if (aim && Input.GetAxisRaw(aimButton) == 0)
+         	{
+         		StartCoroutine(ToggleAimOff());
+         	}
+     
+         	// No sprinting while aiming.
+         	canSprint = !aim;
+     
+         	// Toggle camera aim position left or right, switching shoulders.
+         	if (aim && Input.GetButtonDown (shoulderButton))
+         	{
+         		aimCamOffset.x = aimCamOffset.x * (-1);
+         		aimPivotOffset.x = aimPivotOffset.x * (-1);
+         	}
+     
+         	// Set aim boolean on the Animator Controller.
+         	behaviourManager.GetAnim.SetBool (aimBool, aim);
 		}
 
-		// No sprinting while aiming.
-		canSprint = !aim;
-
-		// Toggle camera aim position left or right, switching shoulders.
-		if (aim && Input.GetButtonDown (shoulderButton))
-		{
-			aimCamOffset.x = aimCamOffset.x * (-1);
-			aimPivotOffset.x = aimPivotOffset.x * (-1);
-		}
-
-		// Set aim boolean on the Animator Controller.
-		behaviourManager.GetAnim.SetBool (aimBool, aim);
 	}
 
 	// Co-rountine to start aiming mode with delay.

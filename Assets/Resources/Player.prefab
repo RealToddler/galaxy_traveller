@@ -6061,6 +6061,9 @@ GameObject:
   - component: {fileID: 8422355495050599420}
   - component: {fileID: 5911718146475374227}
   - component: {fileID: 4746734748931762918}
+  - component: {fileID: 6315274067691122499}
+  - component: {fileID: 700895187995434486}
+  - component: {fileID: 3750636141942883142}
   m_Layer: 8
   m_Name: FirstPlayer
   m_TagString: Player
@@ -6123,6 +6126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 247335de9c2ba3d49bbbada1d0562339, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  view: {fileID: 0}
   aimButton: Aim
   shoulderButton: Aim Shoulder
   crosshair: {fileID: 10914, guid: 0000000000000000f000000000000000, type: 0}
@@ -6141,6 +6145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d91044bddee1594cb64cddcbb5e76b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  view: {fileID: 0}
   playerCamera: {fileID: 508865431604142772}
   turnSmoothing: 0.06
   sprintFOV: 100
@@ -6156,6 +6161,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 039bb8d7417bb404b81b234941f62050, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  view: {fileID: 0}
   walkSpeed: 0.15
   runSpeed: 1
   sprintSpeed: 2
@@ -6175,6 +6181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b86dbbaaa422b64d8a77740b0e66a5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  view: {fileID: 0}
   flyButton: Fly
   flySpeed: 4
   sprintFactor: 2
@@ -6256,6 +6263,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 099094cbd67a566478f44c4f2fb0a360, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  view: {fileID: 0}
   playerAnimator: {fileID: 8162828716094709261}
   moveBehaviour: {fileID: 386468609652805197}
   respawnPoint: {fileID: 4309694500335550586}
@@ -6264,6 +6272,106 @@ MonoBehaviour:
     m_Bits: 2048
   maxHealth: 100
   maxOxygen: 100
+--- !u!114 &6315274067691122499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2520637923631280043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 700895187995434486}
+  - {fileID: 3750636141942883142}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &700895187995434486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2520637923631280043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
+--- !u!114 &3750636141942883142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2520637923631280043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 1
+    SynchronizeType: 1
+    Name: Speed
+  - Type: 4
+    SynchronizeType: 1
+    Name: Jump
+  - Type: 4
+    SynchronizeType: 1
+    Name: Fly
+  - Type: 4
+    SynchronizeType: 1
+    Name: Aim
+  - Type: 1
+    SynchronizeType: 1
+    Name: H
+  - Type: 1
+    SynchronizeType: 1
+    Name: V
+  - Type: 4
+    SynchronizeType: 1
+    Name: Grounded
+  - Type: 9
+    SynchronizeType: 1
+    Name: Pickup
+  - Type: 9
+    SynchronizeType: 1
+    Name: Roll
+  - Type: 9
+    SynchronizeType: 1
+    Name: Attack
+  - Type: 4
+    SynchronizeType: 1
+    Name: DiePv
+  - Type: 4
+    SynchronizeType: 1
+    Name: DieOxy
+  m_SynchronizeLayers:
+  - SynchronizeType: 0
+    LayerIndex: 0
+  - SynchronizeType: 0
+    LayerIndex: 1
+  - SynchronizeType: 0
+    LayerIndex: 2
+  - SynchronizeType: 0
+    LayerIndex: 3
 --- !u!1 &2605223724496887271
 GameObject:
   m_ObjectHideFlags: 0
@@ -13472,9 +13580,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 46315900138654032}
-  - component: {fileID: 3529894275110008405}
-  - component: {fileID: 4538851184926744220}
-  - component: {fileID: 28021680726736022}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -13503,62 +13608,6 @@ Transform:
   - {fileID: 7192858224878357806}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3529894275110008405
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7003312485318002529}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
-  m_SynchronizeScale: 0
-  m_UseLocal: 1
---- !u!114 &4538851184926744220
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7003312485318002529}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents:
-  - {fileID: 3529894275110008405}
-  - {fileID: 28021680726736022}
-  sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
---- !u!114 &28021680726736022
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7003312485318002529}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowLayerWeightsInspector: 1
-  ShowParameterInspector: 1
-  m_SynchronizeParameters: []
-  m_SynchronizeLayers: []
 --- !u!1 &7075066488571959739
 GameObject:
   m_ObjectHideFlags: 0
