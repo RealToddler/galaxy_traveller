@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: OxygenPotion
   visual: {fileID: 21300000, guid: 1ae55c3aa29c6fd43bfdd523011ffee2, type: 3}
-  prefab: {fileID: 1000013317980782, guid: 00d5c34bf96558f47ad2c6c9e8a291cf, type: 3}
+  prefab: {fileID: 4341942496310108725, guid: 00d5c34bf96558f47ad2c6c9e8a291cf, type: 3}

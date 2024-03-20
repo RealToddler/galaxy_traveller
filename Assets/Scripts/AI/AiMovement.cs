@@ -27,7 +27,7 @@ public class AiMovement : MonoBehaviour
     {
         if (!ennemy.IsAttacking && ennemy.plateform.players.Count != 0)
         {
-            agent.isStopped = ennemy.IsAttacking;
+            //agent.isStopped = ennemy.IsAttacking;
 
             float distance = Vector3.Distance(ennemy.plateform.players[0].position, transform.position);
 

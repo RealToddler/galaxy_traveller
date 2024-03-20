@@ -51,8 +51,10 @@ public class Ennemy : MonoBehaviour
             if (currAttack.name == attackName)
             {
                 IsAttacking = true;
-
+                
                 //currAttack.LaunchAttack();
+                
+                
 
                 Invoke(nameof(BackToFalse), 2);
             }
