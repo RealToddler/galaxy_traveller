@@ -8,14 +8,14 @@ public class AiMovement : MonoBehaviour
 {
     [Header("Objects")]
     [SerializeField] private NavMeshAgent agent;
-    [SerializeField] private EnnemyAI ennemy;
+    [SerializeField] private EnemyAI enemy;
 
     private float _currentStoppingDistance;
 
 
     private void Start()
     {
-        _currentStoppingDistance = ennemy.radiusAttackDistance; 
+        _currentStoppingDistance = enemy.radiusAttackDistance; 
     }
 
     void Update()
@@ -25,21 +25,21 @@ public class AiMovement : MonoBehaviour
     
     private void MovementManager()
     {
-        if (!ennemy.IsAttacking && ennemy.plateform.players.Count != 0)
+        if (!enemy.IsAttacking && enemy.platform.players.Count != 0)
         {
             //agent.isStopped = ennemy.IsAttacking;
 
-            float distance = Vector3.Distance(ennemy.plateform.players[0].position, transform.position);
+            float distance = Vector3.Distance(enemy.platform.players[0].position, transform.position);
 
-            if (distance <= ennemy.meleeAttackRadius)
+            if (distance <= enemy.meleeAttackRadius)
             {
-                _currentStoppingDistance = ennemy.meleeStoppingDistance;
+                _currentStoppingDistance = enemy.meleeStoppingDistance;
             }
             else
             {
-                _currentStoppingDistance = ennemy.radiusAttackDistance;
+                _currentStoppingDistance = enemy.radiusAttackDistance;
 
-                if (distance > ennemy.radiusAttackDistance)
+                if (distance > enemy.radiusAttackDistance)
                 {
                     Approach();
                 }
@@ -49,6 +49,6 @@ public class AiMovement : MonoBehaviour
 
     void Approach()
     {
-        agent.SetDestination(ennemy.plateform.players[0].position);
+        agent.SetDestination(enemy.platform.players[0].position);
     }
 }

@@ -6267,11 +6267,8 @@ MonoBehaviour:
   playerAnimator: {fileID: 8162828716094709261}
   moveBehaviour: {fileID: 386468609652805197}
   respawnPoint: {fileID: 4309694500335550586}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 2048
   maxHealth: 100
-  maxOxygen: 100
+  maxOxygen: 28800
 --- !u!114 &6315274067691122499
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6293,7 +6290,7 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 700895187995434486}
   - {fileID: 3750636141942883142}
-  sceneViewId: 0
+  sceneViewId: 1
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &700895187995434486
@@ -6357,12 +6354,12 @@ MonoBehaviour:
   - Type: 9
     SynchronizeType: 1
     Name: Attack
+  - Type: 9
+    SynchronizeType: 0
+    Name: DeadHp
   - Type: 4
-    SynchronizeType: 1
-    Name: DiePv
-  - Type: 4
-    SynchronizeType: 1
-    Name: DieOxy
+    SynchronizeType: 0
+    Name: DeadO2
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
@@ -6372,6 +6369,8 @@ MonoBehaviour:
     LayerIndex: 2
   - SynchronizeType: 0
     LayerIndex: 3
+  - SynchronizeType: 0
+    LayerIndex: 4
 --- !u!1 &2605223724496887271
 GameObject:
   m_ObjectHideFlags: 0
@@ -12636,100 +12635,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4108531299041904843}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &6146220595801450680
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3650746898550740840}
-  - component: {fileID: 4585167641029364809}
-  m_Layer: 0
-  m_Name: Spot Light
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3650746898550740840
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6146220595801450680}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.17806247, y: -0.09057341, z: 0.19689265, w: 0.95985603}
-  m_LocalPosition: {x: 0.007000286, y: 2.12, z: -0.017999874}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4110323274426241803}
-  m_LocalEulerAnglesHint: {x: 22.179, y: -6.433, z: 21.922}
---- !u!108 &4585167641029364809
-Light:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6146220595801450680}
-  m_Enabled: 1
-  serializedVersion: 10
-  m_Type: 0
-  m_Shape: 0
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 27.3
-  m_Range: 10.063782
-  m_SpotAngle: 35.11
-  m_InnerSpotAngle: 1.3
-  m_CookieSize: 10
-  m_Shadows:
-    m_Type: 2
-    m_Resolution: -1
-    m_CustomResolution: -1
-    m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 0.2
-    m_CullingMatrixOverride:
-      e00: 1
-      e01: 0
-      e02: 0
-      e03: 0
-      e10: 0
-      e11: 1
-      e12: 0
-      e13: 0
-      e20: 0
-      e21: 0
-      e22: 1
-      e23: 0
-      e30: 0
-      e31: 0
-      e32: 0
-      e33: 1
-    m_UseCullingMatrixOverride: 0
-  m_Cookie: {fileID: 0}
-  m_DrawHalo: 0
-  m_Flare: {fileID: 0}
-  m_RenderMode: 0
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RenderingLayerMask: 1
-  m_Lightmapping: 1
-  m_LightShadowCasterMode: 0
-  m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
-  m_ColorTemperature: 6570
-  m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
-  m_UseBoundingSphereOverride: 0
-  m_UseViewFrustumForShadowCasterCull: 1
-  m_ShadowRadius: 0
-  m_ShadowAngle: 0
 --- !u!1 &6191407232014001314
 GameObject:
   m_ObjectHideFlags: 0
@@ -19004,8 +18909,7 @@ Transform:
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 3650746898550740840}
+  m_Children: []
   m_Father: {fileID: 3564775654176044903}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &6316247290944651841

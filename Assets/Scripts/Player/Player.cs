@@ -10,17 +10,15 @@ public class Player : MonoBehaviour
     [SerializeField] private Animator playerAnimator;
     [SerializeField] private MoveBehaviour moveBehaviour;
     [SerializeField] private Transform respawnPoint;
-    [SerializeField] private LayerMask layerMask;
     
-    private int _attackMelee = Animator.StringToHash("Attack");
-    private int deadPv = Animator.StringToHash("DiePv");
-    private int deadOxy = Animator.StringToHash("DieOxy");
+    private readonly int _attackMeleeAnim = Animator.StringToHash("Attack");
+    private readonly int _deadHpAnim = Animator.StringToHash("DeadHp");
+    private readonly int _deadO2Anim = Animator.StringToHash("DeadO2");
     
-    private bool isAttacking;
-    private bool isDeadPv;
-    private bool isDeadOxy;
-    private bool isRespawning;
-    
+    private bool _isAttacking;
+    private bool _noMoreO2;
+    private bool _isRespawning;
+
     public int maxHealth = 100;
     public int maxOxygen = 100;
 
@@ -29,35 +27,34 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        // Proprieties initialisation
         Health = maxHealth;
         Oxygen = maxOxygen;
+        
+        // Cursor
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Confined;
-        view = GetComponent<PhotonView>();
+        
+        // Network
+        //view = GetComponent<PhotonView>();
     }
 
     private void Update()
     {
-        if (view.IsMine)
+        //if (view.IsMine)
         {
             LooseOxygen();
-            DiePv();
-            DieOxy();
-            AnimationManager();
-            //GetDamage(0.04f);
-            AttackManager();   
+            AttackManager();
+            // TakeDamage(0.3f);
         }
     }
 
     public void AttackManager()
     {
-        Debug.DrawRay(transform.position + new Vector3(0,1,0), transform.forward *2.2f, Color.white);
-        if (!isDeadPv && !isAttacking && Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1") && Health > 0 && !_isAttacking)
         {
-            isAttacking = true;
-            SendAttackMelee();
-            playerAnimator.SetTrigger(_attackMelee);
-            Invoke(nameof(SetAttackingToFalse), 0.5f);
+            _isAttacking = true;
+            playerAnimator.SetTrigger(_attackMeleeAnim);
         }
     }
 
@@ -67,88 +64,17 @@ public class Player : MonoBehaviour
 
         RaycastHit hit;
 
-        if (Physics.Raycast(transform.position + new Vector3(0,1,0), transform.forward, out hit, 2.2f, layerMask))
+        if (Physics.Raycast(transform.position + new Vector3(0,1,0), transform.forward, out hit, 2.2f))
         {
-            Debug.Log("RayCast Touch something");
-            if (hit.transform.CompareTag("AI"))
+            if (hit.transform.CompareTag("Enemy"))
             {
-                Debug.Log("Ai loose health");
-                hit.collider.GetComponent<Ennemy>().LooseHealth(50f);
+                hit.collider.GetComponent<Enemy>().LooseHealth(25f);
             }
         }
     }
-
-    public void AnimationManager()
-    {
-        
-        if (isDeadPv)
-        {
-            playerAnimator.SetBool(deadPv,true);
-            isDeadPv = false;
-        }
-        if (isDeadOxy)
-        {
-            playerAnimator.SetBool(deadOxy, true);
-            isDeadOxy = false;
-        }
-
-    }
-    public void SetAttackingToFalse()
-    {
-        isAttacking = false;
-    }
-    public void DiePv()
-    {
-        //fct that checks if player has any more pvs. If it is not the case, player is dead and 
-        //the function stops every movement of the player and calls the respawning function.
-        if (!isDeadPv && Health <= 0)
-        {
-            isDeadPv = true;
-        }
-        if (isDeadPv)
-        {
-            moveBehaviour.enabled = false;
-            if (!isRespawning)
-            {
-                Invoke(nameof(RespawnAfterdeathPv), 4);
-                isRespawning = true;
-            }
-        }
-    }
-
-    public void DieOxy() {
-        if (!isDeadOxy && Oxygen <= 0) {
-            isDeadOxy = true;
-        }
-
-        if (isDeadOxy) {
-            moveBehaviour.enabled = false;
-            if (!isRespawning) {
-                Invoke(nameof(RespawnAfterDeathOxy), 4);
-                isRespawning = true;
-            }
-        }
-    }
-    public void RespawnAfterDeathOxy(){
-        playerAnimator.SetBool(deadOxy, false);
-        Oxygen=maxOxygen;
-        isRespawning=false;
-        transform.position = respawnPoint.transform.position;
-        moveBehaviour.enabled = true;
-    }
-    public void RespawnAfterdeathPv()
-    //This function manages the things to reset normally after the player's death and it brings the player to the respawn point.
-    {
-        playerAnimator.SetBool(deadPv, false);
-        Health = maxHealth;
-        isRespawning = false;
-        transform.position = respawnPoint.transform.position;
-        moveBehaviour.enabled = true;
-
-    }
-
+    
     // Remove damage to player health
-    public void GetDamage(float damage)
+    public void TakeDamage(float damage)
     {
         if (Health > 0)
         {
@@ -156,24 +82,45 @@ public class Player : MonoBehaviour
         }
         else
         {
-            // Respawn or GameOver
+            if (!_isRespawning)
+            {
+                moveBehaviour.enabled = false;
+                _isRespawning = true;
+                playerAnimator.SetTrigger(_deadHpAnim);
+            }
         }
     }
+    
+    //This function manages the things to reset normally after the player's death and it brings the player to the respawn point.
+    public void RespawnAfterDeathHp()
+    {
+        Health = maxHealth;
+        _isRespawning = false;
+        transform.position = respawnPoint.transform.position;
+        moveBehaviour.enabled = true;
+    }
 
-    // Remove qty of O2 to player Oxygene
+    // Remove qty of O2 to player Oxygen
     public void LooseOxygen()
     {
         if (Oxygen >= 10)
         {
             Oxygen -= 0.007f;
         }
-        else if (Oxygen <= 10 && Oxygen > 0) {
+        else if (Oxygen is < 10 and > 0) 
+        {
             Oxygen -= 0.002f;
             playerAnimator.speed = 0.7f;
-        } else {
-            Debug.Log("dead");
+        } 
+        else 
+        {
+            playerAnimator.SetTrigger(_deadO2Anim);
+            Debug.Log("Game Over");
         }
     }
-
-
+    
+    public void SetAttackingToFalse()
+    {
+        _isAttacking = false;
+    }
 }

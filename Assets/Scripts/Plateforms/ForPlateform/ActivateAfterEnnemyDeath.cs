@@ -5,14 +5,14 @@ using UnityEngine;
 
 public class ActivateAfterEnnemyDeath : MonoBehaviour
 {
-    [SerializeField] public Ennemy ennemy;
-    [SerializeField] private GameObject platForm;
+    [SerializeField] public Enemy enemy;
+    [SerializeField] private GameObject platform;
 
     private void Update()
     {
-        if (ennemy.Health <= 0)
+        if (enemy.Health <= 0)
         {
-            platForm.gameObject.SetActive(true);
+            platform.gameObject.SetActive(true);
         }
     }
 }
