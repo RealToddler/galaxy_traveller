@@ -6290,7 +6290,7 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 700895187995434486}
   - {fileID: 3750636141942883142}
-  sceneViewId: 1
+  sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &700895187995434486
@@ -13730,6 +13730,7 @@ MonoBehaviour:
   healthBarFill: {fileID: 4504865007170242028}
   oxygenBarFill: {fileID: 7451742461284526887}
   inventorySlots: {fileID: 2077070584306734997}
+  gameOverScreen: {fileID: 0}
 --- !u!1 &7552271686568350838
 GameObject:
   m_ObjectHideFlags: 0

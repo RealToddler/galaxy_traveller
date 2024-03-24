@@ -1,4 +1,6 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerUI : MonoBehaviour
@@ -10,11 +12,17 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private RectTransform oxygenBarFill;
     [SerializeField] private Transform inventorySlots;
 
+    [SerializeField] private GameObject gameOverScreen;
+    
     private void Update()
     {
         RefreshHealthAmount();
         RefreshOxygenAmount();
         RefreshInventory();
+
+        // Cursor
+        Cursor.visible = gameOverScreen.activeSelf;
+        Cursor.lockState = CursorLockMode.Confined;
     }
     
     // Refresh Health Bar
@@ -30,6 +38,7 @@ public class PlayerUI : MonoBehaviour
     }
     
     // Refresh the visual of inventory
+    // ReSharper disable Unity.PerformanceAnalysis
     private void RefreshInventory()
     {
         Color normalColor = inventorySlots.GetChild(0).GetComponent<Button>().colors.normalColor;
@@ -42,12 +51,16 @@ public class PlayerUI : MonoBehaviour
             {
                 inventorySlots.GetChild(i).GetChild(0).GetComponent<Image>().sprite = inventory.Content[i].visual;
             }
+            else
+            {
+                inventorySlots.GetChild(i).GetChild(0).GetComponent<Image>().sprite = null;
+            }
         }
         
         // visual of slot
         for (int i = 0; i < Inventory.InventorySize; i++)
         {
-            if (i == inventory.CurrSelectedItem)
+            if (i == inventory.ItemIndex)
             {
                 inventorySlots.GetChild(i).GetComponent<Image>().color = selectedColor;
             }
@@ -56,5 +69,11 @@ public class PlayerUI : MonoBehaviour
                 inventorySlots.GetChild(i).GetComponent<Image>().color = normalColor;
             }
         }
+    }
+
+    public void BackToMainMenu()
+    {
+        Debug.Log("back");
+        SceneManager.LoadScene("Menus");
     }
 }

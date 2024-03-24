@@ -1,21 +1,23 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
-
+using Unity.VisualScripting;
 public class Player : MonoBehaviour
 {
     public PhotonView view;
     [SerializeField] private Animator playerAnimator;
     [SerializeField] private MoveBehaviour moveBehaviour;
     [SerializeField] private Transform respawnPoint;
+    [SerializeField] private GameObject gameOverMenu;
+    [SerializeField] private Inventory inventory;
     
     private readonly int _attackMeleeAnim = Animator.StringToHash("Attack");
     private readonly int _deadHpAnim = Animator.StringToHash("DeadHp");
     private readonly int _deadO2Anim = Animator.StringToHash("DeadO2");
+    private readonly int _speed = Animator.StringToHash("Speed");
+    private readonly int _drink = Animator.StringToHash("Drink");
+
     
-    private bool _isAttacking;
+    private bool _isInAction;
     private bool _noMoreO2;
     private bool _isRespawning;
 
@@ -30,10 +32,8 @@ public class Player : MonoBehaviour
         // Proprieties initialisation
         Health = maxHealth;
         Oxygen = maxOxygen;
-        
-        // Cursor
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Confined;
+
+        // Oxygen = 1;
         
         // Network
         //view = GetComponent<PhotonView>();
@@ -41,34 +41,66 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        //if (view.IsMine)
-        {
-            LooseOxygen();
-            AttackManager();
-            // TakeDamage(0.3f);
-        }
+        LooseOxygen();
+        ActionManager();
     }
 
-    public void AttackManager()
+    private void ActionManager()
     {
-        if (Input.GetButtonDown("Fire1") && Health > 0 && !_isAttacking)
+        if (Input.GetButtonDown("Action1") && Health > 0 && !_isInAction)
         {
-            _isAttacking = true;
-            playerAnimator.SetTrigger(_attackMeleeAnim);
-        }
-    }
-
-    public void SendAttackMelee()
-    {
-        Debug.Log("Attack sent");
-
-        RaycastHit hit;
-
-        if (Physics.Raycast(transform.position + new Vector3(0,1,0), transform.forward, out hit, 2.2f))
-        {
-            if (hit.transform.CompareTag("Enemy"))
+            if (inventory.Content[inventory.ItemIndex].IsUnityNull())
             {
-                hit.collider.GetComponent<Enemy>().LooseHealth(25f);
+                return;
+            }
+
+            _isInAction = true;
+            
+            if (inventory.IsTheCurrSelectedItem("Sword"))
+            {
+                playerAnimator.SetTrigger(_attackMeleeAnim);
+            }
+            else if (inventory.IsTheCurrSelectedItem("HealthPotion"))
+            {
+                Health = Health <= 80 ? Health + 20 : 100;
+                
+                playerAnimator.SetTrigger(_drink);
+            }
+            else if (inventory.IsTheCurrSelectedItem("InvincibilityPotion"))
+            {
+                // action to define
+                
+                playerAnimator.SetTrigger(_drink);
+            }
+            else if (inventory.IsTheCurrSelectedItem("OxygenPotion"))
+            {
+                Oxygen = Oxygen <= 90 ? Oxygen + 10 : 100;
+                
+                playerAnimator.SetTrigger(_drink);
+            }
+        }
+    }
+    
+    // Remove qty of O2 to player Oxygen
+    private void LooseOxygen()
+    {
+        if (Oxygen >= 10)
+        {
+            Oxygen -= 0.007f;
+        }
+        else if (Oxygen is < 10 and > 0) 
+        {
+            Oxygen -= 0.002f;
+            playerAnimator.speed = 0.7f;
+        } 
+        else 
+        {
+            if (!_isRespawning)
+            {
+                _isRespawning = true;
+                moveBehaviour.canMove = false;
+                playerAnimator.SetFloat(_speed, 0);
+                playerAnimator.SetTrigger(_deadO2Anim);
             }
         }
     }
@@ -85,13 +117,29 @@ public class Player : MonoBehaviour
             if (!_isRespawning)
             {
                 moveBehaviour.enabled = false;
-                _isRespawning = true;
+                _isRespawning = true; 
                 playerAnimator.SetTrigger(_deadHpAnim);
             }
         }
     }
+
+    // ==================== All functions called in actions animations ====================
     
-    //This function manages the things to reset normally after the player's death and it brings the player to the respawn point.
+    public void SendAttackMelee()
+    {
+        Debug.Log("Attack sent");
+
+        RaycastHit hit;
+
+        if (Physics.Raycast(transform.position + new Vector3(0,1,0), transform.forward, out hit, 2.2f))
+        {
+            if (hit.transform.CompareTag("Enemy"))
+            {
+                hit.collider.GetComponent<Enemy>().LooseHealth(25f);
+            }
+        }
+    }
+    
     public void RespawnAfterDeathHp()
     {
         Health = maxHealth;
@@ -100,27 +148,21 @@ public class Player : MonoBehaviour
         moveBehaviour.enabled = true;
     }
 
-    // Remove qty of O2 to player Oxygen
-    public void LooseOxygen()
+    // Call the game over menu
+    public void GameOver()
     {
-        if (Oxygen >= 10)
-        {
-            Oxygen -= 0.007f;
-        }
-        else if (Oxygen is < 10 and > 0) 
-        {
-            Oxygen -= 0.002f;
-            playerAnimator.speed = 0.7f;
-        } 
-        else 
-        {
-            playerAnimator.SetTrigger(_deadO2Anim);
-            Debug.Log("Game Over");
-        }
+        Debug.Log("G.O. called");
+        gameOverMenu.GameObject().SetActive(true);
+        GameObject.Find("OnGame").SetActive(false);
     }
     
-    public void SetAttackingToFalse()
+    public void SetInActionToFalse()
     {
-        _isAttacking = false;
+        _isInAction = false;
+    }
+
+    public void ConsumeItem()
+    {
+        inventory.RemoveItem();
     }
 }

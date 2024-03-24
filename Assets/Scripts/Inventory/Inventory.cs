@@ -5,13 +5,8 @@ public class Inventory : MonoBehaviour
 {
     public ItemData[] Content { get; private set; }
 
-    public bool IsFree()
-    {
-        return Content.GetValue(CurrSelectedItem).IsUnityNull();
-    }
-
     public static int InventorySize => 4;
-    public int CurrSelectedItem { get; private set; }
+    public int ItemIndex { get; private set; }
 
     private void Start()
     {
@@ -22,27 +17,42 @@ public class Inventory : MonoBehaviour
     {
         if (Input.mouseScrollDelta.y < 0)
         {
-            if (CurrSelectedItem != InventorySize-1) CurrSelectedItem++;
-            else CurrSelectedItem = 0;
+            if (ItemIndex != InventorySize-1) ItemIndex++;
+            else ItemIndex = 0;
         }
         if (Input.mouseScrollDelta.y > 0)
         {
-            if (CurrSelectedItem != 0) CurrSelectedItem--;
-            else CurrSelectedItem = InventorySize - 1;
+            if (ItemIndex != 0) ItemIndex--;
+            else ItemIndex = InventorySize - 1;
         }
+    }
+    
+    public bool IsTheCurrSlotFree()
+    {
+        return Content.GetValue(ItemIndex).IsUnityNull();
+    }
+
+    public bool IsTheCurrSelectedItem(string itemsName)
+    {
+        return !IsTheCurrSlotFree() && Content[ItemIndex].name == itemsName;
     }
 
     public void AddItem(ItemData item)
     {
-        if (IsFree())
+        if (IsTheCurrSlotFree())
         {
-            Content.SetValue(item, CurrSelectedItem);
+            Content[ItemIndex] = item;
         }
         else
         {
             // Instantiate(Content.GetValue(CurrSelectedItem));
             // Content.SetValue(item, CurrSelectedItem);
         }
+    }
+    
+    public void RemoveItem()
+    {
+        Content[ItemIndex] = null;
     }
     
     

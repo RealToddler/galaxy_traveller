@@ -70,7 +70,7 @@ public class BasicBehaviour : MonoBehaviour
 
 	void Update()
 	{
-		if (view.IsMine)
+		if (view.IsMine && enabled)
 		{
 			// Store the input axes.
 			h = Input.GetAxis("Horizontal");

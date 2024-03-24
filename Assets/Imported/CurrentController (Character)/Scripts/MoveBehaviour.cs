@@ -131,7 +131,7 @@ public class MoveBehaviour : GenericBehaviour
 	// Deal with the basic player movement
 	void MovementManagement(float horizontal, float vertical)
 	{
-		if (!canMove)
+		if (!canMove || !enabled)
 		{
 			return;
 		}
