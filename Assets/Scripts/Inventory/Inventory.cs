@@ -25,14 +25,14 @@ public class Inventory : MonoBehaviour
         {
             if (!IsTheCurrSlotFree())
             {
-                equipmentLibraryItem=equipmentLibrary.content.Where(elem => elem.itemData==Content[ItemIndex]).First();
+                equipmentLibraryItem = equipmentLibrary.content.First(elem => elem.itemData==Content[ItemIndex]);
                 equipmentLibraryItem.itemPrefab.SetActive(false);
             }
             if (ItemIndex != InventorySize-1) ItemIndex++;
             else ItemIndex = 0;
             if (!IsTheCurrSlotFree())
             {
-                equipmentLibraryItem=equipmentLibrary.content.Where(elem => elem.itemData==Content[ItemIndex]).First();
+                equipmentLibraryItem = equipmentLibrary.content.First(elem => elem.itemData==Content[ItemIndex]);
                 equipmentLibraryItem.itemPrefab.SetActive(true);
             }
         }
@@ -40,14 +40,14 @@ public class Inventory : MonoBehaviour
         {
             if (!IsTheCurrSlotFree())
             {
-                equipmentLibraryItem=equipmentLibrary.content.Where(elem => elem.itemData==Content[ItemIndex]).First();
+                equipmentLibraryItem = equipmentLibrary.content.First(elem => elem.itemData==Content[ItemIndex]);
                 equipmentLibraryItem.itemPrefab.SetActive(false);
             }
             if (ItemIndex != 0) ItemIndex--;
             else ItemIndex = InventorySize - 1;
             if (!IsTheCurrSlotFree())
             {
-                equipmentLibraryItem=equipmentLibrary.content.Where(elem => elem.itemData==Content[ItemIndex]).First();
+                equipmentLibraryItem = equipmentLibrary.content.Where(elem => elem.itemData==Content[ItemIndex]).First();
                 equipmentLibraryItem.itemPrefab.SetActive(true);
             }
         }

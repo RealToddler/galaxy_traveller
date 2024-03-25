@@ -1,6 +1,8 @@
 using UnityEngine;
 using Photon.Pun;
 using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
+
 public class Player : MonoBehaviour
 {
     public PhotonView view;
@@ -33,7 +35,7 @@ public class Player : MonoBehaviour
         Health = maxHealth;
         Oxygen = maxOxygen;
 
-        // Oxygen = 1;
+        //Oxygen = 1;
         
         // Network
         //view = GetComponent<PhotonView>();
@@ -65,21 +67,17 @@ public class Player : MonoBehaviour
                 Health = Health <= 80 ? Health + 20 : 100;
                 
                 playerAnimator.SetTrigger(_drink);
-                inventory.RemoveItem();
             }
             else if (inventory.IsTheCurrSelectedItem("InvincibilityPotion"))
             {
                 // action to define
-                
                 playerAnimator.SetTrigger(_drink);
-                inventory.RemoveItem();
             }
             else if (inventory.IsTheCurrSelectedItem("OxygenPotion"))
             {
                 Oxygen = Oxygen <= 90 ? Oxygen + 10 : 100;
                 
                 playerAnimator.SetTrigger(_drink);
-                inventory.RemoveItem();
             }
         }
     }
@@ -152,11 +150,9 @@ public class Player : MonoBehaviour
     }
 
     // Call the game over menu
-    public void GameOver()
+    public void ToGameOverScreen()
     {
-        Debug.Log("G.O. called");
-        gameOverMenu.GameObject().SetActive(true);
-        GameObject.Find("OnGame").SetActive(false);
+        SceneManager.LoadScene("GameOver");
     }
     
     public void SetInActionToFalse()
