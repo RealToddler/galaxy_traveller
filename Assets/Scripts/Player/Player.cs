@@ -35,7 +35,7 @@ public class Player : MonoBehaviour
         Health = maxHealth;
         Oxygen = maxOxygen;
 
-        //Oxygen = 1;
+        // Oxygen = 1;
         
         // Network
         //view = GetComponent<PhotonView>();

@@ -1,4 +1,5 @@
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -11,8 +12,8 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private RectTransform healthBarFill;
     [SerializeField] private RectTransform oxygenBarFill;
     [SerializeField] private Transform inventorySlots;
+    [SerializeField] private GameObject pauseMenu;
 
-    [SerializeField] private GameObject gameOverScreen;
     
     private void Update()
     {
@@ -20,9 +21,10 @@ public class PlayerUI : MonoBehaviour
         RefreshOxygenAmount();
         RefreshInventory();
 
-        // Cursor
-        Cursor.visible = gameOverScreen.activeSelf;
-        Cursor.lockState = CursorLockMode.Confined;
+        if (Input.GetButtonDown("Escape"))
+        {
+            pauseMenu.gameObject.SetActive(!pauseMenu.activeSelf);
+        }
     }
     
     // Refresh Health Bar
@@ -38,7 +40,6 @@ public class PlayerUI : MonoBehaviour
     }
     
     // Refresh the visual of inventory
-    // ReSharper disable Unity.PerformanceAnalysis
     private void RefreshInventory()
     {
         Color normalColor = inventorySlots.GetChild(0).GetComponent<Button>().colors.normalColor;
