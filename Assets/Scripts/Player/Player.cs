@@ -65,18 +65,21 @@ public class Player : MonoBehaviour
                 Health = Health <= 80 ? Health + 20 : 100;
                 
                 playerAnimator.SetTrigger(_drink);
+                inventory.RemoveItem();
             }
             else if (inventory.IsTheCurrSelectedItem("InvincibilityPotion"))
             {
                 // action to define
                 
                 playerAnimator.SetTrigger(_drink);
+                inventory.RemoveItem();
             }
             else if (inventory.IsTheCurrSelectedItem("OxygenPotion"))
             {
                 Oxygen = Oxygen <= 90 ? Oxygen + 10 : 100;
                 
                 playerAnimator.SetTrigger(_drink);
+                inventory.RemoveItem();
             }
         }
     }

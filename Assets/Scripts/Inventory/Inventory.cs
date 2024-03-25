@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using System.Linq;
 
 public class Inventory : MonoBehaviour
 {
@@ -7,6 +8,11 @@ public class Inventory : MonoBehaviour
 
     public static int InventorySize => 4;
     public int ItemIndex { get; private set; }
+
+    [SerializeField]
+    private EquipmentLibrary equipmentLibrary;
+
+    private EquipmentLibraryItem equipmentLibraryItem;
 
     private void Start()
     {
@@ -17,13 +23,33 @@ public class Inventory : MonoBehaviour
     {
         if (Input.mouseScrollDelta.y < 0)
         {
+            if (!IsTheCurrSlotFree())
+            {
+                equipmentLibraryItem=equipmentLibrary.content.Where(elem => elem.itemData==Content[ItemIndex]).First();
+                equipmentLibraryItem.itemPrefab.SetActive(false);
+            }
             if (ItemIndex != InventorySize-1) ItemIndex++;
             else ItemIndex = 0;
+            if (!IsTheCurrSlotFree())
+            {
+                equipmentLibraryItem=equipmentLibrary.content.Where(elem => elem.itemData==Content[ItemIndex]).First();
+                equipmentLibraryItem.itemPrefab.SetActive(true);
+            }
         }
         if (Input.mouseScrollDelta.y > 0)
         {
+            if (!IsTheCurrSlotFree())
+            {
+                equipmentLibraryItem=equipmentLibrary.content.Where(elem => elem.itemData==Content[ItemIndex]).First();
+                equipmentLibraryItem.itemPrefab.SetActive(false);
+            }
             if (ItemIndex != 0) ItemIndex--;
             else ItemIndex = InventorySize - 1;
+            if (!IsTheCurrSlotFree())
+            {
+                equipmentLibraryItem=equipmentLibrary.content.Where(elem => elem.itemData==Content[ItemIndex]).First();
+                equipmentLibraryItem.itemPrefab.SetActive(true);
+            }
         }
     }
     
@@ -42,6 +68,8 @@ public class Inventory : MonoBehaviour
         if (IsTheCurrSlotFree())
         {
             Content[ItemIndex] = item;
+            equipmentLibraryItem=equipmentLibrary.content.Where(elem => elem.itemData==item).First();
+            equipmentLibraryItem.itemPrefab.SetActive(true);
         }
         else
         {
@@ -52,6 +80,8 @@ public class Inventory : MonoBehaviour
     
     public void RemoveItem()
     {
+        equipmentLibraryItem=equipmentLibrary.content.Where(elem => elem.itemData==Content[ItemIndex]).First();
+        equipmentLibraryItem.itemPrefab.SetActive(false);
         Content[ItemIndex] = null;
     }
     
