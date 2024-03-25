@@ -1,18 +1,16 @@
 using Unity.VisualScripting;
 using UnityEngine;
-using System.Linq;
 
 public class Inventory : MonoBehaviour
 {
     public ItemData[] Content { get; private set; }
-
     public static int InventorySize => 4;
     public int ItemIndex { get; private set; }
 
-    [SerializeField]
-    private EquipmentLibrary equipmentLibrary;
+    [SerializeField] private EquipmentLibrary equipmentLibrary;
+    [SerializeField] private Transform player;
 
-    private EquipmentLibraryItem equipmentLibraryItem;
+    private EquipmentLibraryItem _equipmentLibraryItem;
 
     private void Start()
     {
@@ -23,37 +21,28 @@ public class Inventory : MonoBehaviour
     {
         if (Input.mouseScrollDelta.y < 0)
         {
-            if (!IsTheCurrSlotFree())
-            {
-                equipmentLibraryItem = equipmentLibrary.content.First(elem => elem.itemData==Content[ItemIndex]);
-                equipmentLibraryItem.itemPrefab.SetActive(false);
-            }
-            if (ItemIndex != InventorySize-1) ItemIndex++;
-            else ItemIndex = 0;
-            if (!IsTheCurrSlotFree())
-            {
-                equipmentLibraryItem = equipmentLibrary.content.First(elem => elem.itemData==Content[ItemIndex]);
-                equipmentLibraryItem.itemPrefab.SetActive(true);
-            }
+            ItemIndex = ItemIndex != InventorySize-1 ? ItemIndex + 1 : 0;
         }
-        if (Input.mouseScrollDelta.y > 0)
+        else if (Input.mouseScrollDelta.y > 0)
         {
-            if (!IsTheCurrSlotFree())
-            {
-                equipmentLibraryItem = equipmentLibrary.content.First(elem => elem.itemData==Content[ItemIndex]);
-                equipmentLibraryItem.itemPrefab.SetActive(false);
-            }
-            if (ItemIndex != 0) ItemIndex--;
-            else ItemIndex = InventorySize - 1;
-            if (!IsTheCurrSlotFree())
-            {
-                equipmentLibraryItem = equipmentLibrary.content.Where(elem => elem.itemData==Content[ItemIndex]).First();
-                equipmentLibraryItem.itemPrefab.SetActive(true);
-            }
+            ItemIndex = ItemIndex != 0 ? ItemIndex - 1 : InventorySize - 1;
+        }
+        
+        DisplayItemVisual();
+    }
+
+    private void DisplayItemVisual()
+    {
+        EquipmentLibraryItem nextItem = equipmentLibrary.content.Find(elem => elem.itemData == Content[ItemIndex]);
+        if (_equipmentLibraryItem != nextItem)
+        {
+            _equipmentLibraryItem?.itemPrefab.SetActive(false);
+            _equipmentLibraryItem = nextItem;
+            _equipmentLibraryItem?.itemPrefab.SetActive(true);
         }
     }
-    
-    public bool IsTheCurrSlotFree()
+
+    private bool IsTheCurrSlotFree()
     {
         return Content.GetValue(ItemIndex).IsUnityNull();
     }
@@ -65,25 +54,18 @@ public class Inventory : MonoBehaviour
 
     public void AddItem(ItemData item)
     {
-        if (IsTheCurrSlotFree())
+        if (!IsTheCurrSlotFree())
         {
-            Content[ItemIndex] = item;
-            equipmentLibraryItem=equipmentLibrary.content.Where(elem => elem.itemData==item).First();
-            equipmentLibraryItem.itemPrefab.SetActive(true);
+            var position = player.position;
+            Instantiate(Content[ItemIndex].prefab, new Vector3(position.x, position.y+1, position.z-1), 
+                Content[ItemIndex].prefab.transform.rotation);
         }
-        else
-        {
-            // Instantiate(Content.GetValue(CurrSelectedItem));
-            // Content.SetValue(item, CurrSelectedItem);
-        }
+        
+        Content[ItemIndex] = item;
     }
     
     public void RemoveItem()
     {
-        equipmentLibraryItem=equipmentLibrary.content.Where(elem => elem.itemData==Content[ItemIndex]).First();
-        equipmentLibraryItem.itemPrefab.SetActive(false);
         Content[ItemIndex] = null;
     }
-    
-    
 }

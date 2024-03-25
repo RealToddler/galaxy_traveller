@@ -16,7 +16,7 @@ public class PickupBehaviour : MonoBehaviour
     // Manage the "picking" up of an item
     public void DoPickup(Item item)
     {
-        if (!inventory.IsTheCurrSlotFree() || !playerMoveBehaviour.canMove)
+        if (!playerMoveBehaviour.canMove)
         {
             return;
         }
@@ -24,13 +24,10 @@ public class PickupBehaviour : MonoBehaviour
         _currentItem = item;
         
         playerAnimator.SetTrigger(Pickup);
-        _currentItem.gameObject.SetActive(false);
         playerMoveBehaviour.canMove = false;
-        
-        // _equippedSwordVisual.SetActive(true); // on utilisera ca apres
     }
     
-    // Add the item to inventory adn destroy it
+    // Add the item to inventory and destroy it
     public void AddItemToInventory()
     {
         inventory.AddItem(_currentItem.itemData);

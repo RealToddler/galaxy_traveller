@@ -9,7 +9,6 @@ public class Player : MonoBehaviour
     [SerializeField] private Animator playerAnimator;
     [SerializeField] private MoveBehaviour moveBehaviour;
     [SerializeField] private Transform respawnPoint;
-    [SerializeField] private GameObject gameOverMenu;
     [SerializeField] private Inventory inventory;
     
     private readonly int _attackMeleeAnim = Animator.StringToHash("Attack");
@@ -22,6 +21,7 @@ public class Player : MonoBehaviour
     private bool _isInAction;
     private bool _noMoreO2;
     private bool _isRespawning;
+    private bool _isInvincible;
 
     public int maxHealth = 100;
     public int maxOxygen = 100;
@@ -64,18 +64,22 @@ public class Player : MonoBehaviour
             }
             else if (inventory.IsTheCurrSelectedItem("HealthPotion"))
             {
-                Health = Health <= 80 ? Health + 20 : 100;
+                Health = Health <= 80 ? Health + 20 : maxHealth;
                 
                 playerAnimator.SetTrigger(_drink);
             }
             else if (inventory.IsTheCurrSelectedItem("InvincibilityPotion"))
             {
-                // action to define
+                if (!_isInvincible)
+                {
+                    _isInvincible = true;
+                    Invoke(nameof(SetInvincibleToFalse), 5f);
+                }
                 playerAnimator.SetTrigger(_drink);
             }
             else if (inventory.IsTheCurrSelectedItem("OxygenPotion"))
             {
-                Oxygen = Oxygen <= 90 ? Oxygen + 10 : 100;
+                Oxygen = Oxygen <= 90 ? Oxygen + 10 : maxOxygen;
                 
                 playerAnimator.SetTrigger(_drink);
             }
@@ -109,6 +113,11 @@ public class Player : MonoBehaviour
     // Remove damage to player health
     public void TakeDamage(float damage)
     {
+        if (_isInvincible)
+        {
+            return;
+        }
+        
         if (Health > 0)
         {
             Health -= damage;
@@ -122,6 +131,11 @@ public class Player : MonoBehaviour
                 playerAnimator.SetTrigger(_deadHpAnim);
             }
         }
+    }
+
+    private void SetInvincibleToFalse()
+    {
+        _isInvincible = false;
     }
 
     // ==================== All functions called in actions animations ====================
