@@ -9,6 +9,7 @@ public class Inventory : MonoBehaviour
 
     [SerializeField] private EquipmentLibrary equipmentLibrary;
     [SerializeField] private Transform player;
+    
 
     private EquipmentLibraryItem _equipmentLibraryItem;
 

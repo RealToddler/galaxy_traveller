@@ -16,6 +16,8 @@ public class Player : MonoBehaviour
     private readonly int _deadO2Anim = Animator.StringToHash("DeadO2");
     private readonly int _speed = Animator.StringToHash("Speed");
     private readonly int _drink = Animator.StringToHash("Drink");
+    private readonly int _hasItem = Animator.StringToHash("HasItem");
+
 
     
     private bool _isInAction;
@@ -84,6 +86,11 @@ public class Player : MonoBehaviour
                 playerAnimator.SetTrigger(_drink);
             }
         }
+        if (inventory.Content[inventory.ItemIndex].IsUnityNull())
+        {
+            playerAnimator.SetBool(_hasItem,false);
+        }
+        else playerAnimator.SetBool(_hasItem,true);
     }
     
     // Remove qty of O2 to player Oxygen
