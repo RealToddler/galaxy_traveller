@@ -8,7 +8,6 @@ public class PickupBehaviour : MonoBehaviour
 
     [SerializeField] private Inventory inventory;
 
-    private GameObject _equippedSwordVisual;
     private Item _currentItem;
     
     private static readonly int Pickup = Animator.StringToHash("Pickup");

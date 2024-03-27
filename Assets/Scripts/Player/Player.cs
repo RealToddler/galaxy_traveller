@@ -12,11 +12,14 @@ public class Player : MonoBehaviour
     [SerializeField] private Inventory inventory;
     
     private readonly int _attackMeleeAnim = Animator.StringToHash("Attack");
+    private readonly int _attackDistanceAnim = Animator.StringToHash("AttackDistance");
     private readonly int _deadHpAnim = Animator.StringToHash("DeadHp");
     private readonly int _deadO2Anim = Animator.StringToHash("DeadO2");
     private readonly int _speed = Animator.StringToHash("Speed");
     private readonly int _drink = Animator.StringToHash("Drink");
-    private readonly int _hasItem = Animator.StringToHash("HasItem");
+    private readonly int _hasPotion = Animator.StringToHash("HasPotion");
+    private readonly int _hasSword = Animator.StringToHash("HasSword");
+    private readonly int _holdWeapon = Animator.StringToHash("HoldWeapon");
 
 
     
@@ -64,6 +67,12 @@ public class Player : MonoBehaviour
             {
                 playerAnimator.SetTrigger(_attackMeleeAnim);
             }
+            if (inventory.IsTheCurrSelectedItem("Weapon"))
+            {
+                Debug.Log("weapon");
+                playerAnimator.SetLayerWeight(6,0);
+                playerAnimator.SetTrigger(_attackDistanceAnim);
+            }
             else if (inventory.IsTheCurrSelectedItem("HealthPotion"))
             {
                 Health = Health <= 80 ? Health + 20 : maxHealth;
@@ -86,11 +95,31 @@ public class Player : MonoBehaviour
                 playerAnimator.SetTrigger(_drink);
             }
         }
+        
         if (inventory.Content[inventory.ItemIndex].IsUnityNull())
         {
-            playerAnimator.SetBool(_hasItem,false);
+            playerAnimator.SetBool(_holdWeapon,false);
+            playerAnimator.SetBool(_hasPotion,false);
+            playerAnimator.SetBool(_hasSword,false);
         }
-        else playerAnimator.SetBool(_hasItem,true);
+        else if (inventory.Content[inventory.ItemIndex].name=="Weapon")
+        {
+            playerAnimator.SetBool(_holdWeapon,true);
+            playerAnimator.SetBool(_hasSword,false);
+            playerAnimator.SetBool(_hasPotion,false);
+        }
+        else if (inventory.Content[inventory.ItemIndex].name=="Sword")
+        {
+            playerAnimator.SetBool(_hasSword,true);
+            playerAnimator.SetBool(_holdWeapon,false);
+            playerAnimator.SetBool(_hasPotion,false);
+        }
+        else 
+        {
+            playerAnimator.SetBool(_hasPotion,true);
+            playerAnimator.SetBool(_holdWeapon,false);
+            playerAnimator.SetBool(_hasSword,false);
+        }
     }
     
     // Remove qty of O2 to player Oxygen
@@ -179,6 +208,9 @@ public class Player : MonoBehaviour
     public void SetInActionToFalse()
     {
         _isInAction = false;
+        playerAnimator.SetLayerWeight(6,1);
+
+
     }
 
     public void ConsumeItem()
