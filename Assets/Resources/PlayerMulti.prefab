@@ -11767,6 +11767,7 @@ Transform:
   - {fileID: 9136862840292676847}
   - {fileID: 9213442040625273674}
   - {fileID: 2561856829655800582}
+  - {fileID: 5973980946823269857}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3699315572894963989
@@ -27873,6 +27874,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9a709850bf59904690e7ceff3e5b6cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &6142743233246719954
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5973980946823269857}
+  m_Layer: 0
+  m_Name: RespawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5973980946823269857
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6142743233246719954}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 16, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6317861036645149402}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6362979940902553903
 GameObject:
   m_ObjectHideFlags: 0
@@ -28710,7 +28742,7 @@ MonoBehaviour:
   view: {fileID: 0}
   playerAnimator: {fileID: 482707796046916773}
   moveBehaviour: {fileID: 7709533467211606417}
-  respawnPoint: {fileID: 0}
+  respawnPoint: {fileID: 5973980946823269857}
   inventory: {fileID: 277306137346537230}
   maxHealth: 100
   maxOxygen: 100

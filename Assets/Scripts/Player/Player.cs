@@ -15,13 +15,11 @@ public class Player : MonoBehaviour
     private readonly int _attackDistanceAnim = Animator.StringToHash("AttackDistance");
     private readonly int _deadHpAnim = Animator.StringToHash("DeadHp");
     private readonly int _deadO2Anim = Animator.StringToHash("DeadO2");
-    private readonly int _speed = Animator.StringToHash("Speed");
-    private readonly int _drink = Animator.StringToHash("Drink");
-    private readonly int _hasPotion = Animator.StringToHash("HasPotion");
-    private readonly int _hasSword = Animator.StringToHash("HasSword");
+    private readonly int _speedAnim = Animator.StringToHash("Speed");
+    private readonly int _drinkAnim = Animator.StringToHash("Drink");
+    private readonly int _holdPotion = Animator.StringToHash("HoldPotion");
+    private readonly int _holdSword = Animator.StringToHash("HoldSword");
     private readonly int _holdWeapon = Animator.StringToHash("HoldWeapon");
-
-
     
     private bool _isInAction;
     private bool _noMoreO2;
@@ -48,13 +46,14 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        LooseOxygen();
+        OxygenManager();
         ActionManager();
+        HoldingVisualManager();
     }
 
     private void ActionManager()
     {
-        if (Input.GetButtonDown("Action1") && Health > 0 && !_isInAction)
+        if (Input.GetButtonDown("Action1") && Health > 0 && Oxygen > 0 && !_isInAction)
         {
             if (inventory.Content[inventory.ItemIndex].IsUnityNull())
             {
@@ -67,63 +66,54 @@ public class Player : MonoBehaviour
             {
                 playerAnimator.SetTrigger(_attackMeleeAnim);
             }
-            if (inventory.IsTheCurrSelectedItem("Weapon"))
+            else if (inventory.IsTheCurrSelectedItem("Weapon"))
             {
-                Debug.Log("weapon");
-                playerAnimator.SetLayerWeight(6,0);
                 playerAnimator.SetTrigger(_attackDistanceAnim);
             }
-            else if (inventory.IsTheCurrSelectedItem("HealthPotion"))
+            else
             {
-                Health = Health <= 80 ? Health + 20 : maxHealth;
-                
-                playerAnimator.SetTrigger(_drink);
-            }
-            else if (inventory.IsTheCurrSelectedItem("InvincibilityPotion"))
-            {
-                if (!_isInvincible)
+                if (inventory.IsTheCurrSelectedItem("HealthPotion"))
                 {
-                    _isInvincible = true;
-                    Invoke(nameof(SetInvincibleToFalse), 5f);
+                    Health = Health <= 80 ? Health + 20 : maxHealth;
                 }
-                playerAnimator.SetTrigger(_drink);
-            }
-            else if (inventory.IsTheCurrSelectedItem("OxygenPotion"))
-            {
-                Oxygen = Oxygen <= 90 ? Oxygen + 10 : maxOxygen;
+                else if (inventory.IsTheCurrSelectedItem("InvincibilityPotion"))
+                {
+                    if (!_isInvincible)
+                    {
+                        _isInvincible = true;
+                        // gold invincibility screen
+                        Invoke(nameof(SetInvincibleToFalse), 5f);
+                    }
+                }
+                else if (inventory.IsTheCurrSelectedItem("OxygenPotion"))
+                {
+                    Oxygen = Oxygen <= 90 ? Oxygen + 10 : maxOxygen;
+                }
                 
-                playerAnimator.SetTrigger(_drink);
+                playerAnimator.SetTrigger(_drinkAnim);
             }
         }
-        
+    }
+
+    private void HoldingVisualManager()
+    {
         if (inventory.Content[inventory.ItemIndex].IsUnityNull())
         {
             playerAnimator.SetBool(_holdWeapon,false);
-            playerAnimator.SetBool(_hasPotion,false);
-            playerAnimator.SetBool(_hasSword,false);
+            playerAnimator.SetBool(_holdPotion,false);
+            playerAnimator.SetBool(_holdSword,false);
         }
-        else if (inventory.Content[inventory.ItemIndex].name=="Weapon")
+        else
         {
-            playerAnimator.SetBool(_holdWeapon,true);
-            playerAnimator.SetBool(_hasSword,false);
-            playerAnimator.SetBool(_hasPotion,false);
-        }
-        else if (inventory.Content[inventory.ItemIndex].name=="Sword")
-        {
-            playerAnimator.SetBool(_hasSword,true);
-            playerAnimator.SetBool(_holdWeapon,false);
-            playerAnimator.SetBool(_hasPotion,false);
-        }
-        else 
-        {
-            playerAnimator.SetBool(_hasPotion,true);
-            playerAnimator.SetBool(_holdWeapon,false);
-            playerAnimator.SetBool(_hasSword,false);
+            playerAnimator.SetBool(_holdSword, inventory.IsTheCurrSelectedItem("Sword"));
+            playerAnimator.SetBool(_holdWeapon, inventory.IsTheCurrSelectedItem("Weapon"));
+            playerAnimator.SetBool(_holdPotion, inventory.Content[inventory.ItemIndex].name is "HealthPotion" or 
+                "InvincibilityPotion" or "OxygenPotion");
         }
     }
     
     // Remove qty of O2 to player Oxygen
-    private void LooseOxygen()
+    private void OxygenManager()
     {
         if (Oxygen >= 10)
         {
@@ -140,7 +130,7 @@ public class Player : MonoBehaviour
             {
                 _isRespawning = true;
                 moveBehaviour.canMove = false;
-                playerAnimator.SetFloat(_speed, 0);
+                playerAnimator.SetFloat(_speedAnim, 0);
                 playerAnimator.SetTrigger(_deadO2Anim);
             }
         }
@@ -154,12 +144,14 @@ public class Player : MonoBehaviour
             return;
         }
         
-        if (Health > 0)
+        if (Health - damage > 0)
         {
             Health -= damage;
         }
         else
         {
+            Health = 0;
+            
             if (!_isRespawning)
             {
                 moveBehaviour.enabled = false;
@@ -209,8 +201,6 @@ public class Player : MonoBehaviour
     {
         _isInAction = false;
         playerAnimator.SetLayerWeight(6,1);
-
-
     }
 
     public void ConsumeItem()
