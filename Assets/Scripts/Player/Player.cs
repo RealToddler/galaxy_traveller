@@ -21,7 +21,6 @@ public class Player : MonoBehaviour
     private readonly int _holdSword = Animator.StringToHash("HoldSword");
     private readonly int _holdWeapon = Animator.StringToHash("HoldWeapon");
     
-    private bool _isInAction;
     private bool _noMoreO2;
     private bool _isRespawning;
     private bool _isInvincible;
@@ -31,6 +30,8 @@ public class Player : MonoBehaviour
 
     public float Health { get; private set; }
     public float Oxygen { get; private set; }
+    public bool IsInAction { get; private set; }
+
 
     private void Start()
     {
@@ -53,14 +54,14 @@ public class Player : MonoBehaviour
 
     private void ActionManager()
     {
-        if (Input.GetButtonDown("Action1") && Health > 0 && Oxygen > 0 && !_isInAction)
+        if (Input.GetButtonDown("Action1") && Health > 0 && Oxygen > 0 && !IsInAction)
         {
             if (inventory.Content[inventory.ItemIndex].IsUnityNull())
             {
                 return;
             }
 
-            _isInAction = true;
+            IsInAction = true;
             
             if (inventory.IsTheCurrSelectedItem("Sword"))
             {
@@ -199,7 +200,7 @@ public class Player : MonoBehaviour
     
     public void SetInActionToFalse()
     {
-        _isInAction = false;
+        IsInAction = false;
         playerAnimator.SetLayerWeight(6,1);
     }
 
