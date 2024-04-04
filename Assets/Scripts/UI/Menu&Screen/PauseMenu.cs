@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Photon.Pun;
 
 public class PauseMenu : BasicMenu
 {
@@ -14,6 +15,7 @@ public class PauseMenu : BasicMenu
 
     public void BackToLobby()
     {
+        PhotonNetwork.LeaveRoom();
         SceneManager.LoadScene("Lobby");
     }
 }

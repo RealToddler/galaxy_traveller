@@ -606,7 +606,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   equipmentLibrary: {fileID: 2950475211571250511}
-  player: {fileID: 8956609078938543337}
+  player: {fileID: 1519737250568680663}
   enable: 1
 --- !u!1 &1094596072887327427
 GameObject:
