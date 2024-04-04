@@ -48,6 +48,7 @@ public class Player : MonoBehaviour
     private void Update()
     {
         OxygenManager();
+        HealthManager();
         ActionManager();
         HoldingVisualManager();
     }
@@ -136,6 +137,22 @@ public class Player : MonoBehaviour
             }
         }
     }
+
+    private void HealthManager()
+    {
+        if (Health is > 0 and <= 25)
+        {
+            Health += 0.01f;
+        }
+        else if (Health is > 25 and <= 50)
+        {
+            Health += 0.005f;
+        }
+        else if (Health < 100)
+        {
+            Health += 0.001f;
+        }
+    }
     
     // Remove damage to player health
     public void TakeDamage(float damage)
@@ -152,6 +169,7 @@ public class Player : MonoBehaviour
         else
         {
             Health = 0;
+            Oxygen -= Oxygen/4;
             
             if (!_isRespawning)
             {
