@@ -2,8 +2,9 @@
 using Photon.Pun;
 
 // MoveBehaviour inherits from GenericBehaviour. This class corresponds to basic walk and run behaviour, it is the default behaviour.
-public class MoveBehaviour : GenericBehaviour
+public class MoveBehaviour : MonoBehaviour
 {
+	/*
 	public PhotonView view;
 	public float walkSpeed = 0.15f;                 // Default walk speed.
 	public float runSpeed = 1.0f;                   // Default run speed.
@@ -222,4 +223,5 @@ public class MoveBehaviour : GenericBehaviour
 		GetComponent<CapsuleCollider>().material.dynamicFriction = 0.6f;
 		GetComponent<CapsuleCollider>().material.staticFriction = 0.6f;
 	}
+	*/
 }

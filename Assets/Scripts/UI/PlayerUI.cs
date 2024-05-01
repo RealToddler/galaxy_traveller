@@ -3,9 +3,12 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Photon.Pun;
 
 public class PlayerUI : MonoBehaviour
 {
+    /*
+    public PhotonView view;
     [SerializeField] private Player player;
     [SerializeField] private Inventory inventory;
 
@@ -13,17 +16,19 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private RectTransform oxygenBarFill;
     [SerializeField] private Transform inventorySlots;
     [SerializeField] private GameObject pauseMenu;
-
     
+
     private void Update()
     {
-        RefreshHealthAmount();
-        RefreshOxygenAmount();
-        RefreshInventory();
+        if (view.IsMine) {
+            RefreshHealthAmount();
+            RefreshOxygenAmount();
+            RefreshInventory();
 
-        if (Input.GetButtonDown("Escape"))
-        {
-            pauseMenu.gameObject.SetActive(!pauseMenu.activeSelf);
+            if (Input.GetButtonDown("Escape"))
+            {
+                pauseMenu.gameObject.SetActive(!pauseMenu.activeSelf);
+            }
         }
     }
     
@@ -77,4 +82,5 @@ public class PlayerUI : MonoBehaviour
         Debug.Log("back");
         SceneManager.LoadScene("Menus");
     }
+    */
 }

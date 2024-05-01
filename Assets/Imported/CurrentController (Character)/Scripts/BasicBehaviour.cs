@@ -7,8 +7,9 @@ using Photon.Pun;
 // Contains basic setup and common functions used by all the player behaviours.
 public class BasicBehaviour : MonoBehaviour
 {
+	/*
 	public PhotonView view;
-	public Transform playerCamera;                        // Reference to the camera that focus the player.
+	// public Transform playerCamera;                        // Reference to the camera that focus the player.
 	public float turnSmoothing = 0.06f;                   // Speed of turn when moving to match camera facing.
 	public float sprintFOV = 100f;                        // the FOV to use on the camera when player is sprinting.
 	
@@ -385,4 +386,5 @@ public abstract class GenericBehaviour : MonoBehaviour
 	{
 		return canSprint;
 	}
+	*/
 }

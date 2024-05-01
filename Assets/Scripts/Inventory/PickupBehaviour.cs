@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PickupBehaviour : MonoBehaviour
 {
+    /*
     [SerializeField] private MoveBehaviour playerMoveBehaviour;
 
     [SerializeField] private Animator playerAnimator;
@@ -39,4 +40,5 @@ public class PickupBehaviour : MonoBehaviour
     {
         playerMoveBehaviour.canMove = true;
     }
+    */
 }

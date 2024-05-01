@@ -3,6 +3,7 @@
 // This class corresponds to the 3rd person camera features.
 public class ThirdPersonOrbitCamBasic : MonoBehaviour 
 {
+	/*
 	public Transform player;                                           // Player's reference.
 	public Vector3 pivotOffset = new Vector3(0.0f, 1.7f,  0.0f);       // Offset to repoint the camera.
 	public Vector3 camOffset   = new Vector3(0.0f, 0.0f, -3.0f);       // Offset to relocate the camera related to the player position.
@@ -202,4 +203,5 @@ public class ThirdPersonOrbitCamBasic : MonoBehaviour
 	{
 		return Mathf.Abs ((finalPivotOffset - smoothPivotOffset).magnitude);
 	}
+	*/
 }

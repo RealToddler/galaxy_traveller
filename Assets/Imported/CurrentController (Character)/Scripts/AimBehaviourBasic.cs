@@ -2,8 +2,9 @@
 using System.Collections;
 using Photon.Pun;
 // AimBehaviour inherits from GenericBehaviour. This class corresponds to aim and strafe behaviour.
-public class AimBehaviourBasic : GenericBehaviour
+public class AimBehaviourBasic : MonoBehaviour
 {
+	/*
 	public PhotonView view;
 	public string aimButton = "Aim", shoulderButton = "Aim Shoulder";     // Default aim and switch shoulders buttons.
 	public Texture2D crosshair;                                           // Crosshair texture.
@@ -138,4 +139,5 @@ public class AimBehaviourBasic : GenericBehaviour
 										 crosshair.width, crosshair.height), crosshair);
 		}
 	}
+	*/
 }

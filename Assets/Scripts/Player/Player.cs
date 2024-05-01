@@ -2,10 +2,12 @@ using UnityEngine;
 using Photon.Pun;
 using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviourPunCallbacks
 {
-    public PhotonView view;
+    /**
+    private PhotonView view;
     [SerializeField] private Animator playerAnimator;
     [SerializeField] private MoveBehaviour moveBehaviour;
     [SerializeField] private Transform respawnPoint;
@@ -32,25 +34,50 @@ public class Player : MonoBehaviour
     public float Oxygen { get; private set; }
     public bool IsInAction { get; private set; }
 
+    public static GameObject LocalPlayerInstance;
 
+    public void Awake()
+    {
+        if (photonView.IsMine)
+        {
+            LocalPlayerInstance = gameObject;
+        }
+        DontDestroyOnLoad(gameObject);
+    }
+    
     private void Start()
     {
+        CameraBis _cameraWork = gameObject.GetComponent<CameraBis>();
+
+        if (_cameraWork != null)
+        {
+            if (photonView.IsMine)
+            {
+                _cameraWork.OnStartFollowing();
+            }
+        }
+        else
+        {
+            Debug.LogError("<Color=Red><b>Missing</b></Color> CameraWork Component on player Prefab.", this);
+        }
         // Proprieties initialisation
         Health = maxHealth;
         Oxygen = maxOxygen;
 
         // Oxygen = 1;
-        
+
         // Network
-        //view = GetComponent<PhotonView>();
+        view = GetComponent<PhotonView>();
     }
 
     private void Update()
     {
-        OxygenManager();
-        HealthManager();
-        ActionManager();
-        HoldingVisualManager();
+        if (view.IsMine) {
+            OxygenManager();
+            HealthManager();
+            ActionManager();
+            HoldingVisualManager();
+        }
     }
 
     private void ActionManager()
@@ -226,4 +253,5 @@ public class Player : MonoBehaviour
     {
         inventory.RemoveItem();
     }
+    */
 }

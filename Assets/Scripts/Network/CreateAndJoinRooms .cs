@@ -21,6 +21,7 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.LoadLevel("Lvl1");
         Debug.Log("loading");
+        Debug.Log("player has been instantiated");
     }
 
 

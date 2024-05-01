@@ -2,8 +2,9 @@
 using Photon.Pun;
 
 // FlyBehaviour inherits from GenericBehaviour. This class corresponds to the flying behaviour.
-public class FlyBehaviour : GenericBehaviour
+public class FlyBehaviour : MonoBehaviour
 {
+	/*
 	public PhotonView view;
 	public string flyButton = "Fly";              // Default fly button.
 	public float flySpeed = 4.0f;                 // Default flying speed.
@@ -135,4 +136,5 @@ public class FlyBehaviour : GenericBehaviour
 		// Return the current fly direction.
 		return targetDirection;
 	}
+	*/
 }

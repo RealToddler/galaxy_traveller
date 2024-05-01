@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PickUpItem : MonoBehaviour
 {
+    /*
     [SerializeField] 
     private float pickUpRange = 3.5f;
     
@@ -25,4 +26,5 @@ public class PickUpItem : MonoBehaviour
             }
         }
     }
+    */
 }
