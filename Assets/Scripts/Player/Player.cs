@@ -6,10 +6,9 @@ using UnityEngine.EventSystems;
 
 public class Player : MonoBehaviourPunCallbacks
 {
-    /**
     private PhotonView view;
-    [SerializeField] private Animator playerAnimator;
-    [SerializeField] private MoveBehaviour moveBehaviour;
+    // [SerializeField] private Animator playerAnimator;
+    // [SerializeField] private MoveBehaviour moveBehaviour;
     [SerializeField] private Transform respawnPoint;
     [SerializeField] private Inventory inventory;
     
@@ -47,19 +46,6 @@ public class Player : MonoBehaviourPunCallbacks
     
     private void Start()
     {
-        CameraBis _cameraWork = gameObject.GetComponent<CameraBis>();
-
-        if (_cameraWork != null)
-        {
-            if (photonView.IsMine)
-            {
-                _cameraWork.OnStartFollowing();
-            }
-        }
-        else
-        {
-            Debug.LogError("<Color=Red><b>Missing</b></Color> CameraWork Component on player Prefab.", this);
-        }
         // Proprieties initialisation
         Health = maxHealth;
         Oxygen = maxOxygen;
@@ -93,11 +79,11 @@ public class Player : MonoBehaviourPunCallbacks
             
             if (inventory.IsTheCurrSelectedItem("Sword"))
             {
-                playerAnimator.SetTrigger(_attackMeleeAnim);
+                // playerAnimator.SetTrigger(_attackMeleeAnim);
             }
             else if (inventory.IsTheCurrSelectedItem("Weapon"))
             {
-                playerAnimator.SetTrigger(_attackDistanceAnim);
+                // playerAnimator.SetTrigger(_attackDistanceAnim);
             }
             else
             {
@@ -119,7 +105,7 @@ public class Player : MonoBehaviourPunCallbacks
                     Oxygen = Oxygen <= 90 ? Oxygen + 10 : maxOxygen;
                 }
                 
-                playerAnimator.SetTrigger(_drinkAnim);
+                // playerAnimator.SetTrigger(_drinkAnim);
             }
         }
     }
@@ -128,16 +114,16 @@ public class Player : MonoBehaviourPunCallbacks
     {
         if (inventory.Content[inventory.ItemIndex].IsUnityNull())
         {
-            playerAnimator.SetBool(_holdWeapon,false);
-            playerAnimator.SetBool(_holdPotion,false);
-            playerAnimator.SetBool(_holdSword,false);
+            // playerAnimator.SetBool(_holdWeapon,false);
+            // playerAnimator.SetBool(_holdPotion,false);
+            // playerAnimator.SetBool(_holdSword,false);
         }
         else
         {
-            playerAnimator.SetBool(_holdSword, inventory.IsTheCurrSelectedItem("Sword"));
-            playerAnimator.SetBool(_holdWeapon, inventory.IsTheCurrSelectedItem("Weapon"));
-            playerAnimator.SetBool(_holdPotion, inventory.Content[inventory.ItemIndex].name is "HealthPotion" or 
-                "InvincibilityPotion" or "OxygenPotion");
+            // playerAnimator.SetBool(_holdSword, inventory.IsTheCurrSelectedItem("Sword"));
+            // playerAnimator.SetBool(_holdWeapon, inventory.IsTheCurrSelectedItem("Weapon"));
+            // playerAnimator.SetBool(_holdPotion, inventory.Content[inventory.ItemIndex].name is "HealthPotion" or 
+            //     "InvincibilityPotion" or "OxygenPotion");
         }
     }
     
@@ -151,16 +137,16 @@ public class Player : MonoBehaviourPunCallbacks
         else if (Oxygen is < 10 and > 0) 
         {
             Oxygen -= 0.002f;
-            playerAnimator.speed = 0.7f;
+            // playerAnimator.speed = 0.7f;
         } 
         else 
         {
             if (!_isRespawning)
             {
                 _isRespawning = true;
-                moveBehaviour.canMove = false;
-                playerAnimator.SetFloat(_speedAnim, 0);
-                playerAnimator.SetTrigger(_deadO2Anim);
+                // moveBehaviour.canMove = false;
+                // playerAnimator.SetFloat(_speedAnim, 0);
+                // playerAnimator.SetTrigger(_deadO2Anim);
             }
         }
     }
@@ -200,9 +186,9 @@ public class Player : MonoBehaviourPunCallbacks
             
             if (!_isRespawning)
             {
-                moveBehaviour.enabled = false;
+                // moveBehaviour.enabled = false;
                 _isRespawning = true; 
-                playerAnimator.SetTrigger(_deadHpAnim);
+                // playerAnimator.SetTrigger(_deadHpAnim);
             }
         }
     }
@@ -234,7 +220,7 @@ public class Player : MonoBehaviourPunCallbacks
         Health = maxHealth;
         _isRespawning = false;
         transform.position = respawnPoint.transform.position;
-        moveBehaviour.enabled = true;
+        // moveBehaviour.enabled = true;
     }
 
     // Call the game over menu
@@ -246,12 +232,11 @@ public class Player : MonoBehaviourPunCallbacks
     public void SetInActionToFalse()
     {
         IsInAction = false;
-        playerAnimator.SetLayerWeight(6,1);
+        // playerAnimator.SetLayerWeight(6,1);
     }
 
     public void ConsumeItem()
     {
         inventory.RemoveItem();
     }
-    */
 }

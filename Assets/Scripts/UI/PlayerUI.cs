@@ -7,8 +7,6 @@ using Photon.Pun;
 
 public class PlayerUI : MonoBehaviour
 {
-    /*
-    public PhotonView view;
     [SerializeField] private Player player;
     [SerializeField] private Inventory inventory;
 
@@ -20,15 +18,13 @@ public class PlayerUI : MonoBehaviour
 
     private void Update()
     {
-        if (view.IsMine) {
-            RefreshHealthAmount();
-            RefreshOxygenAmount();
-            RefreshInventory();
+        RefreshHealthAmount();
+        RefreshOxygenAmount();
+        RefreshInventory();
 
-            if (Input.GetButtonDown("Escape"))
-            {
-                pauseMenu.gameObject.SetActive(!pauseMenu.activeSelf);
-            }
+        if (Input.GetButtonDown("Escape"))
+        {
+            pauseMenu.gameObject.SetActive(!pauseMenu.activeSelf);
         }
     }
     
@@ -82,5 +78,4 @@ public class PlayerUI : MonoBehaviour
         Debug.Log("back");
         SceneManager.LoadScene("Menus");
     }
-    */
 }

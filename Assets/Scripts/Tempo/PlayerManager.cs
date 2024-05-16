@@ -35,7 +35,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
 
     [Tooltip("The Player's UI GameObject Prefab")]
     [SerializeField]
-    // private GameObject playerUiPrefab;
+    private GameObject playerUiPrefab;
 
     // [Tooltip("The Beams GameObject to control")]
     // [SerializeField]
@@ -77,15 +77,14 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
         {
             if (photonView.IsMine)
             {
-                cameraWork.OnStartFollowing();
+                //cameraWork.OnStartFollowing();
             }
         }
         else
         {
             Debug.LogError("<Color=Red><b>Missing</b></Color> CameraWork Component on player Prefab.", this);
         }
-
-        /*
+        
         // Create the UI
         if (this.playerUiPrefab != null)
         {
@@ -96,7 +95,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
         {
             Debug.LogWarning("<Color=Red><b>Missing</b></Color> PlayerUiPrefab reference on player Prefab.", this);
         }
-        */
+       
 
 #if UNITY_5_4_OR_NEWER
         // Unity 5.4 has a new scene management. register a method to call CalledOnLevelWasLoaded.
@@ -206,8 +205,8 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
             transform.position = new Vector3(0, 20, 0);
         }
 
-        //  GameObject _uiGo = Instantiate(this.playerUiPrefab);
-        // _uiGo.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
+        GameObject _uiGo = Instantiate(this.playerUiPrefab);
+        _uiGo.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
     }
 
     #endregion

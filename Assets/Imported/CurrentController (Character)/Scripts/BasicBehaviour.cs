@@ -7,11 +7,8 @@ using Photon.Pun;
 // Contains basic setup and common functions used by all the player behaviours.
 public class BasicBehaviour : MonoBehaviour
 {
-	/*
+	
 	public PhotonView view;
-	// public Transform playerCamera;                        // Reference to the camera that focus the player.
-	public float turnSmoothing = 0.06f;                   // Speed of turn when moving to match camera facing.
-	public float sprintFOV = 100f;                        // the FOV to use on the camera when player is sprinting.
 	
 	private string sprintButton = "Sprint";               // Default sprint button input name.
 	private float h;                                      // Horizontal Axis.
@@ -21,9 +18,7 @@ public class BasicBehaviour : MonoBehaviour
 	private int behaviourLocked;                          // Reference to temporary locked behaviour that forbids override.
 	private Vector3 lastDirection;                        // Last direction the player was moving.
 	private Animator anim;                                // Reference to the Animator component.
-	private ThirdPersonOrbitCamBasic camScript;           // Reference to the third person camera script.
 	private bool sprint;                                  // Boolean to determine whether or not the player activated the sprint mode.
-	private bool changedFOV;                              // Boolean to store when the sprint action has changed de camera FOV.
 	private int hFloat;                                   // Animator variable related to Horizontal Axis.
 	private int vFloat;                                   // Animator variable related to Vertical Axis.
 	private List<GenericBehaviour> behaviours;            // The list containing all the enabled player behaviours.
@@ -35,9 +30,6 @@ public class BasicBehaviour : MonoBehaviour
 	// Get current horizontal and vertical axes.
 	public float GetH => h;
 	public float GetV => v;
-
-	// Get the player camera script.
-	public ThirdPersonOrbitCamBasic GetCamScript => camScript;
 
 	// Get the player's rigid body.
 	public Rigidbody GetRigidBody => rBody;
@@ -56,7 +48,6 @@ public class BasicBehaviour : MonoBehaviour
 		anim = GetComponent<Animator> ();
 		hFloat = Animator.StringToHash("H");
 		vFloat = Animator.StringToHash("V");
-		camScript = playerCamera.GetComponent<ThirdPersonOrbitCamBasic> ();
 		rBody = GetComponent<Rigidbody> ();
 
 		// Grounded verification variables.
@@ -83,18 +74,7 @@ public class BasicBehaviour : MonoBehaviour
 
 			// Toggle sprint by input.
 			sprint = Input.GetButton (sprintButton);
-
-			// Set the correct camera FOV for sprint mode.
-			if(IsSprinting())
-			{
-				changedFOV = true;
-				camScript.SetFOV(sprintFOV);
-			}
-			else if(changedFOV)
-			{
-				camScript.ResetFOV();
-				changedFOV = false;
-			}
+			
 			// Set the grounded test on the Animator Controller.
 			anim.SetBool(groundedBool, IsGrounded());
 		}
@@ -331,7 +311,7 @@ public class BasicBehaviour : MonoBehaviour
 		{
 			lastDirection.y = 0;
 			Quaternion targetRotation = Quaternion.LookRotation (lastDirection);
-			Quaternion newRotation = Quaternion.Slerp(rBody.rotation, targetRotation, turnSmoothing);
+			Quaternion newRotation = Quaternion.Slerp(rBody.rotation, targetRotation, 0.01f);
 			rBody.MoveRotation (newRotation);
 		}
 	}
@@ -386,5 +366,4 @@ public abstract class GenericBehaviour : MonoBehaviour
 	{
 		return canSprint;
 	}
-	*/
 }

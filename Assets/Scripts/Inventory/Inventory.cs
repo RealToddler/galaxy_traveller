@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    /*
     public ItemData[] Content { get; private set; }
     public static int InventorySize => 4;
     public int ItemIndex { get; private set; }
@@ -74,5 +73,4 @@ public class Inventory : MonoBehaviour
     {
         Content[ItemIndex] = null;
     }
-    */
 }

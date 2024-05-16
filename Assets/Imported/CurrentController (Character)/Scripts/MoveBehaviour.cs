@@ -2,10 +2,10 @@
 using Photon.Pun;
 
 // MoveBehaviour inherits from GenericBehaviour. This class corresponds to basic walk and run behaviour, it is the default behaviour.
-public class MoveBehaviour : MonoBehaviour
+public class MoveBehaviour : GenericBehaviour
 {
-	/*
 	public PhotonView view;
+	
 	public float walkSpeed = 0.15f;                 // Default walk speed.
 	public float runSpeed = 1.0f;                   // Default run speed.
 	public float sprintSpeed = 2.0f;                // Default sprint speed.
@@ -15,7 +15,7 @@ public class MoveBehaviour : MonoBehaviour
 	public float jumpHeight = 1.5f;                 // Default jump height.
 	public float jumpIntertialForce = 10f;          // Default horizontal inertial force when jumping.
 
-	private float _speed, _speedSeeker;               // Moving speed.
+	public float _speed, _speedSeeker;               // Moving speed.
 	private int _jumpBool;                           // Animator variable related to jumping.
 	private int _rollBool;
 	private int _groundedBool;                       // Animator variable related to whether or not the player is on ground.
@@ -177,7 +177,7 @@ public class MoveBehaviour : MonoBehaviour
 	Vector3 Rotating(float horizontal, float vertical)
 	{
 		// Get camera forward direction, without vertical component.
-		Vector3 forward = behaviourManager.playerCamera.TransformDirection(Vector3.forward);
+		Vector3 forward = behaviourManager.GetComponent<PhotonView>().transform.forward;
 
 		// Player is moving on ground, Y component of camera facing is not relevant.
 		forward.y = 0.0f;
@@ -193,7 +193,7 @@ public class MoveBehaviour : MonoBehaviour
 		{
 			Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
 
-			Quaternion newRotation = Quaternion.Slerp(behaviourManager.GetRigidBody.rotation, targetRotation, behaviourManager.turnSmoothing);
+			Quaternion newRotation = Quaternion.Slerp(behaviourManager.GetRigidBody.rotation, targetRotation, 0.01f);
 			behaviourManager.GetRigidBody.MoveRotation(newRotation);
 			behaviourManager.SetLastDirection(targetDirection);
 		}
@@ -223,5 +223,4 @@ public class MoveBehaviour : MonoBehaviour
 		GetComponent<CapsuleCollider>().material.dynamicFriction = 0.6f;
 		GetComponent<CapsuleCollider>().material.staticFriction = 0.6f;
 	}
-	*/
 }

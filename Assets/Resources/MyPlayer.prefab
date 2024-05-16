@@ -124,7 +124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Health: 1
-  IsFiring: 0
+  playerUiPrefab: {fileID: 0}
 --- !u!114 &3518262291938664735
 MonoBehaviour:
   m_ObjectHideFlags: 0
