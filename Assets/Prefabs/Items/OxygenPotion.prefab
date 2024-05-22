@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 9103069101216346767}
   - component: {fileID: 7612132686478732705}
   - component: {fileID: 2482195603347544267}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: bottle_blue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -115,7 +115,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 819124086476908529}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: bottle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -150,7 +150,7 @@ GameObject:
   - component: {fileID: 6906030218234426552}
   - component: {fileID: 504045759172187824}
   - component: {fileID: 121460500575075757}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: OxygenPotion
   m_TagString: Item
   m_Icon: {fileID: 0}
@@ -246,7 +246,7 @@ GameObject:
   - component: {fileID: 2133176863225651611}
   - component: {fileID: 932420000623548771}
   - component: {fileID: 3456853943075402565}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: StarsParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5052,7 +5052,7 @@ GameObject:
   - component: {fileID: 1867990025890917310}
   - component: {fileID: 5038447886261380081}
   - component: {fileID: 2703236383784776382}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GlowParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -31,13 +31,13 @@ public class PlayerUI : MonoBehaviour
     // Refresh Health Bar
     void RefreshHealthAmount()
     {
-        healthBarFill.localScale = new Vector3(1f, player.Health/player.maxHealth, 1f);
+        // healthBarFill.localScale = new Vector3(1f, player.Health/player.maxHealth, 1f);
     }
     
     // Refresh Oxygen Bar
     void RefreshOxygenAmount()
     {
-        oxygenBarFill.localScale = new Vector3(1f, player.Oxygen/player.maxOxygen, 1f);
+        // oxygenBarFill.localScale = new Vector3(1f, player.Oxygen/player.maxOxygen, 1f);
     }
     
     // Refresh the visual of inventory

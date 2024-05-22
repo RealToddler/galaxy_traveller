@@ -71,21 +71,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
     /// </summary>
     public void Start()
     {
-        CWork cameraWork = gameObject.GetComponent<CWork>();
-
-        if (cameraWork != null)
-        {
-            if (photonView.IsMine)
-            {
-                //cameraWork.OnStartFollowing();
-            }
-        }
-        else
-        {
-            Debug.LogError("<Color=Red><b>Missing</b></Color> CameraWork Component on player Prefab.", this);
-        }
-        
-        // Create the UI
+        // // Create the UI
         if (this.playerUiPrefab != null)
         {
             GameObject _uiGo = Instantiate(this.playerUiPrefab);

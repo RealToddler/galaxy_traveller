@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2791125577078238817}
   - component: {fileID: 3207440793782179378}
   - component: {fileID: 4915501312487050445}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MoonSword
   m_TagString: Item
   m_Icon: {fileID: 0}
@@ -161,7 +161,7 @@ GameObject:
   - component: {fileID: 2869624339567307948}
   - component: {fileID: 5413365924060202842}
   - component: {fileID: 6814963587589752372}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sparks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5012,7 +5012,7 @@ GameObject:
   - component: {fileID: 8451776976489346330}
   - component: {fileID: 551737274426356845}
   - component: {fileID: 1990429177995369094}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9854,7 +9854,7 @@ GameObject:
   - component: {fileID: 502064504726823923}
   - component: {fileID: 4521712939714631980}
   - component: {fileID: 1206572085420339124}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Wind
   m_TagString: Untagged
   m_Icon: {fileID: 0}

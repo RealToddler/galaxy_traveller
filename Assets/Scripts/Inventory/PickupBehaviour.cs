@@ -1,8 +1,8 @@
+using System;
 using UnityEngine;
 
 public class PickupBehaviour : MonoBehaviour
 {
-    /*
     [SerializeField] private MoveBehaviour playerMoveBehaviour;
 
     [SerializeField] private Animator playerAnimator;
@@ -12,6 +12,17 @@ public class PickupBehaviour : MonoBehaviour
     private Item _currentItem;
     
     private static readonly int Pickup = Animator.StringToHash("Pickup");
+
+    private void OnCollisionStay(Collision other)
+    {
+        if (other.gameObject.CompareTag("Item"))
+        {
+            if (Input.GetButtonDown("Action1"))
+            {
+                print("Collect");
+            }
+        }
+    }
 
     // Manage the "picking" up of an item
     public void DoPickup(Item item)
@@ -40,5 +51,4 @@ public class PickupBehaviour : MonoBehaviour
     {
         playerMoveBehaviour.canMove = true;
     }
-    */
 }

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7253736206807385679}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: bottle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 4681547285271149068}
   - component: {fileID: 9126340095272748872}
   - component: {fileID: 1714134597166979898}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GlowParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4849,7 +4849,7 @@ GameObject:
   - component: {fileID: 1869570828471108436}
   - component: {fileID: 6167127494680372035}
   - component: {fileID: 2119613274050637648}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: StarsParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9656,7 +9656,7 @@ GameObject:
   - component: {fileID: 5201078141404612101}
   - component: {fileID: 5874451381662892787}
   - component: {fileID: 7003988423358035122}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: HealthPotion
   m_TagString: Item
   m_Icon: {fileID: 0}
@@ -9753,7 +9753,7 @@ GameObject:
   - component: {fileID: 6155913177049225535}
   - component: {fileID: 2399076571955062626}
   - component: {fileID: 5228254658454435430}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: bottle_green
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -177,28 +177,26 @@ public class MoveBehaviour : GenericBehaviour
 	Vector3 Rotating(float horizontal, float vertical)
 	{
 		// Get camera forward direction, without vertical component.
-		Vector3 forward = behaviourManager.GetComponent<PhotonView>().transform.forward;
-
+		Vector3 forward = Camera.main.transform.forward;
+        
 		// Player is moving on ground, Y component of camera facing is not relevant.
 		forward.y = 0.0f;
 		forward = forward.normalized;
 
 		// Calculate target direction based on camera forward and direction key.
 		Vector3 right = new Vector3(forward.z, 0, -forward.x);
-		Vector3 targetDirection;
-		targetDirection = forward * vertical + right * horizontal;
+		Vector3 targetDirection = forward * vertical + right * horizontal;
 
 		// Lerp current direction to calculated target direction.
 		if (behaviourManager.IsMoving() && targetDirection != Vector3.zero)
 		{
 			Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
-
-			Quaternion newRotation = Quaternion.Slerp(behaviourManager.GetRigidBody.rotation, targetRotation, 0.01f);
+			Quaternion newRotation = Quaternion.Slerp(behaviourManager.GetRigidBody.rotation, targetRotation, 0.1f);
 			behaviourManager.GetRigidBody.MoveRotation(newRotation);
 			behaviourManager.SetLastDirection(targetDirection);
 		}
 		// If idle, Ignore current camera facing and consider last moving direction.
-		if (!(Mathf.Abs(horizontal) > 0.9 || Mathf.Abs(vertical) > 0.9))
+		else if (!(Mathf.Abs(horizontal) > 0.1f || Mathf.Abs(vertical) > 0.1f))
 		{
 			behaviourManager.Repositioning();
 		}

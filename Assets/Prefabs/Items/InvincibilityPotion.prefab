@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 264067286561459188}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: bottle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 8402954764929075692}
   - component: {fileID: 3426701004359279248}
   - component: {fileID: 762422889471673415}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: InvincibilityPotion
   m_TagString: Item
   m_Icon: {fileID: 0}
@@ -140,7 +140,7 @@ GameObject:
   - component: {fileID: 486952779350604051}
   - component: {fileID: 3557209156075186113}
   - component: {fileID: 9039823434699494744}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: StarsParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4947,7 +4947,7 @@ GameObject:
   - component: {fileID: 4098632599121209506}
   - component: {fileID: 6659807895677957986}
   - component: {fileID: 4922286318466955456}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: bottle_red
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5052,7 +5052,7 @@ GameObject:
   - component: {fileID: 9201142604126411708}
   - component: {fileID: 2837517952392517844}
   - component: {fileID: 5463794012671184457}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GlowParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}

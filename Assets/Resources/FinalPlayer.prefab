@@ -6033,6 +6033,51 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &3443692619669993418
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6932596587162823348}
+  - component: {fileID: 7528734230419467014}
+  m_Layer: 8
+  m_Name: EquipementLibrary
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6932596587162823348
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3443692619669993418}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7879975459685018442}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7528734230419467014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3443692619669993418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9979a7e94d7518440918af2fb5dc220c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  content: []
 --- !u!1 &3464394050703668773
 GameObject:
   m_ObjectHideFlags: 0
@@ -11335,14 +11380,16 @@ GameObject:
   - component: {fileID: 6557739539037091995}
   - component: {fileID: 6602165490307109378}
   - component: {fileID: 7948985215580978383}
-  - component: {fileID: 2129872877801001389}
+  - component: {fileID: 4444179843469082041}
+  - component: {fileID: 8260123697983762301}
+  - component: {fileID: 1100531776088078975}
   m_Layer: 8
   m_Name: FinalPlayer
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7879975459685018442
 Transform:
   m_ObjectHideFlags: 0
@@ -11363,6 +11410,7 @@ Transform:
   - {fileID: 7242463940828212765}
   - {fileID: 6613795872930597247}
   - {fileID: 2108922622959228531}
+  - {fileID: 6932596587162823348}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &4956608850192445738
@@ -11448,10 +11496,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: deee7474e31e3ea40924100c22766123, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sensitivity: 1
   distance: 7
-  height: 3
-  centerOffset: {x: 0, y: 0, z: 0}
-  rotationSpeed: 2
 --- !u!114 &1206587641946692565
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11488,6 +11534,7 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 1206587641946692565}
   - {fileID: 6557739539037091995}
+  - {fileID: 4444179843469082041}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -11539,25 +11586,119 @@ MonoBehaviour:
   speedDampTime: 0.1
   jumpHeight: 1.5
   jumpIntertialForce: 10
+  _speed: 0
+  _speedSeeker: 0
   canMove: 1
---- !u!114 &2129872877801001389
+--- !u!114 &4444179843469082041
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4699669800681581755}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6f1104f080158747aa6ec9ee263fe8d, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 6
-  sprintMultiplier: 1.5
-  rotationSpeed: 2
-  cameraDistance: 7
-  cameraHeight: 3
-  cameraOffset: {x: 0, y: 0, z: 0}
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 1
+    SynchronizeType: 1
+    Name: Speed
+  - Type: 4
+    SynchronizeType: 1
+    Name: Jump
+  - Type: 4
+    SynchronizeType: 1
+    Name: Fly
+  - Type: 4
+    SynchronizeType: 1
+    Name: Aim
+  - Type: 1
+    SynchronizeType: 1
+    Name: H
+  - Type: 1
+    SynchronizeType: 1
+    Name: V
+  - Type: 4
+    SynchronizeType: 1
+    Name: Grounded
+  - Type: 9
+    SynchronizeType: 1
+    Name: Pickup
+  - Type: 9
+    SynchronizeType: 1
+    Name: Roll
+  - Type: 9
+    SynchronizeType: 1
+    Name: Attack
+  - Type: 9
+    SynchronizeType: 1
+    Name: DeadHp
+  - Type: 9
+    SynchronizeType: 1
+    Name: DeadO2
+  - Type: 9
+    SynchronizeType: 1
+    Name: Drink
+  - Type: 9
+    SynchronizeType: 1
+    Name: AttackDistance
+  - Type: 4
+    SynchronizeType: 1
+    Name: HoldWeapon
+  - Type: 4
+    SynchronizeType: 1
+    Name: HoldPotion
+  - Type: 4
+    SynchronizeType: 1
+    Name: HoldSword
+  m_SynchronizeLayers:
+  - SynchronizeType: 0
+    LayerIndex: 0
+  - SynchronizeType: 0
+    LayerIndex: 1
+  - SynchronizeType: 0
+    LayerIndex: 2
+  - SynchronizeType: 0
+    LayerIndex: 3
+  - SynchronizeType: 0
+    LayerIndex: 4
+  - SynchronizeType: 0
+    LayerIndex: 5
+  - SynchronizeType: 0
+    LayerIndex: 6
+--- !u!114 &8260123697983762301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4699669800681581755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70857a0ed5596a0498e5b3f956674ee7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerMoveBehaviour: {fileID: 7948985215580978383}
+  playerAnimator: {fileID: 4956608850192445738}
+  inventory: {fileID: 1100531776088078975}
+--- !u!114 &1100531776088078975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4699669800681581755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20cade6a44bb41e46a81393bce266398, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  equipmentLibrary: {fileID: 7528734230419467014}
+  enable: 1
 --- !u!1 &4717488398480891612
 GameObject:
   m_ObjectHideFlags: 0

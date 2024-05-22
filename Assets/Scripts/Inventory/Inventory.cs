@@ -8,8 +8,8 @@ public class Inventory : MonoBehaviour
     public int ItemIndex { get; private set; }
 
     [SerializeField] private EquipmentLibrary equipmentLibrary;
-    [SerializeField] private Player player;
-
+    
+    private Player player;
     public bool enable = true;
 
     private EquipmentLibraryItem _equipmentLibraryItem;
@@ -17,11 +17,12 @@ public class Inventory : MonoBehaviour
     private void Start()
     {
         Content = new ItemData[4];
+        player = GetComponent<Player>();
     }
 
     private void Update()
     {
-        if (!player.IsInAction)
+        //if (!player.IsInAction)
         {
             if (Input.mouseScrollDelta.y < 0)
             {

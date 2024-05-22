@@ -28,7 +28,7 @@ public class AimBehaviourBasic : MonoBehaviour
 	{
 		if (view.IsMine)
 		{		
-		// Activate/deactivate aim by input.
+			// Activate/deactivate aim by input.
          	if (Input.GetAxisRaw(aimButton) != 0 && !aim)
          	{
          		StartCoroutine(ToggleAimOn());
