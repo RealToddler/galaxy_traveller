@@ -6,11 +6,12 @@ using UnityEngine.EventSystems;
 
 public class Player : MonoBehaviourPunCallbacks
 {
-    private PhotonView view;
-    // [SerializeField] private Animator playerAnimator;
-    // [SerializeField] private MoveBehaviour moveBehaviour;
     [SerializeField] private Transform respawnPoint;
-    [SerializeField] private Inventory inventory;
+
+    private MoveBehaviour _moveBehaviour;
+    private PhotonView _view;
+    private Inventory _inventory;
+    private Animator _playerAnimator;
     
     private readonly int _attackMeleeAnim = Animator.StringToHash("Attack");
     private readonly int _attackDistanceAnim = Animator.StringToHash("AttackDistance");
@@ -52,13 +53,15 @@ public class Player : MonoBehaviourPunCallbacks
 
         // Oxygen = 1;
 
-        // Network
-        view = GetComponent<PhotonView>();
+        _view = GetComponent<PhotonView>();
+        _inventory = GetComponent<Inventory>();
+        _playerAnimator = GetComponent<Animator>();
+        _moveBehaviour = GetComponent<MoveBehaviour>();
     }
 
     private void Update()
     {
-        if (view.IsMine) {
+        if (_view.IsMine) {
             OxygenManager();
             HealthManager();
             ActionManager();
@@ -70,28 +73,28 @@ public class Player : MonoBehaviourPunCallbacks
     {
         if (Input.GetButtonDown("Action1") && Health > 0 && Oxygen > 0 && !IsInAction)
         {
-            if (inventory.Content[inventory.ItemIndex].IsUnityNull())
+            if (_inventory.Content[_inventory.ItemIndex].IsUnityNull())
             {
                 return;
             }
 
             IsInAction = true;
             
-            if (inventory.IsTheCurrSelectedItem("Sword"))
+            if (_inventory.IsTheCurrSelectedItem("Sword"))
             {
-                // playerAnimator.SetTrigger(_attackMeleeAnim);
+                _playerAnimator.SetTrigger(_attackMeleeAnim);
             }
-            else if (inventory.IsTheCurrSelectedItem("Weapon"))
+            else if (_inventory.IsTheCurrSelectedItem("Weapon"))
             {
-                // playerAnimator.SetTrigger(_attackDistanceAnim);
+                _playerAnimator.SetTrigger(_attackDistanceAnim);
             }
             else
             {
-                if (inventory.IsTheCurrSelectedItem("HealthPotion"))
+                if (_inventory.IsTheCurrSelectedItem("HealthPotion"))
                 {
                     Health = Health <= 80 ? Health + 20 : maxHealth;
                 }
-                else if (inventory.IsTheCurrSelectedItem("InvincibilityPotion"))
+                else if (_inventory.IsTheCurrSelectedItem("InvincibilityPotion"))
                 {
                     if (!_isInvincible)
                     {
@@ -100,30 +103,32 @@ public class Player : MonoBehaviourPunCallbacks
                         Invoke(nameof(SetInvincibleToFalse), 5f);
                     }
                 }
-                else if (inventory.IsTheCurrSelectedItem("OxygenPotion"))
+                else if (_inventory.IsTheCurrSelectedItem("OxygenPotion"))
                 {
                     Oxygen = Oxygen <= 90 ? Oxygen + 10 : maxOxygen;
                 }
                 
-                // playerAnimator.SetTrigger(_drinkAnim);
+                _playerAnimator.SetTrigger(_drinkAnim);
             }
         }
     }
 
     private void HoldingVisualManager()
     {
-        if (inventory.Content[inventory.ItemIndex].IsUnityNull())
+        if (_inventory.Content[_inventory.ItemIndex].IsUnityNull())
         {
-            // playerAnimator.SetBool(_holdWeapon,false);
-            // playerAnimator.SetBool(_holdPotion,false);
-            // playerAnimator.SetBool(_holdSword,false);
+            _playerAnimator.SetBool(_holdWeapon,false);
+            _playerAnimator.SetBool(_holdPotion,false);
+            _playerAnimator.SetBool(_holdSword,false);
         }
         else
         {
-            // playerAnimator.SetBool(_holdSword, inventory.IsTheCurrSelectedItem("Sword"));
-            // playerAnimator.SetBool(_holdWeapon, inventory.IsTheCurrSelectedItem("Weapon"));
-            // playerAnimator.SetBool(_holdPotion, inventory.Content[inventory.ItemIndex].name is "HealthPotion" or 
-            //     "InvincibilityPotion" or "OxygenPotion");
+            _playerAnimator.SetBool(_holdSword, _inventory.IsTheCurrSelectedItem("Sword"));
+            _playerAnimator.SetBool(_holdWeapon, _inventory.IsTheCurrSelectedItem("Weapon"));
+            _playerAnimator.SetBool(_holdPotion, _inventory.Content[_inventory.ItemIndex].name is 
+                "HealthPotion" or 
+                "InvincibilityPotion" or 
+                "OxygenPotion");
         }
     }
     
@@ -137,16 +142,16 @@ public class Player : MonoBehaviourPunCallbacks
         else if (Oxygen is < 10 and > 0) 
         {
             Oxygen -= 0.002f;
-            // playerAnimator.speed = 0.7f;
+            _playerAnimator.speed = 0.7f;
         } 
         else 
         {
             if (!_isRespawning)
             {
                 _isRespawning = true;
-                // moveBehaviour.canMove = false;
-                // playerAnimator.SetFloat(_speedAnim, 0);
-                // playerAnimator.SetTrigger(_deadO2Anim);
+                _moveBehaviour.canMove = false;
+                _playerAnimator.SetFloat(_speedAnim, 0);
+                _playerAnimator.SetTrigger(_deadO2Anim);
             }
         }
     }
@@ -186,9 +191,9 @@ public class Player : MonoBehaviourPunCallbacks
             
             if (!_isRespawning)
             {
-                // moveBehaviour.enabled = false;
+                _moveBehaviour.enabled = false;
                 _isRespawning = true; 
-                // playerAnimator.SetTrigger(_deadHpAnim);
+                _playerAnimator.SetTrigger(_deadHpAnim);
             }
         }
     }
@@ -220,7 +225,7 @@ public class Player : MonoBehaviourPunCallbacks
         Health = maxHealth;
         _isRespawning = false;
         transform.position = respawnPoint.transform.position;
-        // moveBehaviour.enabled = true;
+        _moveBehaviour.enabled = true;
     }
 
     // Call the game over menu
@@ -232,11 +237,11 @@ public class Player : MonoBehaviourPunCallbacks
     public void SetInActionToFalse()
     {
         IsInAction = false;
-        // playerAnimator.SetLayerWeight(6,1);
+        _playerAnimator.SetLayerWeight(6,1);
     }
 
     public void ConsumeItem()
     {
-        inventory.RemoveItem();
+        _inventory.RemoveItem();
     }
 }

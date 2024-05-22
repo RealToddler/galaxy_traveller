@@ -1858,6 +1858,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efa75acaf32d0e0448ae00ed6ebe4a94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 897719404968138427, guid: a747bf47a369f10478627a2c62672915, type: 3}
+  healthBarFill: {fileID: 7642368138399800020}
+  oxygenBarFill: {fileID: 4500507736282186}
+  inventorySlots: {fileID: 2128401624758141854}
+  pauseMenu: {fileID: 1516842864578082647}
 --- !u!1 &8485167544312607969
 GameObject:
   m_ObjectHideFlags: 0

@@ -6077,7 +6077,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9979a7e94d7518440918af2fb5dc220c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  content: []
+  content:
+  - itemData: {fileID: 11400000, guid: 203aa9b61b9959e4086ac155e5d8f8b6, type: 2}
+    itemPrefab: {fileID: 1429897665372350498}
+  - itemData: {fileID: 11400000, guid: 3ba94b2dc0a6c214598a3a26169f322b, type: 2}
+    itemPrefab: {fileID: 2602660274843345100}
+  - itemData: {fileID: 11400000, guid: 2162d44cbb3cb68408cb7249f5120dd6, type: 2}
+    itemPrefab: {fileID: 3352719343103607895}
+  - itemData: {fileID: 11400000, guid: 75b47e5f4782b8f4f80427917e8b9827, type: 2}
+    itemPrefab: {fileID: 7115898250427302525}
 --- !u!1 &3464394050703668773
 GameObject:
   m_ObjectHideFlags: 0
@@ -11383,13 +11391,14 @@ GameObject:
   - component: {fileID: 4444179843469082041}
   - component: {fileID: 8260123697983762301}
   - component: {fileID: 1100531776088078975}
+  - component: {fileID: 897719404968138427}
   m_Layer: 8
   m_Name: FinalPlayer
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7879975459685018442
 Transform:
   m_ObjectHideFlags: 0
@@ -11510,7 +11519,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3577258814905264a8f14e14bf287832, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Health: 1
   playerUiPrefab: {fileID: 8363942309254102323, guid: 424f9a2875dc5fe4c9ee835d366b3968,
     type: 3}
 --- !u!114 &375138477795317183
@@ -11685,6 +11693,7 @@ MonoBehaviour:
   playerMoveBehaviour: {fileID: 7948985215580978383}
   playerAnimator: {fileID: 4956608850192445738}
   inventory: {fileID: 1100531776088078975}
+  range: 2
 --- !u!114 &1100531776088078975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11698,7 +11707,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   equipmentLibrary: {fileID: 7528734230419467014}
-  enable: 1
+--- !u!114 &897719404968138427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4699669800681581755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 099094cbd67a566478f44c4f2fb0a360, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  respawnPoint: {fileID: 0}
+  maxHealth: 100
+  maxOxygen: 100
 --- !u!1 &4717488398480891612
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,23 +9,23 @@ public class Inventory : MonoBehaviour
 
     [SerializeField] private EquipmentLibrary equipmentLibrary;
     
-    private Player player;
-    public bool enable = true;
-
+    private Player _player;
+    
     private EquipmentLibraryItem _equipmentLibraryItem;
 
     private void Start()
     {
         Content = new ItemData[4];
-        player = GetComponent<Player>();
+        _player = GetComponent<Player>();
     }
 
     private void Update()
     {
-        //if (!player.IsInAction)
+        if (!_player.IsInAction)
         {
             if (Input.mouseScrollDelta.y < 0)
             {
+                print(ItemIndex);
                 ItemIndex = ItemIndex != InventorySize-1 ? ItemIndex + 1 : 0;
             }
             else if (Input.mouseScrollDelta.y > 0)
@@ -62,7 +62,7 @@ public class Inventory : MonoBehaviour
     {
         if (!IsTheCurrSlotFree())
         {
-            var position = player.transform.position;
+            var position = _player.transform.position;
             Instantiate(Content[ItemIndex].prefab, new Vector3(position.x, position.y+1, position.z-1), 
                 Content[ItemIndex].prefab.transform.rotation);
         }
