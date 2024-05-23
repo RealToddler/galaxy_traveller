@@ -25,7 +25,6 @@ public class Inventory : MonoBehaviour
         {
             if (Input.mouseScrollDelta.y < 0)
             {
-                print(ItemIndex);
                 ItemIndex = ItemIndex != InventorySize-1 ? ItemIndex + 1 : 0;
             }
             else if (Input.mouseScrollDelta.y > 0)

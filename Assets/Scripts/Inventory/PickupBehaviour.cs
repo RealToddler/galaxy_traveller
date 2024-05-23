@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
+using UnityEditor;
 using UnityEngine;
 
 public class PickupBehaviour : MonoBehaviour
@@ -10,30 +12,45 @@ public class PickupBehaviour : MonoBehaviour
     [SerializeField] private Inventory inventory;
     [SerializeField] private float range = 2f;
 
-    private Item _currentItem;
+    private List<Item> nearItems = new();
+    [CanBeNull] private Item _currentItem;
     
     private static readonly int Pickup = Animator.StringToHash("Pickup");
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.DrawWireSphere(transform.position, range);
-    }
-
     private void Update()
     {
-        UpdateTarget();
+        UpdateNearest();
     }
 
-    void UpdateTarget()
+    private void OnTriggerEnter(Collider other)
     {
-        GameObject[] items = GameObject.FindGameObjectsWithTag("Item");
-        GameObject nearestItem = items
-            .OrderByDescending(item => Vector3.Distance(transform.position, item.transform.position))
-            .FirstOrDefault(item => Vector3.Distance(item.transform.position, transform.position) <= range);
-        
-        if (nearestItem != null && Input.GetButtonDown("Fly"))
+        if (other.gameObject.CompareTag("Item"))
         {
-            DoPickup(nearestItem.GetComponent<Item>());
+            nearItems.Add(other.gameObject.GetComponent<Item>());
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Item"))
+        {
+            nearItems.Remove(other.gameObject.GetComponent<Item>());
+        }
+    }
+
+    void UpdateNearest()
+    {
+        if (nearItems.Count > 0)
+        {
+            Item nearestItem = nearItems
+                .OrderByDescending(item => Vector3.Distance(transform.position, item.transform.position))
+                .FirstOrDefault(item => Vector3.Distance(item.transform.position, transform.position) <= range);
+            
+            if (Input.GetButtonDown("Action2"))
+            {
+                DoPickup(nearestItem!.GetComponent<Item>());
+                nearItems.Remove(nearestItem);
+            }
         }
     }
 

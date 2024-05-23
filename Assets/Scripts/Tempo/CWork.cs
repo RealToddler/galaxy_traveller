@@ -43,20 +43,8 @@ public class CWork : MonoBehaviourPunCallbacks
         Vector3 direction = new Vector3(0, 0, -distance); // Direction de la caméra
         Quaternion rotation = Quaternion.Euler(currentY, currentX, 0); // Calcul de la rotation de la caméra
         Vector3 desiredPosition = transform.position + rotation * direction; // Position désirée de la caméra
-
-        // Assurez-vous que la caméra ne rentre pas dans le terrain ou d'autres objets
-        RaycastHit hit;
-        if (Physics.Linecast(transform.position , desiredPosition, out hit))
-        {
-            if (hit.transform.CompareTag("Terrain"))
-            {
-                cameraTransform.position = hit.point;
-            }
-        }
-        else
-        {
-            cameraTransform.position = desiredPosition;
-        }
+        
+        cameraTransform.position = desiredPosition;
 
         cameraTransform.LookAt(transform.position + Vector3.up * 2); // Faire en sorte que la caméra regarde le personnage
     }

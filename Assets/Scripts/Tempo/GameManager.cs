@@ -81,6 +81,9 @@ public class GameManager : MonoBehaviourPunCallbacks
 
 
         }
+        
+        PhotonNetwork.InstantiateRoomObject("OxygenPotion", new Vector3(0, 16, 0), Quaternion.identity);
+
 
     }
 
@@ -89,11 +92,11 @@ public class GameManager : MonoBehaviourPunCallbacks
     /// </summary>
     void Update()
     {
-        // "back" button of phone equals "Escape". quit app if that's pressed
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            QuitApplication();
-        }
+        // // "back" button of phone equals "Escape". quit app if that's pressed
+        // if (Input.GetKeyDown(KeyCode.Escape))
+        // {
+        //     QuitApplication();
+        // }
     }
 
     #endregion
