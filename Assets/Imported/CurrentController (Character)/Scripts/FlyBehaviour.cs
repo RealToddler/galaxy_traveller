@@ -2,9 +2,8 @@
 using Photon.Pun;
 
 // FlyBehaviour inherits from GenericBehaviour. This class corresponds to the flying behaviour.
-public class FlyBehaviour : MonoBehaviour
+public class FlyBehaviour : GenericBehaviour
 {
-	/*
 	public PhotonView view;
 	public string flyButton = "Fly";              // Default fly button.
 	public float flySpeed = 4.0f;                 // Default flying speed.
@@ -53,8 +52,6 @@ public class FlyBehaviour : MonoBehaviour
 				{
 					// Set collider direction to vertical.
 					col.direction = 1;
-					// Set camera default offset.
-					behaviourManager.GetCamScript.ResetTargetOffsets();
 
 					// Unregister this behaviour and set current behaviour to the default one.
 					behaviourManager.UnregisterBehaviour(this.behaviourCode);
@@ -81,8 +78,6 @@ public class FlyBehaviour : MonoBehaviour
 	{
 		if (view.IsMine)
 		{
-			// Set camera limit angle related to fly mode.
-			behaviourManager.GetCamScript.SetMaxVerticalAngle(flyMaxVerticalAngle);
 
 			// Call the fly manager.
 			FlyManagement(behaviourManager.GetH, behaviourManager.GetV);
@@ -99,42 +94,31 @@ public class FlyBehaviour : MonoBehaviour
 	// Rotate the player to match correct orientation, according to camera and key pressed.
 	Vector3 Rotating(float horizontal, float vertical)
 	{
-		Vector3 forward = behaviourManager.playerCamera.TransformDirection(Vector3.forward);
-		// Camera forward Y component is relevant when flying.
+		// Get camera forward direction, without vertical component.
+		Vector3 forward = Camera.main.transform.forward;
+        
+		// Player is moving on ground, Y component of camera facing is not relevant.
+		forward.y = 0.0f;
 		forward = forward.normalized;
 
-		Vector3 right = new Vector3(forward.z, 0, -forward.x);
-
 		// Calculate target direction based on camera forward and direction key.
+		Vector3 right = new Vector3(forward.z, 0, -forward.x);
 		Vector3 targetDirection = forward * vertical + right * horizontal;
 
-		// Rotate the player to the correct fly position.
-		if ((behaviourManager.IsMoving() && targetDirection != Vector3.zero))
+		// Lerp current direction to calculated target direction.
+		if (behaviourManager.IsMoving() && targetDirection != Vector3.zero)
 		{
 			Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
-
-			Quaternion newRotation = Quaternion.Slerp(behaviourManager.GetRigidBody.rotation, targetRotation, behaviourManager.turnSmoothing);
-
+			Quaternion newRotation = Quaternion.Slerp(behaviourManager.GetRigidBody.rotation, targetRotation, 0.1f);
 			behaviourManager.GetRigidBody.MoveRotation(newRotation);
 			behaviourManager.SetLastDirection(targetDirection);
 		}
-
-		// Player is flying and idle?
-		if (!(Mathf.Abs(horizontal) > 0.2 || Mathf.Abs(vertical) > 0.2))
+		// If idle, Ignore current camera facing and consider last moving direction.
+		else if (!(Mathf.Abs(horizontal) > 0.1f || Mathf.Abs(vertical) > 0.1f))
 		{
-			// Rotate the player to stand position.
 			behaviourManager.Repositioning();
-			// Set collider direction to vertical.
-			col.direction = 1;
-		}
-		else
-		{
-			// Set collider direction to horizontal.
-			col.direction = 2;
 		}
 
-		// Return the current fly direction.
 		return targetDirection;
 	}
-	*/
 }

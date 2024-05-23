@@ -32,7 +32,7 @@ public class CWork : MonoBehaviourPunCallbacks
 
         currentX += Input.GetAxis("Mouse X") * sensitivity; // Mise à jour de la rotation en X
         currentY -= Input.GetAxis("Mouse Y") * sensitivity; // Mise à jour de la rotation en Y
-        // currentY = Mathf.Clamp(currentY, -180, 180); // Limitation de l'angle de rotation en Y
+        currentY = Mathf.Clamp(currentY, 10, 50); // Limitation de l'angle de rotation en Y
     }
 
     private void LateUpdate()
@@ -48,7 +48,10 @@ public class CWork : MonoBehaviourPunCallbacks
         RaycastHit hit;
         if (Physics.Linecast(transform.position , desiredPosition, out hit))
         {
-            cameraTransform.position = hit.point;
+            if (hit.transform.CompareTag("Terrain"))
+            {
+                cameraTransform.position = hit.point;
+            }
         }
         else
         {

@@ -11392,6 +11392,7 @@ GameObject:
   - component: {fileID: 8260123697983762301}
   - component: {fileID: 1100531776088078975}
   - component: {fileID: 897719404968138427}
+  - component: {fileID: 4393028605348144645}
   m_Layer: 8
   m_Name: FinalPlayer
   m_TagString: Player
@@ -11722,6 +11723,23 @@ MonoBehaviour:
   respawnPoint: {fileID: 0}
   maxHealth: 100
   maxOxygen: 100
+--- !u!114 &4393028605348144645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4699669800681581755}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b86dbbaaa422b64d8a77740b0e66a5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  view: {fileID: 0}
+  flyButton: Fly
+  flySpeed: 4
+  sprintFactor: 2
+  flyMaxVerticalAngle: 60
 --- !u!1 &4717488398480891612
 GameObject:
   m_ObjectHideFlags: 0
