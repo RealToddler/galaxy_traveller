@@ -8,10 +8,12 @@
 // <author>developer@exitgames.com</author>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Photon.Pun;
 using Photon.Realtime;
+using Unity.VisualScripting;
 
 #pragma warning disable 649
 
@@ -52,20 +54,30 @@ public class GameManager : MonoBehaviourPunCallbacks
         // in case we started this demo with the wrong scene being active, simply load the menu scene
         if (!PhotonNetwork.IsConnected)
         {
-            SceneManager.LoadScene("Lvl1");
+            SceneManager.LoadScene("Loading");
 
             return;
         }
-
-        if (playerPrefab == null)
-        { // #Tip Never assume public properties of Components are filled up properly, always check and inform the developer of it.
-
-            Debug.LogError("<Color=Red><b>Missing</b></Color> playerPrefab Reference. Please set it up in GameObject 'Game Manager'", this);
+        
+        if (PhotonNetwork.IsMasterClient)
+        {
+            CreateItems();
         }
         else
         {
+            ClearItems();
+        }
 
+        if (playerPrefab == null)
+        {
+            // #Tip Never assume public properties of Components are filled up properly, always check and inform the developer of it.
 
+            Debug.LogError(
+                "<Color=Red><b>Missing</b></Color> playerPrefab Reference. Please set it up in GameObject 'Game Manager'",
+                this);
+        }
+        else
+        {
             if (PhotonNetwork.InRoom && PlayerManager.LocalPlayerInstance == null)
             {
                 Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
@@ -78,27 +90,39 @@ public class GameManager : MonoBehaviourPunCallbacks
 
                 Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
             }
-
-
         }
-        
-        PhotonNetwork.InstantiateRoomObject("OxygenPotion", new Vector3(0, 16, 0), Quaternion.identity);
-
-
     }
 
-    /// <summary>
-    /// MonoBehaviour method called on GameObject by Unity on every frame.
-    /// </summary>
-    void Update()
+
+
+    private void CreateItems()
     {
-        // // "back" button of phone equals "Escape". quit app if that's pressed
-        // if (Input.GetKeyDown(KeyCode.Escape))
-        // {
-        //     QuitApplication();
-        // }
+        print("create");
+        GameObject[] objectsToInstantiate = GameObject.FindGameObjectsWithTag("Item");
+        
+        Debug.Log($"There is {objectsToInstantiate.Length} objects to instantiate.");
+        
+        foreach (var obj in objectsToInstantiate)
+        {
+            if (!obj.gameObject.GetPhotonView().isRuntimeInstantiated)
+            {
+                PhotonNetwork.Instantiate(obj.name, obj.transform.position, obj.transform.rotation);
+                Destroy(obj);
+            }
+        }
     }
 
+    private void ClearItems()
+    {
+        print("clean");
+
+        GameObject[] objectsToInstantiate = GameObject.FindGameObjectsWithTag("Item");
+        print(objectsToInstantiate.Length);
+        foreach (var obj in objectsToInstantiate)
+        {
+            Destroy(obj);
+        }
+    }
     #endregion
 
     #region Photon Callbacks
@@ -149,7 +173,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     /// </summary>
     public override void OnLeftRoom()
     {
-        SceneManager.LoadScene("Lobby");
+        SceneManager.LoadScene("Menus");
     }
 
     #endregion

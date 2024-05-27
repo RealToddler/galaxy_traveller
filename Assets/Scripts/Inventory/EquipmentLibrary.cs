@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EquipmentLibrary : MonoBehaviour
 {
-    public List<EquipmentLibraryItem> content= new List<EquipmentLibraryItem>();
+    public List<EquipmentLibraryItem> content = new List<EquipmentLibraryItem>();
 }
 [System.Serializable]
 public class EquipmentLibraryItem

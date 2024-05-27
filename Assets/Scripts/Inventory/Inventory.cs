@@ -1,7 +1,9 @@
+using System;
+using Photon.Pun;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Inventory : MonoBehaviour
+public class Inventory : MonoBehaviourPunCallbacks, IPunObservable
 {
     public ItemData[] Content { get; private set; }
     public static int InventorySize => 4;
@@ -11,12 +13,14 @@ public class Inventory : MonoBehaviour
     
     private Player _player;
     
-    private EquipmentLibraryItem _equipmentLibraryItem;
+    private int _currItem;
+    private int _nextItem;
 
     private void Start()
     {
         Content = new ItemData[4];
         _player = GetComponent<Player>();
+        _currItem = -1;
     }
 
     private void Update()
@@ -35,17 +39,32 @@ public class Inventory : MonoBehaviour
         
         DisplayItemVisual();
     }
-
-    private void DisplayItemVisual()
+    
+    public void DisplayItemVisual()
     {
-        EquipmentLibraryItem nextItem = equipmentLibrary.content.Find(elem => elem.itemData == Content[ItemIndex]);
-        if (_equipmentLibraryItem != nextItem)
+        _nextItem = equipmentLibrary.content.FindIndex(elem => elem.itemData == Content[ItemIndex]);
+        if (_currItem != _nextItem)
         {
-            _equipmentLibraryItem?.itemPrefab.SetActive(false);
-            _equipmentLibraryItem = nextItem;
-            _equipmentLibraryItem?.itemPrefab.SetActive(true);
+            photonView.RPC("UpdateItemVisual", RpcTarget.AllBuffered, _currItem,_nextItem);
+            _currItem = _nextItem;
         }
     }
+
+    [PunRPC]
+    public void UpdateItemVisual(int currItem, int nextItem)
+    {
+        if (currItem != -1)
+        {
+            equipmentLibrary.content[currItem].itemPrefab.SetActive(false);
+        }
+
+        if (nextItem != -1)
+        {
+            equipmentLibrary.content[nextItem].itemPrefab.SetActive(true);
+        }
+        
+    }
+    
 
     private bool IsTheCurrSlotFree()
     {
@@ -62,7 +81,7 @@ public class Inventory : MonoBehaviour
         if (!IsTheCurrSlotFree())
         {
             var position = _player.transform.position;
-            Instantiate(Content[ItemIndex].prefab, new Vector3(position.x, position.y+1, position.z-1), 
+            PhotonNetwork.Instantiate(Content[ItemIndex].name, new Vector3(position.x, position.y+1, position.z-1), 
                 Content[ItemIndex].prefab.transform.rotation);
         }
         
@@ -72,5 +91,10 @@ public class Inventory : MonoBehaviour
     public void RemoveItem()
     {
         Content[ItemIndex] = null;
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        
     }
 }

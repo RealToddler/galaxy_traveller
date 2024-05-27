@@ -11398,7 +11398,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7879975459685018442
 Transform:
   m_ObjectHideFlags: 0
@@ -11544,6 +11544,7 @@ MonoBehaviour:
   - {fileID: 1206587641946692565}
   - {fileID: 6557739539037091995}
   - {fileID: 4444179843469082041}
+  - {fileID: 1100531776088078975}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -11722,7 +11723,6 @@ MonoBehaviour:
   playerMoveBehaviour: {fileID: 7948985215580978383}
   playerAnimator: {fileID: 4956608850192445738}
   inventory: {fileID: 1100531776088078975}
-  range: 2
 --- !u!1 &4717488398480891612
 GameObject:
   m_ObjectHideFlags: 0

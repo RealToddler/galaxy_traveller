@@ -80,7 +80,7 @@ public class Player : MonoBehaviourPunCallbacks
 
             IsInAction = true;
             
-            if (_inventory.IsTheCurrSelectedItem("Sword"))
+            if (_inventory.IsTheCurrSelectedItem("MoonSword"))
             {
                 _playerAnimator.SetTrigger(_attackMeleeAnim);
             }
@@ -123,7 +123,7 @@ public class Player : MonoBehaviourPunCallbacks
         }
         else
         {
-            _playerAnimator.SetBool(_holdSword, _inventory.IsTheCurrSelectedItem("Sword"));
+            _playerAnimator.SetBool(_holdSword, _inventory.IsTheCurrSelectedItem("MoonSword"));
             _playerAnimator.SetBool(_holdWeapon, _inventory.IsTheCurrSelectedItem("Weapon"));
             _playerAnimator.SetBool(_holdPotion, _inventory.Content[_inventory.ItemIndex].name is 
                 "HealthPotion" or 
