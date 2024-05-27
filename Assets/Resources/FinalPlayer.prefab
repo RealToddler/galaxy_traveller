@@ -11392,6 +11392,8 @@ GameObject:
   - component: {fileID: 1100531776088078975}
   - component: {fileID: 897719404968138427}
   - component: {fileID: 8749078106720098185}
+  - component: {fileID: 6336299545590167445}
+  - component: {fileID: 7299435191761322525}
   m_Layer: 8
   m_Name: FinalPlayer
   m_TagString: Player
@@ -11545,6 +11547,7 @@ MonoBehaviour:
   - {fileID: 6557739539037091995}
   - {fileID: 4444179843469082041}
   - {fileID: 1100531776088078975}
+  - {fileID: 7299435191761322525}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -11723,6 +11726,39 @@ MonoBehaviour:
   playerMoveBehaviour: {fileID: 7948985215580978383}
   playerAnimator: {fileID: 4956608850192445738}
   inventory: {fileID: 1100531776088078975}
+--- !u!114 &6336299545590167445
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4699669800681581755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b86dbbaaa422b64d8a77740b0e66a5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  view: {fileID: 0}
+  flyButton: Fly
+  flySpeed: 4
+  sprintFactor: 2
+  flyMaxVerticalAngle: 60
+--- !u!114 &7299435191761322525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4699669800681581755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 0
+  m_TeleportEnabled: 0
+  m_TeleportIfDistanceGreaterThan: 3
 --- !u!1 &4717488398480891612
 GameObject:
   m_ObjectHideFlags: 0

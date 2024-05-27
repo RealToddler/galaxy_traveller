@@ -98,11 +98,10 @@ public class FlyBehaviour : GenericBehaviour
 		Vector3 forward = Camera.main.transform.forward;
         
 		// Player is moving on ground, Y component of camera facing is not relevant.
-		forward.y = 0.0f;
 		forward = forward.normalized;
 
 		// Calculate target direction based on camera forward and direction key.
-		Vector3 right = new Vector3(forward.z, 0, -forward.x);
+		Vector3 right = new Vector3(forward.z, forward.y, -forward.x);
 		Vector3 targetDirection = forward * vertical + right * horizontal;
 
 		// Lerp current direction to calculated target direction.

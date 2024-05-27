@@ -32,7 +32,7 @@ public class CWork : MonoBehaviourPunCallbacks
 
         currentX += Input.GetAxis("Mouse X") * sensitivity; // Mise à jour de la rotation en X
         currentY -= Input.GetAxis("Mouse Y") * sensitivity; // Mise à jour de la rotation en Y
-        currentY = Mathf.Clamp(currentY, 10, 50); // Limitation de l'angle de rotation en Y
+        currentY = Mathf.Clamp(currentY, -20, 50); // Limitation de l'angle de rotation en Y
     }
 
     private void LateUpdate()
