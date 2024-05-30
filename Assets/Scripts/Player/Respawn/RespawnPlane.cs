@@ -1,18 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class RespawnPlane : MonoBehaviour
 {
-    /*
-    [SerializeField] private Transform spawnPoint;
-    void OnTriggerEnter(Collider obj)
+    private void OnCollisionEnter(Collision other)
     {
-        if (obj.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player"))
         {
-            obj.GetComponent<Player>().transform.position = spawnPoint.position;
-            obj.GetComponent<Player>().TakeDamage(25);
+            other.gameObject.GetComponent<Player>().Respawn();
+            other.gameObject.GetComponent<Player>().TakeDamage(25);
         }
     }
-    */
 }

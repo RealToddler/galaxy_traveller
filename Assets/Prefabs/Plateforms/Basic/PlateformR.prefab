@@ -159,6 +159,7 @@ MonoBehaviour:
   - {fileID: 2437145523042829826}
   - {fileID: 8481730742405773134}
   speed: 4
+  activeOnContact: 0
 --- !u!64 &2534083225765007522
 MeshCollider:
   m_ObjectHideFlags: 0

@@ -2,16 +2,14 @@ using UnityEngine;
 using Photon.Pun;
 using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
-using UnityEngine.EventSystems;
 
 public class Player : MonoBehaviourPunCallbacks
 {
-    [SerializeField] private Transform respawnPoint;
-
     private MoveBehaviour _moveBehaviour;
     private PhotonView _view;
     private Inventory _inventory;
     private Animator _playerAnimator;
+    private Vector3 _respawnPoint;
     
     private readonly int _attackMeleeAnim = Animator.StringToHash("Attack");
     private readonly int _attackDistanceAnim = Animator.StringToHash("AttackDistance");
@@ -32,36 +30,24 @@ public class Player : MonoBehaviourPunCallbacks
 
     public float Health { get; private set; }
     public float Oxygen { get; private set; }
-    public bool IsInAction { get; private set; }
-
-    public static GameObject LocalPlayerInstance;
-
-    public void Awake()
-    {
-        if (photonView.IsMine)
-        {
-            LocalPlayerInstance = gameObject;
-        }
-        DontDestroyOnLoad(gameObject);
-    }
+    public bool IsInAction { get; set; }
     
     private void Start()
     {
-        // Proprieties initialisation
         Health = maxHealth;
         Oxygen = maxOxygen;
-
-        // Oxygen = 1;
-
+        
         _view = GetComponent<PhotonView>();
         _inventory = GetComponent<Inventory>();
         _playerAnimator = GetComponent<Animator>();
         _moveBehaviour = GetComponent<MoveBehaviour>();
+        _respawnPoint = transform.position;
     }
 
     private void Update()
     {
-        if (_view.IsMine) {
+        if (_view.IsMine) 
+        {
             OxygenManager();
             HealthManager();
             ActionManager();
@@ -82,11 +68,11 @@ public class Player : MonoBehaviourPunCallbacks
             
             if (_inventory.IsTheCurrSelectedItem("MoonSword"))
             {
-                _playerAnimator.SetTrigger(_attackMeleeAnim);
+                LaunchTriggerAnim(_attackMeleeAnim);
             }
             else if (_inventory.IsTheCurrSelectedItem("Weapon"))
             {
-                _playerAnimator.SetTrigger(_attackDistanceAnim);
+                LaunchTriggerAnim(_attackDistanceAnim);
             }
             else
             {
@@ -108,7 +94,7 @@ public class Player : MonoBehaviourPunCallbacks
                     Oxygen = Oxygen <= 90 ? Oxygen + 10 : maxOxygen;
                 }
                 
-                _playerAnimator.SetTrigger(_drinkAnim);
+                LaunchTriggerAnim(_drinkAnim);
             }
         }
     }
@@ -151,7 +137,7 @@ public class Player : MonoBehaviourPunCallbacks
                 _isRespawning = true;
                 _moveBehaviour.canMove = false;
                 _playerAnimator.SetFloat(_speedAnim, 0);
-                _playerAnimator.SetTrigger(_deadO2Anim);
+                LaunchTriggerAnim(_deadO2Anim);
             }
         }
     }
@@ -193,7 +179,7 @@ public class Player : MonoBehaviourPunCallbacks
             {
                 _moveBehaviour.enabled = false;
                 _isRespawning = true; 
-                _playerAnimator.SetTrigger(_deadHpAnim);
+                LaunchTriggerAnim(_deadHpAnim);
             }
         }
     }
@@ -203,15 +189,18 @@ public class Player : MonoBehaviourPunCallbacks
         _isInvincible = false;
     }
 
+    public void Respawn()
+    {
+        transform.position = _respawnPoint;
+    }
+
     // ==================== All functions called in actions animations ====================
     
     public void SendAttackMelee()
     {
         Debug.Log("Attack sent");
 
-        RaycastHit hit;
-
-        if (Physics.Raycast(transform.position + new Vector3(0,1,0), transform.forward, out hit, 2.2f))
+        if (Physics.Raycast(transform.position + new Vector3(0,1,0), transform.forward, out var hit, 2.2f))
         {
             if (hit.transform.CompareTag("Enemy"))
             {
@@ -224,7 +213,7 @@ public class Player : MonoBehaviourPunCallbacks
     {
         Health = maxHealth;
         _isRespawning = false;
-        transform.position = respawnPoint.transform.position;
+        Respawn();
         _moveBehaviour.enabled = true;
     }
 
@@ -243,5 +232,16 @@ public class Player : MonoBehaviourPunCallbacks
     public void ConsumeItem()
     {
         _inventory.RemoveItem();
+    }
+    
+    // ==================== Trigger animations synchronisation ====================
+    private void LaunchTriggerAnim(int anim)
+    {
+        photonView.RPC("LaunchIt", RpcTarget.AllBuffered, anim);  
+    }
+    [PunRPC]
+    private void LaunchIt(int anim)
+    {
+        _playerAnimator.SetTrigger(anim);
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using Photon.Pun;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Item : MonoBehaviourPunCallbacks
@@ -8,7 +9,7 @@ public class Item : MonoBehaviourPunCallbacks
 
     public void CollectItem()
     {
-        photonView.RPC("SyncCollectItem", RpcTarget.AllBuffered);
+        photonView.RPC("SyncCollectItem", RpcTarget.AllBuffered);  
     }
     
     [PunRPC]

@@ -28,17 +28,14 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     #region Public Fields
 
-    static public GameManager Instance;
-
+    public static GameManager Instance;
+    public Transform[] spawnPoints;
+    
     #endregion
 
     #region Private Fields
-
-    private GameObject instance;
-
-    [Tooltip("The prefab to use for representing the player")]
-    [SerializeField]
-    private GameObject playerPrefab;
+    
+    [SerializeField] private GameObject playerPrefab;
 
     #endregion
 
@@ -58,15 +55,6 @@ public class GameManager : MonoBehaviourPunCallbacks
 
             return;
         }
-        
-        if (PhotonNetwork.IsMasterClient)
-        {
-            CreateItems();
-        }
-        else
-        {
-            ClearItems();
-        }
 
         if (playerPrefab == null)
         {
@@ -83,44 +71,13 @@ public class GameManager : MonoBehaviourPunCallbacks
                 Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
 
                 // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-                PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0, 20, 0), Quaternion.identity, 0);
+                
+                PhotonNetwork.Instantiate(this.playerPrefab.name, spawnPoints[PhotonNetwork.PlayerList.Length-1].position, Quaternion.identity, 0);
             }
             else
             {
-
                 Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
             }
-        }
-    }
-
-
-
-    private void CreateItems()
-    {
-        print("create");
-        GameObject[] objectsToInstantiate = GameObject.FindGameObjectsWithTag("Item");
-        
-        Debug.Log($"There is {objectsToInstantiate.Length} objects to instantiate.");
-        
-        foreach (var obj in objectsToInstantiate)
-        {
-            if (!obj.gameObject.GetPhotonView().isRuntimeInstantiated)
-            {
-                PhotonNetwork.Instantiate(obj.name, obj.transform.position, obj.transform.rotation);
-                Destroy(obj);
-            }
-        }
-    }
-
-    private void ClearItems()
-    {
-        print("clean");
-
-        GameObject[] objectsToInstantiate = GameObject.FindGameObjectsWithTag("Item");
-        print(objectsToInstantiate.Length);
-        foreach (var obj in objectsToInstantiate)
-        {
-            Destroy(obj);
         }
     }
     #endregion
@@ -129,7 +86,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        // Note: it is possible that this monobehaviour is not created (or active) when OnJoinedRoom happens
+        // Note: it is possible that this MonoBehaviour is not created (or active) when OnJoinedRoom happens
         // due to that the Start() method also checks if the local player character was network instantiated!
         if (PlayerManager.LocalPlayerInstance is null)
         {
@@ -208,5 +165,4 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
 
     #endregion
-
 }

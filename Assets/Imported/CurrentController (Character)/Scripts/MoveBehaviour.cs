@@ -43,7 +43,7 @@ public class MoveBehaviour : GenericBehaviour
 	// Update is used to set features regardless the active behaviour.
 	void Update()
 	{
-		if (view.IsMine)
+		if (view.IsMine && !GetComponent<Player>().IsInAction)
 		{
 			// Get jump input.
 			if (Input.GetButtonDown(_jumpButton) && !_roll && !_jump && behaviourManager.IsCurrentBehaviour(behaviourCode) )

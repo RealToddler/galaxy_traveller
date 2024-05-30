@@ -1,16 +1,17 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Attack", menuName = "Attack/New attack")]
-public class Attack : ScriptableObject
+public abstract class Attack : MonoBehaviour
 {
-    [SerializeField] private string _name;
-    [SerializeField] private Animation _animation;
-    [SerializeField] private float damage;
     
-    // public void LaunchAttack()
-    // {
-    //     Debug.Log("attack launched");
-    //     player.GetDamage(damage);
-    // }
+    //[SerializeField] private Animation _animation;
+    [SerializeField] protected EnemyDistance _launcher;
+    protected string _name;
+    protected float _damage;
+    public string Name ()
+    {
+        return _name;
+    }
+    public abstract void LaunchAttack();
 }

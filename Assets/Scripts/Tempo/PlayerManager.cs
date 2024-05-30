@@ -33,8 +33,8 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (photonView.IsMine)
         {
-            GameObject _uiGo = Instantiate(playerUiPrefab); 
-            _uiGo.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
+            GameObject uiGo = Instantiate(playerUiPrefab); 
+            uiGo.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
         }
 
 #if UNITY_5_4_OR_NEWER

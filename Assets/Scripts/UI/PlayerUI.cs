@@ -16,6 +16,12 @@ public class PlayerUI : MonoBehaviour
     private Player _player;
     private Inventory _inventory;
 
+    private void Start()
+    {
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = false;
+    }
+
     private void Update()
     {
         RefreshHealthAmount();
@@ -24,14 +30,13 @@ public class PlayerUI : MonoBehaviour
 
         if (Input.GetButtonDown("Escape"))
         {
-            pauseMenu.gameObject.SetActive(!pauseMenu.activeSelf);
+            ChangePauseMenuState();
         }
         
         // Destroy itself if the target is null, It's a fail safe when Photon is destroying Instances of a Player over the network
         if (_player == null)
         {
-            Destroy(this.gameObject);
-            return;
+            Destroy(gameObject);
         }
     }
     
@@ -78,6 +83,13 @@ public class PlayerUI : MonoBehaviour
                 inventorySlots.GetChild(i).GetComponent<Image>().color = normalColor;
             }
         }
+    }
+
+    public void ChangePauseMenuState()
+    {
+        pauseMenu.gameObject.SetActive(!pauseMenu.activeSelf);
+        _player.IsInAction = pauseMenu.activeSelf;
+        Cursor.visible = pauseMenu.activeSelf;
     }
 
     public void BackToMainMenu()

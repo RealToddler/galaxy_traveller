@@ -7,67 +7,72 @@ using UnityEngine.Serialization;
 public class Enemy : MonoBehaviour
 {
     [Header("Proprieties")]
-    [SerializeField] public float radiusAttackDistance;
-    [SerializeField] List<Attack> attacks;
+    [SerializeField] public float radiusAttack;
+    [SerializeField] private List<Attack> attacks;
     [SerializeField] public PlatformEnemy platform;
-
-    public int maxHealth = 100;
-
+    [SerializeField] public float damage;  
+    
+    [HideInInspector] public Animator animator;
+    
+    //public bool IsMoving=true;
+    private readonly int _maxHealth = 100;
     public float Health { get; private set; }
-    public bool IsAttacking { get; protected set; }
+    public bool IsAttacking { get; set; }
 
-    private void Start()
+    protected void Start()
     {
+        animator = GetComponent<Animator>();
+        
         IsAttacking = false;
-        Health = maxHealth;
+        Health = _maxHealth;
     }
 
     private void Update()
     {
-        AttackManager();
-
         if (Health <= 0)
         {
             gameObject.SetActive(false);
         }
-    }
-
-    public virtual void AttackManager()
-    {
-        if (platform.players.Count != 0)
-        {
-            float distance = Vector3.Distance(platform.players[0].position, transform.position);
-
-            if (!IsAttacking && distance <= radiusAttackDistance)
-            {
-                FindAndLaunchAttack("Distance");
-            }
-        }
+        IsAttacking = animator.GetBool("IsAttacking");
     }
 
     protected void FindAndLaunchAttack(string attackName)
     {
         foreach (var currAttack in attacks)
-        {
-            if (currAttack.name == attackName)
-            {
-                IsAttacking = true;
-                
-                //currAttack.LaunchAttack();
-                
-                
-
-                Invoke(nameof(BackToFalse), 2);
+        { 
+            if (currAttack.Name() == attackName)
+            {                
+                animator.SetBool("IsAttacking",true);
+                animator.SetTrigger("Attack"+attackName);
             }
         }
     }
 
-
-    private void BackToFalse()
+    public int IndexNearestPlayer()
     {
-        IsAttacking = false;
-    }
+        if (platform.players.Count!=0)
+        {
+            float distanceRes = Vector3.Distance(platform.players[0].position, transform.position);
+            int res = 0;
+            for(int i = 1 ; i < platform.players.Count ; i++)
+            {
+                float distance = Vector3.Distance(platform.players[i].position, transform.position);
+                if (distance < distanceRes) 
+                {
+                    res = i;
+                    distanceRes = distance;
+                }
+            }
+            return res;
+        }
 
+        throw new IndexOutOfRangeException("listplayers vide");
+    }
+    private void StopHolding()
+    // called at the beginning of IAAttackDistance animation
+    {
+        animator.SetBool("HoldingWeapon",false);
+    }
     public void LooseHealth(float damage)
     {
         Health -= damage;

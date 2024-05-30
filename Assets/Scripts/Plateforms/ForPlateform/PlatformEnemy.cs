@@ -7,11 +7,20 @@ using Object = System.Object;
 public class PlatformEnemy : MonoBehaviour
 {
     public List<Transform> players;
-    private void OnTriggerEnter(Collider obj)
+
+    private void OnCollisionEnter(Collision other)
     {
-        if (obj.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player"))
         {
-            players.Add(obj.gameObject.transform);
+            players.Add(other.gameObject.transform);
+        }    
+    }
+
+    private void OnCollisionExit(Collision other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            players.Remove(other.gameObject.transform);
         }
     }
 }

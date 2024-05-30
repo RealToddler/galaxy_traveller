@@ -62,7 +62,7 @@ public class BasicBehaviour : MonoBehaviour
 
 	void Update()
 	{
-		if (view.IsMine && enabled)
+		if (view.IsMine && enabled && !GetComponent<Player>().IsInAction)
 		{
 			// Store the input axes.
 			h = Input.GetAxis("Horizontal");

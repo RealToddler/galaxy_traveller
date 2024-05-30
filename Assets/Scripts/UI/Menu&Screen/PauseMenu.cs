@@ -10,7 +10,7 @@ public class PauseMenu : BasicMenu
 {
     public void BackToGame()
     {
-        gameObject.SetActive(false);
+        gameObject.GetComponentInParent<PlayerUI>().ChangePauseMenuState();
     }
 
     public void BackToLobby()

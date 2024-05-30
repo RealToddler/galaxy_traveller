@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -7,48 +8,73 @@ using UnityEngine.AI;
 public class AiMovement : MonoBehaviour
 {
     [Header("Objects")]
-    [SerializeField] private NavMeshAgent agent;
-    [SerializeField] private EnemyAI enemy;
-
-    private float _currentStoppingDistance;
-
+    [SerializeField] public NavMeshAgent agent;
+    [SerializeField] private Enemy enemy;
+    [SerializeField] private float rotationSpeed;
+    
+    private List<Transform> _players;
+    private int _indexNearestPlayer;
 
     private void Start()
     {
-        _currentStoppingDistance = enemy.radiusAttackDistance; 
+        _players = enemy.platform.players;
+        agent.stoppingDistance = enemy.radiusAttack;
     }
 
     void Update()
     {
         MovementManager();
+        Rotate();
+        
+        enemy.animator.SetFloat("Speed", agent.velocity.magnitude);
     }
     
     private void MovementManager()
     {
-        if (!enemy.IsAttacking && enemy.platform.players.Count != 0)
+        if ( _players.Count != 0 && !enemy.animator.GetBool("Backward"))
         {
-            //agent.isStopped = ennemy.IsAttacking;
-
-            float distance = Vector3.Distance(enemy.platform.players[0].position, transform.position);
-
-            if (distance <= enemy.meleeAttackRadius)
+            _indexNearestPlayer = enemy.IndexNearestPlayer();
+            float distance = Vector3.Distance(_players[_indexNearestPlayer].position, enemy.transform.position);
+            if (_players[_indexNearestPlayer].GetComponent<Player>().Health<=0) return ;
+            
+            if (distance <= agent.stoppingDistance+0.1)
             {
-                _currentStoppingDistance = enemy.meleeStoppingDistance;
+                agent.isStopped = true;
             }
-            else
+            else if (!enemy.IsAttacking)
             {
-                _currentStoppingDistance = enemy.radiusAttackDistance;
-
-                if (distance > enemy.radiusAttackDistance)
-                {
-                    Approach();
-                }
+                agent.isStopped = false;
+                Approach(); 
             }
+            else 
+            {
+                enemy.animator.SetBool("IsAttacking",false);
+            }
+    
         }
     }
 
     void Approach()
     {
-        agent.SetDestination(enemy.platform.players[0].position);
+        agent.SetDestination(_players[_indexNearestPlayer].position);
     }
+    void Rotate()
+    {
+        if (_players.Count!=0)
+        {
+            Vector3 direction = _players[_indexNearestPlayer].position - transform.position;
+            direction.y = 0; // Annule les composantes de rotation sur les axes X et Z
+            Quaternion rot = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, rot, rotationSpeed * Time.deltaTime);
+        }
+        
+    }
+    
+    // called in runBackward animation
+    void Escape()
+    {
+        agent.isStopped=false;
+        agent.SetDestination(transform.position-transform.forward*20);
+    }
+        
 }
