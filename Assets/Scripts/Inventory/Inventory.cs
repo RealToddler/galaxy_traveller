@@ -62,11 +62,10 @@ public class Inventory : MonoBehaviourPunCallbacks, IPunObservable
         {
             equipmentLibrary.content[nextItem].itemPrefab.SetActive(true);
         }
-        
     }
     
 
-    private bool IsTheCurrSlotFree()
+    public bool IsTheCurrSlotFree()
     {
         return Content.GetValue(ItemIndex).IsUnityNull();
     }
@@ -80,9 +79,7 @@ public class Inventory : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (!IsTheCurrSlotFree())
         {
-            var position = _player.transform.position;
-            PhotonNetwork.Instantiate(Content[ItemIndex].name, new Vector3(position.x, position.y+1, position.z-1), 
-                Content[ItemIndex].prefab.transform.rotation);
+            ReleaseItem();
         }
         
         Content[ItemIndex] = item;
@@ -91,6 +88,13 @@ public class Inventory : MonoBehaviourPunCallbacks, IPunObservable
     public void RemoveItem()
     {
         Content[ItemIndex] = null;
+    }
+
+    public void ReleaseItem()
+    {
+        var position = _player.transform.position;
+        PhotonNetwork.Instantiate(Content[ItemIndex].name, new Vector3(position.x, position.y+1, position.z-1), 
+            Content[ItemIndex].prefab.transform.rotation);
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

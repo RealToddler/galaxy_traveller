@@ -58,7 +58,7 @@ public class PickupBehaviour : MonoBehaviourPun
 
     void PickUpManager()
     {
-        if (Input.GetButtonDown("Action2") && _nearItems.Count > 0)
+        if (Input.GetButtonDown("Collect") && _nearItems.Count > 0)
         {
             _nearestItem = _nearItems
                 .OrderByDescending(item => Vector3.Distance(transform.position, item.transform.position))
@@ -67,6 +67,11 @@ public class PickupBehaviour : MonoBehaviourPun
             DoPickup();
             
             _nearItems.Remove(_nearestItem);
+        }
+        if (Input.GetButtonDown("Release") && !inventory.IsTheCurrSlotFree())
+        {
+            inventory.ReleaseItem();
+            inventory.Content[inventory.ItemIndex] = null;
         }
     }
 

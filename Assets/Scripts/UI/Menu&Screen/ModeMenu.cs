@@ -1,9 +1,24 @@
+using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public class ModeMenu : BasicMenu
 {
-    public void ToFirstLvl()
+    private GameMode _gameMode;
+    private void Start()
     {
-        SceneManager.LoadScene("Lvl1");
+        _gameMode = GameObject.Find("GameMode").GetComponent<GameMode>();
+    }
+
+    public void StartSinglePlayer()
+    {
+        _gameMode.IsMultiPlayer = false;
+        SceneManager.LoadScene("Loading");
+    }
+    public void StartMultiPlayer()
+    {
+        _gameMode.IsMultiPlayer = true;
+        SceneManager.LoadScene("Loading");
     }
 }

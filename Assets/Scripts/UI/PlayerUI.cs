@@ -1,10 +1,7 @@
-using System;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using Photon.Pun;
 
 public class PlayerUI : MonoBehaviour
 {
@@ -12,6 +9,8 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private RectTransform oxygenBarFill;
     [SerializeField] private Transform inventorySlots;
     [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private Text itemsTips;
+    [SerializeField] private Text globalTips;
 
     private Player _player;
     private Inventory _inventory;
@@ -20,6 +19,8 @@ public class PlayerUI : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = false;
+        // il faut adapter les pressed key in function des Input defined 
+        globalTips.text = $"- Press E to collect\n- Press Q to release";
     }
 
     private void Update()
@@ -27,6 +28,7 @@ public class PlayerUI : MonoBehaviour
         RefreshHealthAmount();
         RefreshOxygenAmount();
         RefreshInventory();
+        RefreshItemsTips();
 
         if (Input.GetButtonDown("Escape"))
         {
@@ -39,7 +41,25 @@ public class PlayerUI : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    
+
+    private void RefreshItemsTips()
+    {
+        ItemData currentItem = _inventory.Content[_inventory.ItemIndex];
+
+        if (!currentItem)
+        {
+            itemsTips.text = "";
+        }
+        else
+            itemsTips.text = 
+                currentItem.prefab.name switch 
+                { 
+                    "HealthPotion" or "InvincibilityPotion" or "OxygenPotion" => "Click LEFT to drink", 
+                    "MoonSword" => "Click LEFT to attack", 
+                    _ => ""
+                };
+    }
+
     // Refresh Health Bar
     void RefreshHealthAmount()
     {
@@ -63,11 +83,15 @@ public class PlayerUI : MonoBehaviour
         {
             if (_inventory.Content[i] != null)
             {
+                if (!inventorySlots.GetChild(i).GetChild(0).GetComponent<Image>().gameObject.activeSelf)
+                {
+                    inventorySlots.GetChild(i).GetChild(0).GetComponent<Image>().gameObject.SetActive(true);
+                }
                 inventorySlots.GetChild(i).GetChild(0).GetComponent<Image>().sprite = _inventory.Content[i].visual;
             }
             else
             {
-                inventorySlots.GetChild(i).GetChild(0).GetComponent<Image>().sprite = null;
+                inventorySlots.GetChild(i).GetChild(0).GetComponent<Image>().gameObject.SetActive(false);
             }
         }
         
