@@ -1,28 +1,17 @@
-using System;
-using UnityEngine;
 using Photon.Pun;
 using UnityEngine.UI;
+using UnityEngine;
 
 public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 {
     public InputField createInput;
     public InputField joinInput;
-    public Button joinButton;
-    public Button createButton;
-    public Button startButton;
-
-    private void Start()
+    
+    private void Update()
     {
-        if (PhotonNetwork.OfflineMode)
+        if (!Cursor.visible)
         {
-            joinInput.gameObject.SetActive(false);
-            joinButton.gameObject.SetActive(false);
-            createInput.gameObject.SetActive(false);
-            createButton.gameObject.SetActive(false);
-        }
-        else
-        {
-            startButton.gameObject.SetActive(false);
+            Cursor.visible = true;
         }
     }
 
@@ -42,15 +31,8 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         }
     }
 
-    public void StartAction()
-    {
-        PhotonNetwork.JoinRandomOrCreateRoom();
-    }
-
     public override void OnJoinedRoom()
     {
         PhotonNetwork.LoadLevel("Lvl1");
     }
-    
-    
 }

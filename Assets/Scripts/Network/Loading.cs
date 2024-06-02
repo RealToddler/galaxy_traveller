@@ -3,13 +3,22 @@ using UnityEngine;
 using Photon.Pun;
 using UnityEngine.SceneManagement;
 
-public class ConnectToServer : MonoBehaviourPunCallbacks
+public class Loading : MonoBehaviourPunCallbacks
 {
     private void Start()
     {
         PhotonNetwork.OfflineMode = !GameObject.Find("GameMode").GetComponent<GameMode>().IsMultiPlayer;
-        
-        PhotonNetwork.ConnectUsingSettings();
+
+        if (PhotonNetwork.OfflineMode)
+        {
+            print("single");
+            PhotonNetwork.JoinRandomOrCreateRoom();
+        }
+        else
+        {
+            print("Multi");
+            PhotonNetwork.ConnectUsingSettings();
+        }
     }
 
     public override void OnConnectedToMaster() 
@@ -20,5 +29,10 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
     public override void OnJoinedLobby() 
     {
         SceneManager.LoadScene("Lobby");
+    }
+    
+    public override void OnCreatedRoom()
+    {
+        PhotonNetwork.LoadLevel("Lvl1");
     }
 }
