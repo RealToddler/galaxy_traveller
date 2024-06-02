@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -14,13 +17,16 @@ public class PlayerUI : MonoBehaviour
 
     private Player _player;
     private Inventory _inventory;
+    private Dictionary<string, string> _inputKey;
 
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = false;
-        // il faut adapter les pressed key in function des Input defined 
-        globalTips.text = $"- Press E to collect\n- Press Q to release";
+        
+        _inputKey = new Dictionary<string, string>();
+        ReadAxes();
+        globalTips.text = $"- Press {_inputKey["Collect"].ToUpper()} to collect\n- Press {_inputKey["Release"].ToUpper()} to release";
     }
 
     private void Update()
@@ -28,7 +34,7 @@ public class PlayerUI : MonoBehaviour
         RefreshHealthAmount();
         RefreshOxygenAmount();
         RefreshInventory();
-        RefreshItemsTips();
+        RefreshTips();
 
         if (Input.GetButtonDown("Escape"))
         {
@@ -42,7 +48,7 @@ public class PlayerUI : MonoBehaviour
         }
     }
 
-    private void RefreshItemsTips()
+    private void RefreshTips()
     {
         ItemData currentItem = _inventory.Content[_inventory.ItemIndex];
 
@@ -121,16 +127,39 @@ public class PlayerUI : MonoBehaviour
         Debug.Log("back");
         SceneManager.LoadScene("Menus");
     }
-    
-    public void SetTarget(PlayerManager _target)
+
+    private void ReadAxes()
     {
-        if (_target == null)
+        var inputManager = AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/InputManager.asset")[0];  
+        SerializedObject obj = new SerializedObject(inputManager);
+        SerializedProperty axisArray = obj.FindProperty("m_Axes");
+        if (axisArray.arraySize == 0)
+            Debug.Log("No Axes");
+
+        for( int i = 0; i < axisArray.arraySize; ++i )
+        {
+            var axis = axisArray.GetArrayElementAtIndex(i);
+            var axisDisplayName = axis.displayName;      //axis.displayName  "Horizontal"  string
+            axis.Next (true);   //axis.displayName      "Name"  string
+            axis.Next (false);      //axis.displayName  "Descriptive Name"  string
+            axis.Next (false);      //axis.displayName  "Descriptive Negative Name" string
+            axis.Next (false);      //axis.displayName  "Negative Button"   string
+            axis.Next (false);      //axis.displayName  "Positive Button"   string
+            var value = axis.stringValue;  //"right"
+            
+            _inputKey[axisDisplayName] = value;
+        }
+    }
+    public void SetTarget(PlayerManager target)
+    {
+        if (target == null)
         {
             Debug.LogError("<Color=Red><a>Missing</a></Color> PlayMakerManager target for PlayerUI.SetTarget.", this);
             return;
+
         }
         // Cache references for efficiency
-        _player = _target.GetComponent<Player>();
-        _inventory = _target.GetComponent<Inventory>();
+        _player = target.GetComponent<Player>();
+        _inventory = target.GetComponent<Inventory>();
     }
 }

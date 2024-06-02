@@ -11,12 +11,10 @@ public class Loading : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.OfflineMode)
         {
-            print("single");
             PhotonNetwork.JoinRandomOrCreateRoom();
         }
         else
         {
-            print("Multi");
             PhotonNetwork.ConnectUsingSettings();
         }
     }
