@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class PlayerUI : MonoBehaviour
 {
-    [SerializeField] private RectTransform healthBarFill;
+    [SerializeField] public RectTransform healthBarFill;
     [SerializeField] private RectTransform oxygenBarFill;
     [SerializeField] private Transform inventorySlots;
     [SerializeField] private GameObject pauseMenu;
@@ -26,7 +26,8 @@ public class PlayerUI : MonoBehaviour
         
         _inputKey = new Dictionary<string, string>();
         ReadAxes();
-        globalTips.text = $"- Press {_inputKey["Collect"].ToUpper()} to collect\n- Press {_inputKey["Release"].ToUpper()} to release";
+        globalTips.text = $"Press {_inputKey["Collect"].ToUpper()} to collect\n" +
+                          $"Press {_inputKey["Release"].ToUpper()} to release";
     }
 
     private void Update()

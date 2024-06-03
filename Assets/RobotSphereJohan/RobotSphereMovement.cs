@@ -80,7 +80,7 @@ public class RobotSphereMovement : MonoBehaviour
     void DestroyBotCreateExp()
     {
         gameObject.SetActive(false);
-        explosion.transform.position=transform.position;
+        explosion.transform.position = transform.position;
         explosion.SetActive(true);
         _players[_indexNearestPlayer].gameObject.GetComponent<Player>().TakeDamage(_enemy.damage);
         Invoke(nameof(DestroyExplosion), 2);

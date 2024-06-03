@@ -1,7 +1,9 @@
 using UnityEngine;
 using Photon.Pun;
 using Unity.VisualScripting;
+using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviourPunCallbacks
 {
@@ -10,6 +12,12 @@ public class Player : MonoBehaviourPunCallbacks
     private Inventory _inventory;
     private Animator _playerAnimator;
     private Vector3 _respawnPoint;
+    private bool _noMoreO2;
+    private bool _isRespawning;
+    private bool _isInvincible;
+    private GameObject _ui;
+    private PostProcessVolume _volume;
+    private Vignette _vignette;
     
     private readonly int _attackMeleeAnim = Animator.StringToHash("Attack");
     private readonly int _attackDistanceAnim = Animator.StringToHash("AttackDistance");
@@ -20,10 +28,6 @@ public class Player : MonoBehaviourPunCallbacks
     private readonly int _holdPotion = Animator.StringToHash("HoldPotion");
     private readonly int _holdSword = Animator.StringToHash("HoldSword");
     private readonly int _holdWeapon = Animator.StringToHash("HoldWeapon");
-    
-    private bool _noMoreO2;
-    private bool _isRespawning;
-    private bool _isInvincible;
 
     public int maxHealth = 100;
     public int maxOxygen = 100;
@@ -42,6 +46,10 @@ public class Player : MonoBehaviourPunCallbacks
         _playerAnimator = GetComponent<Animator>();
         _moveBehaviour = GetComponent<MoveBehaviour>();
         _respawnPoint = transform.position;
+        _ui = gameObject.GetComponent<PlayerManager>().ui;
+        
+        _volume = Camera.main!.GetComponentInChildren<PostProcessVolume>();
+        _volume.profile.TryGetSettings(out _vignette);
     }
 
     private void Update()
@@ -85,8 +93,12 @@ public class Player : MonoBehaviourPunCallbacks
                     if (!_isInvincible)
                     {
                         _isInvincible = true;
+                        
                         // gold invincibility screen
-                        Invoke(nameof(SetInvincibleToFalse), 5f);
+                        _vignette.color.Override(new Color(1,1,0));
+                        _vignette.intensity.Override(0.4f);
+                        
+                        Invoke(nameof(SetInvincibleToFalse), 15f);
                     }
                 }
                 else if (_inventory.IsTheCurrSelectedItem("OxygenPotion"))
@@ -123,12 +135,12 @@ public class Player : MonoBehaviourPunCallbacks
     {
         if (Oxygen >= 10)
         {
-            Oxygen -= 0.007f;
+            Oxygen -= 0.004f;
         }
         else if (Oxygen is < 10 and > 0) 
         {
             Oxygen -= 0.002f;
-            _playerAnimator.speed = 0.7f;
+            _playerAnimator.speed = 0.8f;
         } 
         else 
         {
@@ -156,8 +168,13 @@ public class Player : MonoBehaviourPunCallbacks
         {
             Health += 0.001f;
         }
+
+        if (!_isInvincible)
+        {
+            _vignette.intensity.Override(0.6f - Health / maxHealth);
+        }
     }
-    
+
     // Remove damage to player health
     public void TakeDamage(float damage)
     {
@@ -169,6 +186,8 @@ public class Player : MonoBehaviourPunCallbacks
         if (Health - damage > 0)
         {
             Health -= damage;
+            _ui.GetComponent<PlayerUI>().healthBarFill.gameObject.GetComponent<Image>().color = Color.red;
+            Invoke(nameof(BackToGreen), 1);
         }
         else
         {
@@ -184,9 +203,21 @@ public class Player : MonoBehaviourPunCallbacks
         }
     }
 
+    public void BackToGreen()
+    {
+        _ui.GetComponent<PlayerUI>().healthBarFill.gameObject.GetComponent<Image>().color = new Color(0f, 0.78f, 0.05f, 0.8f);
+    }
+
     private void SetInvincibleToFalse()
     {
         _isInvincible = false;
+        _vignette.intensity.Override(0);
+        _vignette.color.Override(new Color
+        {
+            r = 180,
+            g = 13,
+            b = 13
+        });
     }
 
     public void Respawn()

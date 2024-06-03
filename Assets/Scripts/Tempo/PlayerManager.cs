@@ -6,6 +6,8 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
     public static GameObject LocalPlayerInstance;
 
     [SerializeField] private GameObject playerUiPrefab;
+
+    public GameObject ui;
     
     #region MonoBehaviour CallBacks
 
@@ -33,7 +35,8 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (photonView.IsMine)
         {
-            GameObject uiGo = Instantiate(playerUiPrefab); 
+            GameObject uiGo = Instantiate(playerUiPrefab);
+            ui = uiGo;
             uiGo.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
         }
 

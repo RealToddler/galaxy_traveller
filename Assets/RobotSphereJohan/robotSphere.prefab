@@ -2199,7 +2199,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_LocalScale: {x: 4.132231, y: 4.132231, z: 4.132231}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5778353215680682181}
@@ -2290,11 +2290,11 @@ MonoBehaviour:
   radiusAttack: 0
   attacks: []
   platform: {fileID: 0}
-  IAAnimator: {fileID: 8321573267239944595}
-  Damage: 0
+  damage: 0
+  animator: {fileID: 8321573267239944595}
   meleeAttackRadius: 2
   meleeStoppingDistance: 2
-  nbshots: 0
+  nbShots: 0
 --- !u!135 &7906083502269208112
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2328,7 +2328,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a9c55f3799bfc24eb59aa7ffead312a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosion: {fileID: 0}
+  explosion: {fileID: 5764556628825266348, guid: 94f76b18ec0fb1a4e89814403202f171,
+    type: 3}
 --- !u!1 &5464646284570111135
 GameObject:
   m_ObjectHideFlags: 0
