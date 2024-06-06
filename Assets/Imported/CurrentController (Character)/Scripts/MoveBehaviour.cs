@@ -4,7 +4,6 @@ using Photon.Pun;
 // MoveBehaviour inherits from GenericBehaviour. This class corresponds to basic walk and run behaviour, it is the default behaviour.
 public class MoveBehaviour : GenericBehaviour
 {
-	public PhotonView view;
 	
 	public float walkSpeed = 0.15f;                 // Default walk speed.
 	public float runSpeed = 1.0f;                   // Default run speed.
@@ -16,6 +15,8 @@ public class MoveBehaviour : GenericBehaviour
 	public float jumpIntertialForce = 10f;          // Default horizontal inertial force when jumping.
 
 	public float _speed, _speedSeeker;               // Moving speed.
+	
+	private PhotonView _view;
 	private int _jumpBool;                           // Animator variable related to jumping.
 	private int _rollBool;
 	private int _groundedBool;                       // Animator variable related to whether or not the player is on ground.
@@ -37,13 +38,13 @@ public class MoveBehaviour : GenericBehaviour
 		behaviourManager.SubscribeBehaviour(this);
 		behaviourManager.RegisterDefaultBehaviour(behaviourCode);
 		_speedSeeker = runSpeed;
-		view = GetComponent<PhotonView>();
+		_view = GetComponent<PhotonView>();
 	}
 
 	// Update is used to set features regardless the active behaviour.
 	void Update()
 	{
-		if (view.IsMine && !GetComponent<Player>().IsInAction)
+		if (_view.IsMine && !GetComponent<Player>().IsInAction)
 		{
 			// Get jump input.
 			if (Input.GetButtonDown(_jumpButton) && !_roll && !_jump && behaviourManager.IsCurrentBehaviour(behaviourCode) )
@@ -60,7 +61,7 @@ public class MoveBehaviour : GenericBehaviour
 	// LocalFixedUpdate overrides the virtual function of the base class.
 	public override void LocalFixedUpdate()
 	{
-		if (view.IsMine)
+		if (_view.IsMine)
 		{
 			// Call the basic movement manager.
 			MovementManagement(behaviourManager.GetH, behaviourManager.GetV);
@@ -79,7 +80,17 @@ public class MoveBehaviour : GenericBehaviour
 			behaviourManager.LockTempBehaviour(this.behaviourCode);
 			behaviourManager.GetAnim.SetBool(_rollBool, true);
 			_roll=false;
-		}
+		} 
+    }
+
+	public void Bounce(float bounceForce)
+	{
+		behaviourManager.LockTempBehaviour(this.behaviourCode);
+		behaviourManager.GetAnim.SetBool(_jumpBool, true);
+		RemoveVerticalVelocity();
+		float velocity = 2f * Mathf.Abs(Physics.gravity.y) * bounceForce;
+		velocity = Mathf.Sqrt(velocity);
+		behaviourManager.GetRigidBody.AddForce(Vector3.up * velocity, ForceMode.VelocityChange);
 	}
 	
 	// Execute the idle and walk/run jump movements.
@@ -96,8 +107,8 @@ public class MoveBehaviour : GenericBehaviour
 			//if (behaviourManager.GetAnim.GetFloat(speedFloat) > 0.1)
 			//{
             // Temporarily change player friction to pass through obstacles.
-            GetComponent<CapsuleCollider>().material.dynamicFriction = 0f;
-            GetComponent<CapsuleCollider>().material.staticFriction = 0f;
+            // GetComponent<CapsuleCollider>().material.dynamicFriction = 0f;
+            // GetComponent<CapsuleCollider>().material.staticFriction = 0f;
             // Remove vertical velocity to avoid "super jumps" on slope ends.
             RemoveVerticalVelocity();
             // Set jump vertical impulse velocity.

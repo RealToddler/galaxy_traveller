@@ -26,8 +26,8 @@ public class PlayerUI : MonoBehaviour
         
         _inputKey = new Dictionary<string, string>();
         ReadAxes();
-        globalTips.text = $"Press {_inputKey["Collect"].ToUpper()} to collect\n" +
-                          $"Press {_inputKey["Release"].ToUpper()} to release";
+        globalTips.text = $"Press E to collect\n" +
+                          $"Press Q to release";
     }
 
     private void Update()
@@ -131,25 +131,7 @@ public class PlayerUI : MonoBehaviour
 
     private void ReadAxes()
     {
-        var inputManager = AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/InputManager.asset")[0];  
-        SerializedObject obj = new SerializedObject(inputManager);
-        SerializedProperty axisArray = obj.FindProperty("m_Axes");
-        if (axisArray.arraySize == 0)
-            Debug.Log("No Axes");
-
-        for( int i = 0; i < axisArray.arraySize; ++i )
-        {
-            var axis = axisArray.GetArrayElementAtIndex(i);
-            var axisDisplayName = axis.displayName;      //axis.displayName  "Horizontal"  string
-            axis.Next (true);   //axis.displayName      "Name"  string
-            axis.Next (false);      //axis.displayName  "Descriptive Name"  string
-            axis.Next (false);      //axis.displayName  "Descriptive Negative Name" string
-            axis.Next (false);      //axis.displayName  "Negative Button"   string
-            axis.Next (false);      //axis.displayName  "Positive Button"   string
-            var value = axis.stringValue;  //"right"
-            
-            _inputKey[axisDisplayName] = value;
-        }
+        // To complete
     }
     public void SetTarget(PlayerManager target)
     {

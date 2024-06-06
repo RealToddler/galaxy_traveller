@@ -95,8 +95,8 @@ public class Player : MonoBehaviourPunCallbacks
                         _isInvincible = true;
                         
                         // gold invincibility screen
-                        _vignette.color.Override(new Color(1,1,0));
-                        _vignette.intensity.Override(0.4f);
+                        _vignette.color.value = new Color(1,1,0);
+                        _vignette.intensity.value = 0.4f;
                         
                         Invoke(nameof(SetInvincibleToFalse), 15f);
                     }
@@ -171,7 +171,7 @@ public class Player : MonoBehaviourPunCallbacks
 
         if (!_isInvincible)
         {
-            _vignette.intensity.Override(0.6f - Health / maxHealth);
+            _vignette.intensity.value = 0.6f - Health / maxHealth;
         }
     }
 
@@ -211,13 +211,8 @@ public class Player : MonoBehaviourPunCallbacks
     private void SetInvincibleToFalse()
     {
         _isInvincible = false;
-        _vignette.intensity.Override(0);
-        _vignette.color.Override(new Color
-        {
-            r = 180,
-            g = 13,
-            b = 13
-        });
+        _vignette.intensity.value = 0;
+        _vignette.color.value = new Color(0.7f, 0.05f,0.05f);
     }
 
     public void Respawn()

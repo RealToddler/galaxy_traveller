@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         // in case we started this demo with the wrong scene being active, simply load the menu scene
         if (!PhotonNetwork.IsConnected)
         {
-            SceneManager.LoadScene("Loading");
+            SceneManager.LoadScene("Menus");
 
             return;
         }

@@ -18,7 +18,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Menus/Lobby.unity
     guid: 81461a161c3802d44890e961d2ee272c
   - enabled: 1
-    path: Assets/Scenes/MultiPlayer/Lvl1.unity
+    path: Assets/Scenes/Lvl/Lvl1.unity
     guid: 3e6f3ccdf1f876740b7aaa1318096d33
   - enabled: 1
     path: Assets/Scenes/Menus/GameOver.unity

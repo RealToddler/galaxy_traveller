@@ -2,11 +2,13 @@ using UnityEngine;
 
 public class BouncingPlatform : MonoBehaviour
 {
-    [SerializeField] private float height = 15f;
-    [SerializeField] private Rigidbody playerRigidBody;
-    [SerializeField] private GameObject player;
-    void OnCollisionEnter()
+    private float bounceForce = 15f; // Adjust the force value as needed
+    
+    void OnCollisionEnter(Collision collision)
     {
-        player.transform.up = Vector3.up * height;
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            collision.gameObject.GetComponent<MoveBehaviour>().Bounce(bounceForce);
+        }
     }
 }
