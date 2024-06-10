@@ -74,7 +74,6 @@ public class MoveBehaviour : GenericBehaviour
 	}
 	void DoRoll()
     {
-        //playeranimator.SetTrigger("Roll");
 		if (_roll)
 		{
 			behaviourManager.LockTempBehaviour(this.behaviourCode);
@@ -139,6 +138,8 @@ public class MoveBehaviour : GenericBehaviour
 			}
 		}
 	}
+
+	public bool IsGrounded() => behaviourManager.IsGrounded();
 
 	// Deal with the basic player movement
 	void MovementManagement(float horizontal, float vertical)

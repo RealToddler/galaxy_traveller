@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BouncingPlatform : MonoBehaviour
 {
-    private float bounceForce = 15f; // Adjust the force value as needed
+    [SerializeField] private float bounceForce = 15f;
     
     void OnCollisionEnter(Collision collision)
     {

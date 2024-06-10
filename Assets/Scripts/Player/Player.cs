@@ -3,6 +3,7 @@ using Photon.Pun;
 using Unity.VisualScripting;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class Player : MonoBehaviourPunCallbacks
@@ -65,7 +66,7 @@ public class Player : MonoBehaviourPunCallbacks
 
     private void ActionManager()
     {
-        if (Input.GetButtonDown("Action1") && Health > 0 && Oxygen > 0 && !IsInAction)
+        if (Input.GetButtonDown("Action1") && Health > 0 && Oxygen > 0 && !IsInAction && _moveBehaviour.IsGrounded())
         {
             if (_inventory.Content[_inventory.ItemIndex].IsUnityNull())
             {
@@ -258,6 +259,46 @@ public class Player : MonoBehaviourPunCallbacks
     public void ConsumeItem()
     {
         _inventory.RemoveItem();
+    }
+    
+    // ==================== IK ====================
+    [Range(0, 1f)] public float distanceToGround; 
+    public LayerMask layerMask;
+    private void OnAnimatorIK(int layerIndex)
+    {
+        if (_playerAnimator)
+        {
+            _playerAnimator.SetIKPositionWeight(AvatarIKGoal.LeftFoot, 1f);
+            _playerAnimator.SetIKRotationWeight(AvatarIKGoal.LeftFoot, 1f);
+            _playerAnimator.SetIKPositionWeight(AvatarIKGoal.RightFoot, 1f);
+            _playerAnimator.SetIKRotationWeight(AvatarIKGoal.RightFoot, 1f);
+            
+            // Left foot
+            Ray ray = new Ray(_playerAnimator.GetIKPosition(AvatarIKGoal.LeftFoot) + Vector3.up, Vector3.down);
+            if (Physics.Raycast(ray, out var hit, distanceToGround + 1f, layerMask))
+            {
+                if (hit.transform.CompareTag("Terrain"))
+                {
+                    Vector3 footPosition = hit.point;
+                    footPosition.y += distanceToGround;
+                    _playerAnimator.SetIKPosition(AvatarIKGoal.LeftFoot, footPosition);
+                    _playerAnimator.SetIKRotation(AvatarIKGoal.LeftFoot, Quaternion.LookRotation(transform.forward, hit.normal));
+                }
+            }
+            
+            // Right foot
+            ray = new Ray(_playerAnimator.GetIKPosition(AvatarIKGoal.RightFoot) + Vector3.up, Vector3.down);
+            if (Physics.Raycast(ray, out hit, distanceToGround + 1f, layerMask))
+            {
+                if (hit.transform.CompareTag("Terrain"))
+                {
+                    Vector3 footPosition = hit.point;
+                    footPosition.y += distanceToGround;
+                    _playerAnimator.SetIKPosition(AvatarIKGoal.RightFoot, footPosition);
+                    _playerAnimator.SetIKRotation(AvatarIKGoal.RightFoot, Quaternion.LookRotation(transform.forward, hit.normal));
+                }
+            }
+        }
     }
     
     // ==================== Trigger animations synchronisation ====================
