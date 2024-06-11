@@ -23,6 +23,7 @@ public class MoveBehaviour : GenericBehaviour
 	private bool _jump;                              // Boolean to determine whether or not the player started a jump.
 	private bool _roll;
 	private bool _isColliding;                       // Boolean to determine if the player has collided with an obstacle.
+	private bool _slippery;
 	public bool canMove = true;
 	
 	// Start is always called after any Awake functions.
@@ -91,6 +92,8 @@ public class MoveBehaviour : GenericBehaviour
 		velocity = Mathf.Sqrt(velocity);
 		behaviourManager.GetRigidBody.AddForce(Vector3.up * velocity, ForceMode.VelocityChange);
 	}
+
+	public bool Slippery { get; set; }
 	
 	// Execute the idle and walk/run jump movements.
 	// ReSharper disable Unity.PerformanceAnalysis
@@ -173,8 +176,9 @@ public class MoveBehaviour : GenericBehaviour
 		{
 			_speed = sprintSpeed;
 		}
-
-		behaviourManager.GetAnim.SetFloat(speedFloat, _speed, speedDampTime, Time.deltaTime);
+		
+		if (Slippery) behaviourManager.GetAnim.SetFloat(speedFloat, _speed*2, speedDampTime*5, Time.deltaTime);
+		else behaviourManager.GetAnim.SetFloat(speedFloat, _speed, speedDampTime, Time.deltaTime);
 	}
 
 	// Remove vertical rigidbody velocity.
@@ -221,7 +225,7 @@ public class MoveBehaviour : GenericBehaviour
 	{
 		_isColliding = true;
 		// Slide on vertical obstacles
-		if (behaviourManager.IsCurrentBehaviour(this.GetBehaviourCode()) && collision.GetContact(0).normal.y <= 0.1f)
+		// if (behaviourManager.IsCurrentBehaviour(this.GetBehaviourCode()) && collision.GetContact(0).normal.y <= 0.1f)
 		{
 			GetComponent<CapsuleCollider>().material.dynamicFriction = 0f;
 			GetComponent<CapsuleCollider>().material.staticFriction = 0f;

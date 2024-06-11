@@ -8,7 +8,7 @@ using Photon.Pun;
 public class BasicBehaviour : MonoBehaviour
 {
 	
-	public PhotonView view;
+	private PhotonView _view;
 	
 	private string sprintButton = "Sprint";               // Default sprint button input name.
 	private float h;                                      // Horizontal Axis.
@@ -57,12 +57,12 @@ public class BasicBehaviour : MonoBehaviour
 
 	private void Start()
 	{
-		view = GetComponent<PhotonView>();
+		_view = GetComponent<PhotonView>();
 	}
 
 	void Update()
 	{
-		if (view.IsMine && enabled && !GetComponent<Player>().IsInAction)
+		if (_view.IsMine && enabled && !GetComponent<Player>().IsInAction)
 		{
 			// Store the input axes.
 			h = Input.GetAxis("Horizontal");
@@ -83,7 +83,7 @@ public class BasicBehaviour : MonoBehaviour
 	// Call the FixedUpdate functions of the active or overriding behaviours.
 	void FixedUpdate()
 	{
-		if (view.IsMine)
+		if (_view.IsMine)
 		{
 			// Call the active behaviour if no other is overriding.
 			bool isAnyBehaviourActive = false;
@@ -119,7 +119,7 @@ public class BasicBehaviour : MonoBehaviour
 	// Call the LateUpdate functions of the active or overriding behaviours.
 	private void LateUpdate()
 	{
-		if (view.IsMine)
+		if (_view.IsMine)
 		{
 			// Call the active behaviour if no other is overriding.
 			if (behaviourLocked > 0 || overridingBehaviours.Count == 0)
@@ -307,13 +307,13 @@ public class BasicBehaviour : MonoBehaviour
 	// Put the player on a standing up position based on last direction faced.
 	public void Repositioning()
 	{
-		if(lastDirection != Vector3.zero)
-		{
-			lastDirection.y = 0;
-			Quaternion targetRotation = Quaternion.LookRotation (lastDirection);
-			Quaternion newRotation = Quaternion.Slerp(rBody.rotation, targetRotation, 0.01f);
-			rBody.MoveRotation (newRotation);
-		}
+		// if(lastDirection != Vector3.zero)
+		// {
+		// 	lastDirection.y = 0;
+		// 	Quaternion targetRotation = Quaternion.LookRotation (lastDirection);
+		// 	Quaternion newRotation = Quaternion.Slerp(rBody.rotation, targetRotation, 0.01f);
+		// 	rBody.MoveRotation (newRotation);
+		// }
 	}
 
 	// Function to tell whether or not the player is on ground.
