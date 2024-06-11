@@ -1,41 +1,48 @@
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class CWork : MonoBehaviourPunCallbacks
 {
-    public float sensitivity = 1f; // Sensibilité de la souris
-    public float distance = 7f; // Distance fixe de la caméra par rapport au personnage
-
-    private float _currentX = 0f; // Rotation en X (gauche/droite)
-    private float _currentY = 0f; // Rotation en Y (haut/bas)
+    private const float Sensitivity = 1f; // Sensibilité de la souris
+    private const float Dist = 5.5f;
+    
+    private float _currentX; // Rotation en X (gauche/droite)
+    private float _currentY; // Rotation en Y (haut/bas)
     private Transform _cameraTransform;
-    private float _dist;
+    private float _distance; // Distance de la caméra par rapport au player
+    private Player _player;
 
     private void Start()
     {
         if (!photonView.IsMine)
         {
-            // Désactiver ce script si ce n'est pas le joueur local
             enabled = false;
             return;
         }
 
         _cameraTransform = Camera.main!.transform;
-        _dist = distance;
+        _distance = Dist;
+        _player = GetComponent<Player>();
     }
 
     private void Update()
     {
-        if (!photonView.IsMine || GetComponent<Player>().IsInAction)
+        if (!photonView.IsMine || _player.IsInAction)
             return;
 
-        _currentX += Input.GetAxis("Mouse X") * sensitivity; // Mise à jour de la rotation en X
-        _currentY -= Input.GetAxis("Mouse Y") * sensitivity; // Mise à jour de la rotation en Y
+        _currentX += Input.GetAxis("Mouse X") * Sensitivity; // Mise à jour de la rotation en X
+        _currentY -= Input.GetAxis("Mouse Y") * Sensitivity; // Mise à jour de la rotation en Y
         
+        // Permet rotation totale de la cam pour fly en mode build
         if (!Debug.isDebugBuild)
         {
             _currentY = Mathf.Clamp(_currentY, -10,80); // Limitation de l'angle de rotation en Y
         }
+
+        // Zoom si player vise
+        _distance = _player.IsAiming ? 3.5f : 5.5f;
     }
 
     private void LateUpdate()
@@ -43,39 +50,40 @@ public class CWork : MonoBehaviourPunCallbacks
         if (!photonView.IsMine)
             return;
 
-        Vector3 direction = new Vector3(0, 0, -distance); // Direction de la caméra
+        Vector3 direction = new Vector3(0, 0, -_distance); // Direction de la caméra
         Quaternion rotation = Quaternion.Euler(_currentY, _currentX, 0); // Calcul de la rotation de la caméra
         Vector3 desiredPosition = transform.position + Vector3.up * 2 + rotation * direction; // Position désirée de la caméra
         
         Debug.DrawLine(transform.position + Vector3.up * 2, desiredPosition - Vector3.up * 0.7f);
-        Debug.DrawLine(transform.position + Vector3.up * 2, transform.position + Vector3.up * 2 + rotation * Vector3.forward * (-distance -0.5f) - Vector3.up * 0.7f, Color.red);
-        Debug.DrawLine(transform.position + Vector3.up * 2, transform.position + Vector3.up * 2 + rotation * Vector3.forward * (-distance +0.1f) - Vector3.up * 0.7f, Color.green);
+        Debug.DrawLine(transform.position + Vector3.up * 2, transform.position + Vector3.up * 2 + rotation * Vector3.forward * (-_distance -0.5f) - Vector3.up * 0.7f, Color.red);
+        Debug.DrawLine(transform.position + Vector3.up * 2, transform.position + Vector3.up * 2 + rotation * Vector3.forward * (-_distance +0.1f) - Vector3.up * 0.7f, Color.green);
 
-        // Assurez-vous que la caméra ne rentre pas dans le terrain ou d'autres objets
-        if (Physics.Linecast(transform.position + Vector3.up * 2, desiredPosition - Vector3.up * 0.7f) && distance > 2)
+        // Pour éviter que la cam rentre dans les objets
+        if (Physics.Linecast(transform.position + Vector3.up * 2, desiredPosition - Vector3.up * 0.7f) && _distance > 2)
         {
-            if (Physics.Linecast(transform.position + Vector3.up * 2, transform.position + Vector3.up * 2 + rotation * Vector3.forward * (-distance +0.1f) - Vector3.up * 0.7f))
+            if (Physics.Linecast(transform.position + Vector3.up * 2, transform.position + Vector3.up * 2 + rotation * Vector3.forward * (-_distance +0.1f) - Vector3.up * 0.7f))
             {
-                distance -= 0.3f;
+                _distance -= 0.3f;
             }
             else
             {
-                distance -= 0.05f;
+                _distance -= 0.05f;
             }
         }
         else
         {
-            if (!Physics.Linecast(transform.position + Vector3.up * 2, transform.position + Vector3.up * 2 + rotation * Vector3.forward * (-distance -0.5f) - Vector3.up * 0.7f))
+            if (!Physics.Linecast(transform.position + Vector3.up * 2, transform.position + Vector3.up * 2 + rotation * Vector3.forward * (-_distance -0.5f) - Vector3.up * 0.7f))
             {
-                if (distance < _dist)
+                if (_distance < Dist)
                 {
-                    distance += 0.05f;
+                    _distance += 0.05f;
                 }
             }
         }
         
         _cameraTransform.position = transform.position + Vector3.up * 2 + rotation * direction;
         
-        _cameraTransform.LookAt(transform.position + Vector3.up * 2); // Faire en sorte que la caméra regarde le personnage
+        // Faire en sorte que la caméra regarde le personnage
+        _cameraTransform.LookAt(transform.position + Vector3.up * 2.5f); 
     }
 }

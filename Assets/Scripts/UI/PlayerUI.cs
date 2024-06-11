@@ -14,6 +14,7 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private Text itemsTips;
     [SerializeField] private Text globalTips;
+    [SerializeField] private GameObject sight;
 
     private Player _player;
     private Inventory _inventory;
@@ -40,6 +41,18 @@ public class PlayerUI : MonoBehaviour
         if (Input.GetButtonDown("Escape"))
         {
             ChangePauseMenuState();
+        }
+        
+        if (_player.IsAiming)
+        {
+            if (!sight.activeSelf)
+            {
+                sight.gameObject.SetActive(true);
+            }
+        }
+        else
+        {
+            sight.gameObject.SetActive(false);
         }
         
         // Destroy itself if the target is null, It's a fail safe when Photon is destroying Instances of a Player over the network
