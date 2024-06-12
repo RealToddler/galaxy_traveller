@@ -46,8 +46,6 @@ public class CWork : MonoBehaviourPunCallbacks
             distance = 3.5f;
         }
         _dist = _player.IsAiming ? 3.5f : 5.5f;
-        
-        print(_dist);
     }
 
     private void LateUpdate()
