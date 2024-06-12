@@ -41,6 +41,10 @@ public class CWork : MonoBehaviourPunCallbacks
         }
         
         // Zoom si player vise
+        if (_player.IsAiming && distance > 3.5f)
+        {
+            distance = 3.5f;
+        }
         _dist = _player.IsAiming ? 3.5f : 5.5f;
         
         print(_dist);
