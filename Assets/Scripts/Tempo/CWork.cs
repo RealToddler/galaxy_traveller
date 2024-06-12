@@ -1,29 +1,28 @@
 using UnityEngine;
 using Photon.Pun;
-using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
 
 public class CWork : MonoBehaviourPunCallbacks
 {
     private const float Sensitivity = 1f; // Sensibilité de la souris
-    private const float Dist = 5.5f;
-    
+    public float distance = 5.5f; // Distance fixe de la caméra par rapport au personnage
+
     private float _currentX; // Rotation en X (gauche/droite)
     private float _currentY; // Rotation en Y (haut/bas)
     private Transform _cameraTransform;
-    private float _distance; // Distance de la caméra par rapport au player
+    private float _dist;
     private Player _player;
 
     private void Start()
     {
         if (!photonView.IsMine)
         {
+            // Désactiver ce script si ce n'est pas le joueur local
             enabled = false;
             return;
         }
 
         _cameraTransform = Camera.main!.transform;
-        _distance = Dist;
+        _dist = distance;
         _player = GetComponent<Player>();
     }
 
@@ -40,9 +39,11 @@ public class CWork : MonoBehaviourPunCallbacks
         {
             _currentY = Mathf.Clamp(_currentY, -10,80); // Limitation de l'angle de rotation en Y
         }
-
+        
         // Zoom si player vise
-        _distance = _player.IsAiming ? 3.5f : 5.5f;
+        _dist = _player.IsAiming ? 3.5f : 5.5f;
+        
+        print(_dist);
     }
 
     private void LateUpdate()
@@ -50,33 +51,33 @@ public class CWork : MonoBehaviourPunCallbacks
         if (!photonView.IsMine)
             return;
 
-        Vector3 direction = new Vector3(0, 0, -_distance); // Direction de la caméra
+        Vector3 direction = new Vector3(0, 0, -distance); // Direction de la caméra
         Quaternion rotation = Quaternion.Euler(_currentY, _currentX, 0); // Calcul de la rotation de la caméra
         Vector3 desiredPosition = transform.position + Vector3.up * 2 + rotation * direction; // Position désirée de la caméra
         
         Debug.DrawLine(transform.position + Vector3.up * 2, desiredPosition - Vector3.up * 0.7f);
-        Debug.DrawLine(transform.position + Vector3.up * 2, transform.position + Vector3.up * 2 + rotation * Vector3.forward * (-_distance -0.5f) - Vector3.up * 0.7f, Color.red);
-        Debug.DrawLine(transform.position + Vector3.up * 2, transform.position + Vector3.up * 2 + rotation * Vector3.forward * (-_distance +0.1f) - Vector3.up * 0.7f, Color.green);
+        Debug.DrawLine(transform.position + Vector3.up * 2, transform.position + Vector3.up * 2 + rotation * Vector3.forward * (-distance -0.5f) - Vector3.up * 0.7f, Color.red);
+        Debug.DrawLine(transform.position + Vector3.up * 2, transform.position + Vector3.up * 2 + rotation * Vector3.forward * (-distance +0.1f) - Vector3.up * 0.7f, Color.green);
 
         // Pour éviter que la cam rentre dans les objets
-        if (Physics.Linecast(transform.position + Vector3.up * 2, desiredPosition - Vector3.up * 0.7f) && _distance > 2)
+        if (Physics.Linecast(transform.position + Vector3.up * 2, desiredPosition - Vector3.up * 0.7f) && distance > 2)
         {
-            if (Physics.Linecast(transform.position + Vector3.up * 2, transform.position + Vector3.up * 2 + rotation * Vector3.forward * (-_distance +0.1f) - Vector3.up * 0.7f))
+            if (Physics.Linecast(transform.position + Vector3.up * 2, transform.position + Vector3.up * 2 + rotation * Vector3.forward * (-distance +0.1f) - Vector3.up * 0.7f))
             {
-                _distance -= 0.3f;
+                distance -= 0.3f;
             }
             else
             {
-                _distance -= 0.05f;
+                distance -= 0.05f;
             }
         }
         else
         {
-            if (!Physics.Linecast(transform.position + Vector3.up * 2, transform.position + Vector3.up * 2 + rotation * Vector3.forward * (-_distance -0.5f) - Vector3.up * 0.7f))
+            if (!Physics.Linecast(transform.position + Vector3.up * 2, transform.position + Vector3.up * 2 + rotation * Vector3.forward * (-distance -0.5f) - Vector3.up * 0.7f))
             {
-                if (_distance < Dist)
+                if (distance < _dist)
                 {
-                    _distance += 0.05f;
+                    distance += 0.05f;
                 }
             }
         }
@@ -84,6 +85,6 @@ public class CWork : MonoBehaviourPunCallbacks
         _cameraTransform.position = transform.position + Vector3.up * 2 + rotation * direction;
         
         // Faire en sorte que la caméra regarde le personnage
-        _cameraTransform.LookAt(transform.position + Vector3.up * 2.5f); 
+        _cameraTransform.LookAt(transform.position + Vector3.up * 2); // Faire en sorte que la caméra regarde le personnage
     }
 }

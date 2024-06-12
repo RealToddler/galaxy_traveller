@@ -7,8 +7,6 @@ using Photon.Pun;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
-using Object = System.Object;
-
 public class PickupBehaviour : MonoBehaviourPun
 {
     [SerializeField] private MoveBehaviour playerMoveBehaviour;
