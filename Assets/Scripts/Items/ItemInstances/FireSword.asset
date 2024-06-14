@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: FireSword
   m_EditorClassIdentifier: 
   name: FireSword
-  visual: {fileID: 21300000, guid: 953610dd2dbe971449229274749f7976, type: 3}
+  visual: {fileID: 21300000, guid: bdcc5035a934390428d9ec62b1ffe1c1, type: 3}
   prefab: {fileID: 7761306877505567867, guid: e16ff789c7ca21f4883716aea12a4e90, type: 3}

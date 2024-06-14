@@ -31,6 +31,6 @@ public class Loading : MonoBehaviourPunCallbacks
     
     public override void OnCreatedRoom()
     {
-        PhotonNetwork.LoadLevel("Lvl3");
+        PhotonNetwork.LoadLevel("Lvl1");
     }
 }
