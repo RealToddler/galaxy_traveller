@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 using UnityEngine;
 public class SoundLibrary : MonoBehaviour
 {
-    [SerializeField] public List<SoundData> listAudio;
+    [SerializeField] public List<AudioClip> listAudio;
 
     public static SoundLibrary Instance;
     private AudioSource _audioSource;
@@ -23,7 +23,7 @@ public class SoundLibrary : MonoBehaviour
 
         if (first != null)
         {
-            _audioSource.PlayOneShot(first.sound);
+            _audioSource.PlayOneShot(first);
         }
     }
 }

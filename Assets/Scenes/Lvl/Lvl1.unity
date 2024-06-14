@@ -24970,8 +24970,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b06addc2e2bd324e9ac7cfa75dac768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listAudio:
-  - {fileID: 11400000, guid: 2baf5eccfe66dfe4991d94a7cec9e861, type: 2}
+  listAudio: []
 --- !u!23 &8398870940758035662
 MeshRenderer:
   m_ObjectHideFlags: 0
