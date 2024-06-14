@@ -1,9 +1,10 @@
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.Serialization;
 
 public class CWork : MonoBehaviourPunCallbacks
 {
-    public /*const*/ float Sensitivity = 1f; // Sensibilité de la souris
+    public float sensitivity = 1f; // Sensibilité de la souris
     public float distance = 5.5f; // Distance fixe de la caméra par rapport au personnage
 
     private float _currentX; // Rotation en X (gauche/droite)
@@ -31,8 +32,8 @@ public class CWork : MonoBehaviourPunCallbacks
         if (!photonView.IsMine || _player.IsInAction)
             return;
 
-        _currentX += Input.GetAxis("Mouse X") * Sensitivity; // Mise à jour de la rotation en X
-        _currentY -= Input.GetAxis("Mouse Y") * Sensitivity; // Mise à jour de la rotation en Y
+        _currentX += Input.GetAxis("Mouse X") * sensitivity; // Mise à jour de la rotation en X
+        _currentY -= Input.GetAxis("Mouse Y") * sensitivity; // Mise à jour de la rotation en Y
         
         // Permet rotation totale de la cam pour fly en mode build
         if (!Debug.isDebugBuild)

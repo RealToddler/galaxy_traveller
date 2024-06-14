@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using Photon.Pun;
+using UnityEditor;
+using UnityEngine.InputSystem;
 
 // MoveBehaviour inherits from GenericBehaviour. This class corresponds to basic walk and run behaviour, it is the default behaviour.
 public class MoveBehaviour : GenericBehaviour
@@ -165,6 +167,11 @@ public class MoveBehaviour : GenericBehaviour
 		// Call function that deals with player orientation.
 		Rotating(horizontal, vertical);
 
+		if (GetComponent<Player>().IsAiming && horizontal == 0 && vertical == 0)
+		{
+			Rotating(0, 1);
+		}
+
 		// Set proper speed.
 		Vector2 dir = new Vector2(horizontal, vertical);
 		_speed = Vector2.ClampMagnitude(dir, 1f).magnitude;
@@ -204,7 +211,7 @@ public class MoveBehaviour : GenericBehaviour
 		Vector3 targetDirection = forward * vertical + right * horizontal;
 
 		// Lerp current direction to calculated target direction.
-		if (behaviourManager.IsMoving() && targetDirection != Vector3.zero)
+		if (/*behaviourManager.IsMoving() && */targetDirection != Vector3.zero)
 		{
 			Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
 			Quaternion newRotation = Quaternion.Slerp(behaviourManager.GetRigidBody.rotation, targetRotation, 0.1f);
