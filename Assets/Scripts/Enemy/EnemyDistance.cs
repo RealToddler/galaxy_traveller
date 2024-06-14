@@ -21,6 +21,7 @@ public class EnemyDistance : Enemy
             {
                 IAAnimator.SetTrigger("IsDead");
                 IAAnimator.SetBool("IsAttacking",false);
+                IAAnimator.SetBool("Backward",false);
                 IsDead=true;
             }
             else 

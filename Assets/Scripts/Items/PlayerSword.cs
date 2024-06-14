@@ -7,8 +7,10 @@ public class PlayerSword : MonoBehaviour
     [SerializeField] private Player _launcher;
     private void OnTriggerEnter(Collider obj)
     {
+        print(_launcher.HasHit);
         if (obj.gameObject.CompareTag("Enemy") && _launcher.IsInAction && _launcher.HasHit)
         {
+            
             Enemy enemy= obj.GetComponentInParent<Enemy>();
             if (!enemy.isHit)
             {

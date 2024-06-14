@@ -81,8 +81,8 @@ public class Enemy : MonoBehaviour
     private void StopHolding()
     // called at the beginning of IAAttackDistance animation
     {
-        //IAAnimator.SetBool("HoldingWeapon",false);
-        _animationStarted=true;
+        IAAnimator.SetBool("HoldingWeapon",false);
+        //_animationStarted=true;
     }
     public void LooseHealth(float damage)
     {

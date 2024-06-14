@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -80,15 +81,20 @@ public class RobotSphereMovement : MonoBehaviour
     void DestroyBotCreateExp()
     {
         gameObject.SetActive(false);
-        explosion.transform.position = transform.position;
-        explosion.SetActive(true);
+        //explosion.transform.position = transform.position;
+        GameObject explo = Instantiate(explosion,transform);
+        //explosion.SetActive(true);
+        explo.GetComponent<ParticleSystem>().Play();
         _players[_indexNearestPlayer].gameObject.GetComponent<Player>().TakeDamage(_enemy.Damage);
-        Invoke(nameof(DestroyExplosion), 2);
+        DestroyExplosion();
+        Destroy(explo);
 
     }
-    void DestroyExplosion()
+    IEnumerable DestroyExplosion()
     {
-        explosion.SetActive(false);
+        //await Task.Delay      //explosion.SetActive(false);
+        yield return new WaitForSeconds(2);
+        
     }
 
     IEnumerator GetNewDestination()

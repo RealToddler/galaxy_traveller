@@ -24,6 +24,7 @@ public class AiMovement : MonoBehaviour
     {
         if (!enemy.IsDead)
         {
+            
             MovementManager();
             Rotate();
             enemy.IAAnimator.SetFloat("Speed",agent.velocity.magnitude);
