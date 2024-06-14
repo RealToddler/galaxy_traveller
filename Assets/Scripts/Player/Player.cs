@@ -94,6 +94,7 @@ public class Player : MonoBehaviourPunCallbacks
             }
             else if (_inventory.IsTheCurrSelectedItem("Weapon"))
             {
+                SoundLibrary.Instance.PlaySound("Chill");
                 LaunchTriggerAnim(_attackDistanceAnim);
             }
             else
