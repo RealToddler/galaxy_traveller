@@ -4,14 +4,12 @@ using UnityEngine;
 
 public abstract class Attack : MonoBehaviour
 {
-    
-    //[SerializeField] private Animation _animation;
-    [SerializeField] protected EnemyDistance _launcher;
     protected string _name;
     protected float _damage;
+    [SerializeField]protected  Enemy _launcher;
     public string Name ()
     {
         return _name;
     }
-    public abstract void LaunchAttack();
+    public virtual void LaunchAttack(){}
 }

@@ -14,7 +14,6 @@ public class Player : MonoBehaviourPunCallbacks
     private Animator _playerAnimator;
     private Vector3 _respawnPoint;
     private bool _noMoreO2;
-    private bool _isRespawning;
     private bool _isInvincible;
     private GameObject _ui;
     private PostProcessVolume _volume;
@@ -33,10 +32,19 @@ public class Player : MonoBehaviourPunCallbacks
     public int maxHealth = 100;
     public int maxOxygen = 100;
 
+
     public float Health { get; private set; }
     public float Oxygen { get; private set; }
     public bool IsInAction { get; set; }
     public bool IsAiming { get; set; }
+    public bool HasHit{get;set;}
+
+    public bool IsRespawning;
+    public bool IsHit;
+    public Animator PlayerAnimator;
+    [Header("Attack Distance")]
+    [SerializeField] private GameObject _projectile;
+    [SerializeField] private Transform _eject;
     
     private void Start()
     {
@@ -49,7 +57,7 @@ public class Player : MonoBehaviourPunCallbacks
         _moveBehaviour = GetComponent<MoveBehaviour>();
         _respawnPoint = transform.position;
         _ui = gameObject.GetComponent<PlayerManager>().ui;
-        
+        PlayerAnimator=GetComponent<Animator>();
         _volume = Camera.main!.GetComponentInChildren<PostProcessVolume>();
         _volume.profile.TryGetSettings(out _vignette);
     }
@@ -81,6 +89,8 @@ public class Player : MonoBehaviourPunCallbacks
                 _inventory.IsTheCurrSelectedItem("FireSword"))
             {
                 LaunchTriggerAnim(_attackMeleeAnim);
+                HasHit=true;
+                Invoke(nameof(SetInActionToFalse),1.2f);
             }
             else if (_inventory.IsTheCurrSelectedItem("Weapon"))
             {
@@ -152,9 +162,9 @@ public class Player : MonoBehaviourPunCallbacks
         } 
         else 
         {
-            if (!_isRespawning)
+            if (!IsRespawning)
             {
-                _isRespawning = true;
+                IsRespawning = true;
                 _moveBehaviour.canMove = false;
                 _playerAnimator.SetFloat(_speedAnim, 0);
                 LaunchTriggerAnim(_deadO2Anim);
@@ -186,6 +196,8 @@ public class Player : MonoBehaviourPunCallbacks
     // Remove damage to player health
     public void TakeDamage(float damage)
     {
+        IsHit=true;
+        IsInAction=true;
         if (_isInvincible)
         {
             return;
@@ -202,10 +214,10 @@ public class Player : MonoBehaviourPunCallbacks
             Health = 0;
             Oxygen -= Oxygen/4;
             
-            if (!_isRespawning)
+            if (!IsRespawning)
             {
                 _moveBehaviour.enabled = false;
-                _isRespawning = true; 
+                IsRespawning = true; 
                 LaunchTriggerAnim(_deadHpAnim);
             }
         }
@@ -223,6 +235,7 @@ public class Player : MonoBehaviourPunCallbacks
         _vignette.color.value = new Color(0.7f, 0.05f,0.05f);
     }
 
+
     public void Respawn()
     {
         transform.position = _respawnPoint;
@@ -230,23 +243,17 @@ public class Player : MonoBehaviourPunCallbacks
 
     // ==================== All functions called in actions animations ====================
     
-    public void SendAttackMelee()
+    public void SendAttackDistance()
     {
-        Debug.Log("Attack sent");
-
-        if (Physics.Raycast(transform.position + new Vector3(0,1,0), transform.forward, out var hit, 2.2f))
-        {
-            if (hit.transform.CompareTag("Enemy"))
-            {
-                hit.collider.GetComponent<Enemy>().LooseHealth(25f);
-            }
-        }
+        Debug.Log("Attack Distance sent");
+        GameObject curr=Instantiate(_projectile, _eject.position, _eject.rotation);
+        curr.GetComponent<Rigidbody>().velocity=transform.forward*50;    
     }
     
     public void RespawnAfterDeathHp()
     {
         Health = maxHealth;
-        _isRespawning = false;
+        IsRespawning = false;
         Respawn();
         _moveBehaviour.enabled = true;
     }
@@ -260,12 +267,18 @@ public class Player : MonoBehaviourPunCallbacks
     public void SetInActionToFalse()
     {
         IsInAction = false;
+        HasHit=false;
         _playerAnimator.SetLayerWeight(6,1);
     }
 
     public void ConsumeItem()
     {
         _inventory.RemoveItem();
+    }
+    public void ResetKnockback()
+    {
+        IsHit=false;
+        IsInAction=false;
     }
     
     // ==================== Trigger animations synchronisation ====================

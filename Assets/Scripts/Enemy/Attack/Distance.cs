@@ -6,50 +6,28 @@ public class Distance : Attack
 {
     // Start is called before the first frame update
     [SerializeField] private GameObject _gun;
-    [SerializeField] private Transform _laserOrigin;
-    private float gunRange = 50f;
-    private float laserDuration = 0.05f;
-    LineRenderer laserLine;
+    [SerializeField] private GameObject _projectile;
+    [SerializeField] private Transform _eject;
+    
+
+    
+
     void Start()
     {
-        _name = "Distance";
-        _damage = _launcher.distanceDamage;
-        laserLine = _gun.GetComponent<LineRenderer>();
+        if (_launcher is EnemyDistance) _launcher=(EnemyDistance)_launcher;
+        else if (_launcher is EnemyMD)  _launcher=(EnemyMD)_launcher;
+        _name="Distance";
+        _damage=_launcher.Damage;
     }
 
     public override void LaunchAttack()
     {
-        
-        
-        if (_launcher.nbshots>0 && _launcher.platform.players[_launcher.IndexNearestPlayer()].GetComponent<Player>().Health>0)
+        if (_launcher.nbshots>0 && _launcher.platform.players.Count!=0 &&  _launcher.platform.players[_launcher.IndexNearestPlayer()].GetComponent<Player>().Health>0)
         {
+            GameObject curr=Instantiate(_projectile, _eject.position, _eject.rotation);
+            curr.GetComponent<Rigidbody>().velocity=_launcher.transform.forward*50;
             print("distance");
-            Vector3 rayOrigin = _laserOrigin.position;
-            RaycastHit hit;
-            if(Physics.Raycast(_launcher.transform.position + new Vector3(0,1,0), transform.forward, out hit, 8f))
-            {
-                if (_launcher.nbshots>0)
-                {
-                    laserLine.SetPosition(0, _laserOrigin.position);
-                    laserLine.SetPosition(1, hit.point);
-                    if (hit.transform.CompareTag("Player"))
-                    {
-                        hit.collider.GetComponent<Player>().TakeDamage(_damage);
-                    }
-                }
-            }
-            else
-            {
-                laserLine.SetPosition(0, _laserOrigin.position);
-                laserLine.SetPosition(1, rayOrigin + (_laserOrigin.up*-1 * gunRange));
-            }
-            StartCoroutine(ShootLaser());
         }        
     }
-    IEnumerator ShootLaser()
-    {
-        laserLine.enabled = true;
-        yield return new WaitForSeconds(laserDuration);
-        laserLine.enabled = false;
-    }
+    
 }

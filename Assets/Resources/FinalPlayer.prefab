@@ -5138,6 +5138,8 @@ GameObject:
   - component: {fileID: 4498570334022423915}
   - component: {fileID: 4011985361594445121}
   - component: {fileID: 6794031531974198785}
+  - component: {fileID: 2900615823829465292}
+  - component: {fileID: 2923531906241298444}
   m_Layer: 7
   m_Name: MoonSwordVisual
   m_TagString: Item
@@ -5213,6 +5215,42 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &2900615823829465292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1429897665372350498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70d2ea58ecd8b574188003e0258b52cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _launcher: {fileID: 897719404968138427}
+--- !u!136 &2923531906241298444
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1429897665372350498}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.1
+  m_Height: 1.7367152
+  m_Direction: 1
+  m_Center: {x: 0.0000003320519, y: 0.6614364, z: -0.000000105235166}
 --- !u!1 &1885313552930352429
 GameObject:
   m_ObjectHideFlags: 0
@@ -11098,7 +11136,8 @@ Transform:
   m_LocalPosition: {x: 0.684, y: -1.157, z: 0.568}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 4016212847323430262}
   m_Father: {fileID: 4334849089786961803}
   m_LocalEulerAnglesHint: {x: -145.031, y: 215.25, z: 228.425}
 --- !u!33 &6503704239488302814
@@ -11531,7 +11570,7 @@ Animator:
   m_GameObject: {fileID: 4699669800681581755}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 535511bb156e7f54f83f305d96a1c4ce, type: 3}
-  m_Controller: {fileID: 9100000, guid: 1ac2a1891f6a2814dbcb83cbd24d5ee1, type: 2}
+  m_Controller: {fileID: 9100000, guid: 06b53ca6eef250d44ae7eb30fa8aa771, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -11604,6 +11643,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: deee7474e31e3ea40924100c22766123, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Sensitivity: 4
+  distance: 5.5
 --- !u!114 &1206587641946692565
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11633,6 +11674,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   maxOxygen: 100
+  IsRespawning: 0
+  IsHit: 0
+  PlayerAnimator: {fileID: 0}
+  _projectile: {fileID: 3766673044893641174, guid: ab4fccc7514793b40bac38215f3afa92,
+    type: 3}
+  _eject: {fileID: 4016212847323430262}
 --- !u!114 &6602165490307109378
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11817,6 +11864,9 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 1
     Name: HoldSword
+  - Type: 9
+    SynchronizeType: 0
+    Name: Knockback
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
@@ -17844,6 +17894,37 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &7389946455191358944
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4016212847323430262}
+  m_Layer: 0
+  m_Name: Projectile_origin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4016212847323430262
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7389946455191358944}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.059113443, y: 0.0819672, z: -0.37200156, w: -0.9227144}
+  m_LocalPosition: {x: 1.335, y: 0.491, z: 0.223}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 785614738864212549}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7661375851455542182
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,7 +11,7 @@ public class RobotSphereMovement : MonoBehaviour
     [SerializeField] public GameObject explosion;
     
     private NavMeshAgent _agent;
-    private EnemyAI _enemy;
+    private EnemyMelee _enemy;
     private Animator _animator;
     private readonly int _animSpeed = Animator.StringToHash("Speed");
     private bool _hasDestination;
@@ -21,7 +21,7 @@ public class RobotSphereMovement : MonoBehaviour
 
     private void Start()
     {
-        _enemy = GetComponent<EnemyAI>();
+        _enemy = GetComponent<EnemyMelee>();
         _agent = GetComponent<NavMeshAgent>();
         _animator = GetComponent<Animator>();
         
@@ -82,7 +82,7 @@ public class RobotSphereMovement : MonoBehaviour
         gameObject.SetActive(false);
         explosion.transform.position = transform.position;
         explosion.SetActive(true);
-        _players[_indexNearestPlayer].gameObject.GetComponent<Player>().TakeDamage(_enemy.damage);
+        _players[_indexNearestPlayer].gameObject.GetComponent<Player>().TakeDamage(_enemy.Damage);
         Invoke(nameof(DestroyExplosion), 2);
 
     }

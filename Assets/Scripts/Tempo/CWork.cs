@@ -3,7 +3,7 @@ using Photon.Pun;
 
 public class CWork : MonoBehaviourPunCallbacks
 {
-    private const float Sensitivity = 1f; // Sensibilité de la souris
+    public /*const*/ float Sensitivity = 1f; // Sensibilité de la souris
     public float distance = 5.5f; // Distance fixe de la caméra par rapport au personnage
 
     private float _currentX; // Rotation en X (gauche/droite)
