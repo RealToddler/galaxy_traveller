@@ -28,6 +28,7 @@ public class Player : MonoBehaviourPunCallbacks
     private readonly int _holdPotion = Animator.StringToHash("HoldPotion");
     private readonly int _holdSword = Animator.StringToHash("HoldSword");
     private readonly int _holdWeapon = Animator.StringToHash("HoldWeapon");
+    private readonly int _knockback = Animator.StringToHash("Knockback");
 
     public int maxHealth = 100;
     public int maxOxygen = 100;
@@ -41,7 +42,8 @@ public class Player : MonoBehaviourPunCallbacks
 
     public bool IsRespawning;
     public bool IsHit;
-    public Animator PlayerAnimator;
+    [HideInInspector]
+    public bool CanAttack=false;
     [Header("Attack Distance")]
     [SerializeField] private GameObject _projectile;
     [SerializeField] private Transform _eject;
@@ -57,7 +59,7 @@ public class Player : MonoBehaviourPunCallbacks
         _moveBehaviour = GetComponent<MoveBehaviour>();
         _respawnPoint = transform.position;
         _ui = gameObject.GetComponent<PlayerManager>().ui;
-        PlayerAnimator=GetComponent<Animator>();
+        _playerAnimator=GetComponent<Animator>();
         _volume = Camera.main!.GetComponentInChildren<PostProcessVolume>();
         _volume.profile.TryGetSettings(out _vignette);
     }
@@ -75,7 +77,7 @@ public class Player : MonoBehaviourPunCallbacks
 
     private void ActionManager()
     {
-        if (Input.GetButtonDown("Action1") && Health > 0 && Oxygen > 0 && !IsInAction && _moveBehaviour.IsGrounded())
+        if (Input.GetButtonDown("Action1") && Health > 0 && Oxygen > 0 && !IsHit && !IsInAction && _moveBehaviour.IsGrounded())
         {
             if (_inventory.Content[_inventory.ItemIndex].IsUnityNull())
             {
@@ -196,8 +198,7 @@ public class Player : MonoBehaviourPunCallbacks
     // Remove damage to player health
     public void TakeDamage(float damage)
     {
-        IsHit=true;
-        IsInAction=true;
+        CanAttack=false;
         if (_isInvincible)
         {
             return;
@@ -222,6 +223,12 @@ public class Player : MonoBehaviourPunCallbacks
             }
         }
     }
+    public void KnockBack(float damage)
+    {
+        IsHit=true;
+        LaunchTriggerAnim(_knockback);
+        TakeDamage(damage);
+    }
 
     public void BackToGreen()
     {
@@ -239,7 +246,6 @@ public class Player : MonoBehaviourPunCallbacks
     public void Respawn()
     {
         transform.position = _respawnPoint;
-        IsInAction=false;
     }
 
     // ==================== All functions called in actions animations ====================
@@ -279,7 +285,14 @@ public class Player : MonoBehaviourPunCallbacks
     public void ResetKnockback()
     {
         IsHit=false;
-        IsInAction=false;
+    }
+    private void SetCanAttackTrue()
+    {
+        CanAttack=true;
+    }
+    private void SetCanAttackFalse()
+    {
+        CanAttack=false;
     }
     
     // ==================== Trigger animations synchronisation ====================

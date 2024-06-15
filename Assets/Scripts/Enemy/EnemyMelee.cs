@@ -10,9 +10,13 @@ public class EnemyMelee : Enemy
         Animator.SetBool("IsShaking",true);
     }
     
-    private void SetCanAttack()
+    private void SetCanAttackTrue()
     {
-        CanAttack=!CanAttack;
+        CanAttack=true;
+    }
+    private void SetCanAttackFalse()
+    {
+        CanAttack=false;
     }
     public override void StopAttack()
     {

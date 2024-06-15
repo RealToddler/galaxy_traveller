@@ -10,8 +10,7 @@ public class Projectile : MonoBehaviour
             Player player= obj.collider.gameObject.GetComponent<Player>();
             if (!player.IsHit) 
             {
-                player.TakeDamage(20);
-                player.PlayerAnimator.SetTrigger("Knockback");
+                player.KnockBack(20);
             }
         }
         else if (obj.gameObject.CompareTag("Enemy"))

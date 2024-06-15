@@ -14,8 +14,7 @@ public class AISword : MonoBehaviour
             Player player= obj.gameObject.GetComponent<Player>();
             if (!player.IsHit) 
             {
-                player.TakeDamage(_launcher.damage);
-                player.PlayerAnimator.SetTrigger("Knockback");
+                player.KnockBack(_launcher.damage);
             }
         }
     }

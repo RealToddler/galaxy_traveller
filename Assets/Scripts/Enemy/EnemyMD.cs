@@ -53,9 +53,13 @@ public class EnemyMD : Enemy
         }
         
     }
-    private void SetCanAttack()
+    private void SetCanAttackTrue()
     {
-        CanAttack=!CanAttack;
+        CanAttack=true;
+    }
+    private void SetCanAttackFalse()
+    {
+        CanAttack=false;
     }
     private void CheckForChanging()
     {
