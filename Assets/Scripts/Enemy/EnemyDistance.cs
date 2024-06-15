@@ -10,8 +10,8 @@ public class EnemyDistance : Enemy
     protected void Start()
     {
         IsAttacking = false;
-        Health = _maxHealth;
-        IAAnimator.SetBool("HoldingWeapon",true);
+        Health = MaxHealth;
+        Animator.SetBool("HoldingWeapon",true);
     }
     void Update()
     {
@@ -19,15 +19,15 @@ public class EnemyDistance : Enemy
         {
             if(Health<=0)
             {
-                IAAnimator.SetTrigger("IsDead");
-                IAAnimator.SetBool("IsAttacking",false);
-                IAAnimator.SetBool("Backward",false);
+                Animator.SetTrigger("IsDead");
+                Animator.SetBool("IsAttacking",false);
+                Animator.SetBool("Backward",false);
                 IsDead=true;
             }
             else 
             {
-                IsAttacking=IAAnimator.GetBool("IsAttacking");
-                IAAnimator.SetBool("StopAttackDistance", !IsAttacking);
+                IsAttacking = Animator.GetBool("IsAttacking");
+                Animator.SetBool("StopAttackDistance", !IsAttacking);
                 AttackManager();
                 CheckForEscape();
             }
@@ -42,11 +42,11 @@ public class EnemyDistance : Enemy
             if (distance<=2.5)
             {
                 StopAttack();
-                IAAnimator.SetBool("Backward",true);
+                Animator.SetBool("Backward",true);
             }
             else
             {
-                IAAnimator.SetBool("Backward",false);
+                Animator.SetBool("Backward",false);
             }
 
         }
@@ -54,19 +54,19 @@ public class EnemyDistance : Enemy
     private void IncreaseAttack()
     //called in iaattackdistance anim
     {
-        nbshots+=1;
+        Shots+=1;
     }
     public override void StopAttack()
     {
-        IAAnimator.SetBool("HoldingWeapon",true);
-        IAAnimator.SetBool("IsAttacking",false);
-        IAAnimator.SetBool("AttackDistance",false);
-        nbshots=0;
+        Animator.SetBool("HoldingWeapon",true);
+        Animator.SetBool("IsAttacking",false);
+        Animator.SetBool("AttackDistance",false);
+        Shots=0;
     }
     public override void AttackManager()
     {
 
-        if (!IsDead && !IsAttacking && !IAAnimator.GetBool("Backward") && platform.players.Count != 0)
+        if (!IsDead && !IsAttacking && !Animator.GetBool("Backward") && platform.players.Count != 0)
         {
             float distance = Vector3.Distance(platform.players[IndexNearestPlayer()].position, transform.position);
             if (distance <= radiusAttack)

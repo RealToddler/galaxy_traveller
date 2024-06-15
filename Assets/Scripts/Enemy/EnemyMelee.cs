@@ -1,16 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class EnemyMelee : Enemy
 {
     protected void Start()
     {
         IsAttacking = false;
-        Health = _maxHealth;
-        IAAnimator.SetBool("IsShaking",true);
+        Health = MaxHealth;
+        Animator.SetBool("IsShaking",true);
     }
     /*void Update()
     {
@@ -25,12 +21,12 @@ public class EnemyMelee : Enemy
 
     public override void StopAttack()
     {
-        IAAnimator.SetBool("IsAttacking",false);
-        IAAnimator.SetBool("AttackMelee",false);
+        Animator.SetBool("IsAttacking",false);
+        Animator.SetBool("AttackMelee",false);
     }
     public override void AttackManager()
     {
-        if (!IsDead && !IsAttacking && !IAAnimator.GetBool("Backward") && platform.players.Count != 0)
+        if (!IsDead && !IsAttacking && !Animator.GetBool("Backward") && platform.players.Count != 0)
         {
             float distance = Vector3.Distance(platform.players[IndexNearestPlayer()].position, transform.position);
             if (distance <= radiusAttack)

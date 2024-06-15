@@ -12,10 +12,10 @@ public class PlayerSword : MonoBehaviour
         {
             
             Enemy enemy= obj.GetComponentInParent<Enemy>();
-            if (!enemy.isHit)
+            if (!enemy.IsHit)
             {
                 enemy.LooseHealth(25);
-                enemy.IAAnimator.SetTrigger("Knockback");
+                enemy.KnockBack();
             }
         }
     }

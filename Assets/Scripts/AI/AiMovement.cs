@@ -4,65 +4,73 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Serialization;
 
 public class AiMovement : MonoBehaviour
 {
     [Header("Objects")]
-    [SerializeField] public NavMeshAgent agent;
-    [SerializeField] private Enemy enemy;
-    [SerializeField] private float _rotationSpeed;
+    
+    [SerializeField] private float rotationSpeed;
+    
     private List<Transform> _players;
     private int _indexNearestPlayer;
+    private NavMeshAgent _agent;
+    private Animator _animator;
+    private Enemy _enemy;
 
     private void Start()
     {
-        _players=enemy.platform.players;
-        agent.stoppingDistance=enemy.radiusAttack;
+        _enemy = GetComponent<Enemy>();
+        _agent = GetComponent<NavMeshAgent>();
+        _animator = GetComponent<Animator>();
+        
+        _players = _enemy.platform.players;
+        _agent.stoppingDistance = _enemy.radiusAttack;
     }
 
     void Update()
     {
-        if (!enemy.IsDead)
+        if (!_enemy.IsDead)
         {
             
             MovementManager();
             Rotate();
-            enemy.IAAnimator.SetFloat("Speed",agent.velocity.magnitude);
+            _animator.SetFloat("Speed", _agent.velocity.magnitude);
         }
         
     }
     
     private void MovementManager()
     {
-        if ( _players.Count != 0 && !enemy.IAAnimator.GetBool("Backward"))
+        if ( _players.Count != 0 && !_animator.GetBool("Backward"))
         {
-            _indexNearestPlayer=enemy.IndexNearestPlayer();
-            float distance = Vector3.Distance(_players[_indexNearestPlayer].position, enemy.transform.position);
+            _indexNearestPlayer = _enemy.IndexNearestPlayer();
+            float distance = Vector3.Distance(_players[_indexNearestPlayer].position, _enemy.transform.position);
             if (_players[_indexNearestPlayer].GetComponent<Player>().Health<=0) return ;
-            if (enemy is EnemyMD)
+            if (_enemy is EnemyMD)
             {
-                EnemyMD newEnemy = (EnemyMD)enemy;
-                if ( distance <= newEnemy.RadiusApproach && !enemy.IsAttacking && distance>newEnemy.RadiusAttackM)
+                EnemyMD newEnemy = (EnemyMD)_enemy;
+                if ( distance <= newEnemy.radiusApproach && !_enemy.IsAttacking && distance > newEnemy.radiusAttackM)
                 {
-                    agent.isStopped=false;
-                    agent.stoppingDistance=newEnemy.RadiusAttackM;
+                    _agent.isStopped = false;
+                    _agent.stoppingDistance = newEnemy.radiusAttackM;
                     Approach();
                     return;
                 }
-                else if (distance <= newEnemy.RadiusApproach)
+                else if (distance <= newEnemy.radiusApproach)
                 {
-                    agent.stoppingDistance=newEnemy.radiusAttack;
-                    agent.isStopped=true;
+                    _agent.stoppingDistance = newEnemy.radiusAttack;
+                    _agent.isStopped = true;
                 }
             }
-            if (distance <=agent.stoppingDistance+0.1)
+            if (distance <= _agent.stoppingDistance + 0.1)
             {
-                agent.isStopped=true;
+                _agent.isStopped = true;
             }
             
-            else if (!enemy.IsAttacking)
+            else if (!_enemy.IsAttacking)
             {
-                agent.isStopped=false;
+                _agent.isStopped = false;
                 Approach(); 
             }
             /*else 
@@ -75,25 +83,25 @@ public class AiMovement : MonoBehaviour
 
     void Approach()
     {
-        agent.SetDestination(_players[_indexNearestPlayer].position);
+        _agent.SetDestination(_players[_indexNearestPlayer].position);
     }
     void Rotate()
     {
-        if (_players.Count!=0)
+        if (_players.Count != 0)
         {
             Quaternion rot = Quaternion.LookRotation(_players[_indexNearestPlayer].position - transform.position);
             Vector3 direction = _players[_indexNearestPlayer].position - transform.position;
             direction.y = 0; // Annule les composantes de rotation sur les axes X et Z
             rot = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, rot, _rotationSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, rot, rotationSpeed * Time.deltaTime);
         }
         
     }
     void Escape()
     //called in runbackward animation
     {
-        agent.isStopped=false;
-        agent.SetDestination(transform.position-transform.forward*20);
+        _agent.isStopped = false;
+        _agent.SetDestination(transform.position-transform.forward * 20);
     }
         
 }

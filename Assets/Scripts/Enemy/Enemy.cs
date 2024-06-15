@@ -1,44 +1,50 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class Enemy : MonoBehaviour
 {
-    [Header("Proprieties")]
+    [Header("Attack's proprieties")]
     [SerializeField] public float radiusAttack;
-    
     [SerializeField] List<Attack> attacks;
+    [SerializeField] public float damage;
+    
+    [Header("Other")]
     [SerializeField] public PlatformEnemy platform;
-    [SerializeField] public Animator IAAnimator;
-    [SerializeField] public float Damage;    
+    [SerializeField] private string nextLvl;
     
-    public bool IsDead=false;
-    protected int _maxHealth = 100;
+    public bool IsDead { get; protected set; }
+    protected Animator Animator;
+    protected const int MaxHealth = 100;
     public float Health { get; protected set; }
-    public bool IsAttacking { get; set; }
+    public bool IsAttacking { get; protected set; }
     protected float EscapeRadius;
-    public bool isHit=false;
-    public int nbshots=0;
-    protected bool _animationStarted;
+    public bool IsHit { get; private set; }
+    public int Shots { get; protected set; }
+    protected bool AnimationStarted;
 
-    
+    private void Awake()
+    {
+        Animator = GetComponent<Animator>();
+    }
 
     private void Update()
     {
         if (!IsDead)
         {
-            if(Health<=0)
+            if(Health <= 0)
             {
-                IAAnimator.SetTrigger("IsDead");
-                IsDead=true;
+                Animator.SetTrigger("IsDead");
+                IsDead = true;
+                
+                Invoke(nameof(SwitchScene), 2);
             }
             else 
             {
-                IsAttacking=IAAnimator.GetBool("IsAttacking");
-                IAAnimator.SetBool("StopAttackMelee",!IsAttacking);
-                IAAnimator.SetBool("StopAttackDistance",!IsAttacking);
+                IsAttacking = Animator.GetBool("IsAttacking");
+                Animator.SetBool("StopAttackMelee",!IsAttacking);
+                Animator.SetBool("StopAttackDistance",!IsAttacking);
                 AttackManager();
             }
         }
@@ -51,50 +57,51 @@ public class Enemy : MonoBehaviour
     {
         foreach (var currAttack in attacks)
         { 
-            if (currAttack.Name() == attackName)
+            if (currAttack.Name == attackName)
             { 
-                IAAnimator.SetBool("IsAttacking",true);
-                IAAnimator.SetBool("Attack"+attackName,true);
+                Animator.SetBool("IsAttacking",true);
+                Animator.SetBool("Attack"+attackName,true);
             }
         }
     }
 
     public int IndexNearestPlayer()
     {
-        if (platform.players.Count!=0)
+        if (platform.players.Count != 0)
         {
-            float distanceres=Vector3.Distance(platform.players[0].position, transform.position);
-            int res=0;
-            for(int i=1; i<platform.players.Count;i++)
+            float distanceres = Vector3.Distance(platform.players[0].position, transform.position);
+            int res = 0;
+            for(int i = 1; i < platform.players.Count; i++)
             {
                 float distance = Vector3.Distance(platform.players[i].position, transform.position);
-                if (distance<distanceres) 
+                if (distance < distanceres) 
                 {
-                    res=i;
-                    distanceres=distance;
+                    res = i;
+                    distanceres = distance;
                 }
             }
             return res;
         }
-        else throw new IndexOutOfRangeException("listplayers vide");
+
+        return -1;
     }
     private void StopHolding()
     // called at the beginning of IAAttackDistance animation
     {
-        IAAnimator.SetBool("HoldingWeapon",false);
+        Animator.SetBool("HoldingWeapon",false);
         //_animationStarted=true;
     }
     public void LooseHealth(float damage)
     {
-        isHit=true;
+        IsHit = true;
         Health -= damage;
     }
     protected virtual void FinishAnim()
     {
-        if (platform.players.Count!=0)
+        if (platform.players.Count != 0)
         {
-            float distanceres=Vector3.Distance(platform.players[0].position, transform.position);
-            if (distanceres>radiusAttack)
+            float distanceres = Vector3.Distance(platform.players[0].position, transform.position);
+            if (distanceres > radiusAttack)
             {
                 StopAttack();
             }
@@ -102,12 +109,18 @@ public class Enemy : MonoBehaviour
         }
 
     }
-    protected void Disappear()
-    {
-        gameObject.SetActive(false);
-    }
     protected void ResetKnockback()
     {
-        isHit=false;
+        IsHit = false;
+    }
+
+    private void SwitchScene()
+    {
+        PhotonNetwork.LoadLevel(nextLvl);
+    }
+
+    public void KnockBack()
+    {
+        Animator.SetTrigger("Knockback");
     }
 }
