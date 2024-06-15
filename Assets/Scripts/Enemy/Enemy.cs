@@ -22,6 +22,8 @@ public class Enemy : MonoBehaviour
     protected float EscapeRadius;
     public bool IsHit { get; private set; }
     public int Shots { get; protected set; }
+    [HideInInspector]
+    public bool CanAttack=false;
     protected bool AnimationStarted;
 
     private void Awake()
@@ -89,7 +91,6 @@ public class Enemy : MonoBehaviour
     // called at the beginning of IAAttackDistance animation
     {
         Animator.SetBool("HoldingWeapon",false);
-        //_animationStarted=true;
     }
     public void LooseHealth(float damage)
     {

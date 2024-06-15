@@ -53,6 +53,10 @@ public class EnemyMD : Enemy
         }
         
     }
+    private void SetCanAttack()
+    {
+        CanAttack=!CanAttack;
+    }
     private void CheckForChanging()
     {
         if (platform.players.Count != 0)

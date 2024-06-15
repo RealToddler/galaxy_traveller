@@ -9156,11 +9156,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb40c1e741acd8c428d657bf8e8bdf00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _launcher: {fileID: 8153864152798746692}
-  _gun: {fileID: 1523437731576346937}
-  _projectile: {fileID: 3766673044893641174, guid: ab4fccc7514793b40bac38215f3afa92,
-    type: 3}
-  _eject: {fileID: 3530439638307532847}
+  launcher: {fileID: 0}
+  gun: {fileID: 0}
+  projectile: {fileID: 0}
+  eject: {fileID: 0}
 --- !u!1 &1346639886727539035
 GameObject:
   m_ObjectHideFlags: 0
@@ -13375,12 +13374,10 @@ MonoBehaviour:
   radiusAttack: 15
   attacks:
   - {fileID: 1207882364263229548}
+  damage: 10
   platform: {fileID: 2021442559}
-  IAAnimator: {fileID: 7181387118438913378}
-  Damage: 10
-  IsDead: 0
-  isHit: 0
-  nbshots: 0
+  nextLvl: 
+  CanAttack: 0
 --- !u!1 &8190727028127192111
 GameObject:
   m_ObjectHideFlags: 0
@@ -13854,9 +13851,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 710ef5e2ad839cc43a76843f819918b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agent: {fileID: 7921619521553708225}
-  enemy: {fileID: 8153864152798746692}
-  _rotationSpeed: 5
+  rotationSpeed: 5
 --- !u!120 &8898994201227119843
 LineRenderer:
   serializedVersion: 2

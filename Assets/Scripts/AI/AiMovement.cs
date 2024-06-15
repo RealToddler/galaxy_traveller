@@ -65,7 +65,7 @@ public class AiMovement : MonoBehaviour
             }
             if (distance <= _agent.stoppingDistance + 0.1)
             {
-                _agent.isStopped = true;
+                //_agent.isStopped = true;
             }
             
             else if (!_enemy.IsAttacking)

@@ -9,8 +9,8 @@ public class RespawnPlane : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            other.gameObject.GetComponent<Player>().Respawn();
             other.gameObject.GetComponent<Player>().TakeDamage(25);
+            other.gameObject.GetComponent<Player>().Respawn();
         }
     }
 }

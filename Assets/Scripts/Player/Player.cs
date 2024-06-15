@@ -239,6 +239,7 @@ public class Player : MonoBehaviourPunCallbacks
     public void Respawn()
     {
         transform.position = _respawnPoint;
+        IsInAction=false;
     }
 
     // ==================== All functions called in actions animations ====================

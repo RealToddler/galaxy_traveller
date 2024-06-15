@@ -74,6 +74,7 @@ public class RobotSphereMovement : MonoBehaviourPunCallbacks
         if (other.gameObject.CompareTag("Player"))
         {
             other.gameObject.GetComponent<Player>().TakeDamage(_enemy.damage);
+            other.gameObject.GetComponent<Player>().PlayerAnimator.SetBool("Knockback",true);
             photonView.RPC("ExplodesRPC", RpcTarget.AllBuffered);
         }
     }
