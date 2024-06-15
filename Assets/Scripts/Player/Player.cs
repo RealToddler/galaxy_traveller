@@ -97,6 +97,7 @@ public class Player : MonoBehaviourPunCallbacks
             else if (_inventory.IsTheCurrSelectedItem("Weapon"))
             {
                 LaunchTriggerAnim(_attackDistanceAnim);
+                Invoke(nameof(SetInActionToFalse),1.2f);
             }
             else
             {

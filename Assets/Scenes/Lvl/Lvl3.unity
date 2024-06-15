@@ -2563,7 +2563,8 @@ PrefabInstance:
         type: 3}
       propertyPath: projectile
       value: 
-      objectReference: {fileID: 878817462}
+      objectReference: {fileID: 3766673044893641174, guid: ab4fccc7514793b40bac38215f3afa92,
+        type: 3}
     - target: {fileID: 3121371984472380545, guid: 0906b37af1e639b4891e526c325d277d,
         type: 3}
       propertyPath: m_IsActive
@@ -5738,6 +5739,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: FinalPlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 4699669800681581755, guid: a747bf47a369f10478627a2c62672915,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7879975459685018442, guid: a747bf47a369f10478627a2c62672915,
         type: 3}

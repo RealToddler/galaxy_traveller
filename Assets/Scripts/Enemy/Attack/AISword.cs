@@ -8,7 +8,6 @@ public class AISword : MonoBehaviour
     [SerializeField] private Enemy _launcher;
     private void OnTriggerEnter(Collider obj)
     {
-        print("e");
         if (obj.gameObject.CompareTag("Player") && _launcher.CanAttack )
         {
             Player player= obj.gameObject.GetComponent<Player>();
