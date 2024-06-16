@@ -72,6 +72,7 @@ public class EnemyDistance : Enemy
             float distance = Vector3.Distance(platform.players[IndexNearestPlayer()].position, transform.position);
             if (distance <= radiusAttack)
             {
+                
                 FindAndLaunchAttack("Distance");
             }
             else 

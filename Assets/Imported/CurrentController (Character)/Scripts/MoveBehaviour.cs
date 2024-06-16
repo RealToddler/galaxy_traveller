@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using Photon.Pun;
 using UnityEditor;
 using UnityEngine.InputSystem;
@@ -47,11 +48,14 @@ public class MoveBehaviour : GenericBehaviour
 	// Update is used to set features regardless the active behaviour.
 	void Update()
 	{
+		Musique();
 		if (_view.IsMine && !GetComponent<Player>().IsInAction)
 		{
 			// Get jump input.
 			if (Input.GetButtonDown(_jumpButton) && !_roll && !_jump && behaviourManager.IsCurrentBehaviour(behaviourCode) )
 			{
+				//SoundLibrary.Instance.PlaySound("Saut");
+				
 				_jump = true;
 			}
 			if ( !_roll && !_jump && Input.GetButtonDown(_rollButton)) 
@@ -59,6 +63,55 @@ public class MoveBehaviour : GenericBehaviour
 				_roll = true;
 			}
 		}
+	}
+
+	private void OnCollisionEnter(Collision other)
+	{
+		if (other.gameObject.CompareTag("platforme") && _jump)
+		{
+			
+			Debug.Log("touch");
+		}
+	}
+
+
+	public bool run;
+	void Musique()
+	{
+		if (_jump) SoundLibrary.Instance.Stop();
+		else 
+		{
+			if (_speed > 0.99f && _speed < 1.99f && run)
+			{
+				run = false;
+				Debug.Log("marche");
+				SoundLibrary.Instance.Stop();
+				if (!SoundLibrary.Instance.Emilien()) SoundLibrary.Instance.PlaySound("marche");
+			}
+
+			if (_speed > 0.99f && _speed < 1.99f && !run)
+			{
+				run = false;
+				if (!SoundLibrary.Instance.Emilien()) SoundLibrary.Instance.PlaySound("marche");
+			}
+
+			if (_speed >= 2 && !run)
+			{
+				run = true;
+				Debug.Log("run");
+				SoundLibrary.Instance.Stop();
+				if (!SoundLibrary.Instance.Emilien()) SoundLibrary.Instance.Run("courir");
+			}
+
+			if (_speed >= 2 && run)
+			{
+				run = true;
+				if (!SoundLibrary.Instance.Emilien()) SoundLibrary.Instance.Run("courir");
+			}
+
+			if (_speed < 0.5f) SoundLibrary.Instance.Stop();
+		}
+
 	}
 
 	// LocalFixedUpdate overrides the virtual function of the base class.
@@ -181,6 +234,7 @@ public class MoveBehaviour : GenericBehaviour
 		_speed *= _speedSeeker;
 		if (behaviourManager.IsSprinting())
 		{
+			//SoundLibrary.Instance.PlaySound("courir");
 			_speed = sprintSpeed;
 		}
 		

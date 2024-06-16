@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -39,7 +40,9 @@ public class AiMovement : MonoBehaviour
         }
         
     }
+
     
+
     private void MovementManager()
     {
         if ( _players.Count != 0 && !_animator.GetBool("Backward"))
@@ -81,10 +84,17 @@ public class AiMovement : MonoBehaviour
         }
     }
 
+    
     void Approach()
     {
         _agent.SetDestination(_players[_indexNearestPlayer].position);
+        if (!SoundLibrary.Instance.Emilien()) SoundLibrary.Instance.PlaySound("marche");
+        _agent.SetDestination(_players[_indexNearestPlayer].position);
     }
+
+
+    
+
     void Rotate()
     {
         if (_players.Count != 0)
