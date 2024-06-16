@@ -10,7 +10,7 @@ public class PlatformEnemy : MonoBehaviour
     {
         if (obj.gameObject.CompareTag("Player"))
         {
-            if (!players.Contains(obj.gameObject.transform))players.Add(obj.gameObject.transform);
+            if (!players.Contains(obj.gameObject.transform)) players.Add(obj.gameObject.transform);
         }
     }
     private void OnTriggerExit (Collider obj)

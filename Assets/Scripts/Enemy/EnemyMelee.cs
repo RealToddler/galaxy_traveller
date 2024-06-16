@@ -1,11 +1,18 @@
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Unity.VisualScripting;
 
 public class EnemyMelee : Enemy
 {
     private float detectionAngle = 90;
+
+    
     protected void Start()
     {
         if (_rsm!=null) return;
+        
         IsAttacking = false;
         Health = MaxHealth;
         Animator.SetBool("IsShaking",true);
@@ -55,7 +62,7 @@ public class EnemyMelee : Enemy
             return false;
         }
     }
-    public override void AttackManager()
+    public async override void AttackManager()
     {
         if (!IsDead && !IsAttacking && !Animator.GetBool("Backward") && platform.players.Count != 0)
         {
@@ -67,6 +74,9 @@ public class EnemyMelee : Enemy
                     FindAndLaunchAttack("Melee");
                 //}
                 
+                FindAndLaunchAttack("Melee");
+                await Task.Delay(1050);
+                SoundLibrary.Instance.PlaySound("epee");
             }
             else 
             {

@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 using Photon.Pun;
 using Unity.VisualScripting;
@@ -74,7 +75,7 @@ public class Player : MonoBehaviourPunCallbacks
         }
     }
 
-    private void ActionManager()
+    private async Task ActionManager()
     {
         if (Input.GetButtonDown("Action1") && Health > 0 && Oxygen > 0 && !IsHit && !IsInAction && _moveBehaviour.IsGrounded())
         {
@@ -90,11 +91,15 @@ public class Player : MonoBehaviourPunCallbacks
                 _inventory.IsTheCurrSelectedItem("FireSword"))
             {
                 LaunchTriggerAnim(_attackMeleeAnim);
+                await Task.Delay(300);
+                SoundLibrary.Instance.PlaySound("epee");
                 HasHit=true;
                 Invoke(nameof(SetInActionToFalse),1.2f);
             }
             else if (_inventory.IsTheCurrSelectedItem("Weapon"))
             {
+                await Task.Delay(1000);
+                SoundLibrary.Instance.PlaySound("fusil");
                 LaunchTriggerAnim(_attackDistanceAnim);
                 Invoke(nameof(SetInActionToFalse),1.2f);
             }

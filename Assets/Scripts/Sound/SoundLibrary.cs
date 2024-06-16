@@ -15,6 +15,7 @@ public class SoundLibrary : MonoBehaviour
     {
         Instance = this;
         _audioSource = GetComponent<AudioSource>();
+        _audioSource.volume = 0.5f;
     }
 
     public void PlaySound(string soundName)
@@ -23,7 +24,26 @@ public class SoundLibrary : MonoBehaviour
 
         if (first != null)
         {
+            _audioSource.pitch = 1;
             _audioSource.PlayOneShot(first);
         }
     }
+
+    public bool Emilien()
+    {
+        return _audioSource.isPlaying;
+    }
+
+    public void Run(string soundName)
+    {
+        _audioSource.pitch = 2;
+        var first = listAudio.FirstOrDefault(soundData => soundData.name == soundName);
+        _audioSource.PlayOneShot(first);
+    }
+
+    public void Stop()
+    {
+        _audioSource.Stop();
+    }
+    
 }
