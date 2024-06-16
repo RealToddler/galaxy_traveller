@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.32698488, g: 0.28154895, b: 0.41663513, a: 1}
+  m_IndirectSpecularColor: {r: 0.3779304, g: 0.2839791, b: 0.4272543, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -17266,7 +17266,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AgentTypeID: 0
-  m_CollectObjects: 0
+  m_CollectObjects: 2
   m_Size: {x: 10, y: 10, z: 10}
   m_Center: {x: 0, y: 2, z: 0}
   m_LayerMask:
@@ -17282,7 +17282,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: d30ccb2c07b19324bba8433a9ae3b07c, type: 2}
   m_BuildHeightMesh: 0
 --- !u!33 &33893439491051313
 MeshFilter:
@@ -20793,7 +20793,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.011}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.77903, y: 0.77903, z: 0.77903}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4151742887533141}

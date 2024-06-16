@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.TextCore.Text;
 
 public class RobotSphereMovement : MonoBehaviourPunCallbacks
 {
-    [Header("Objects")]
     [SerializeField] public GameObject explosion;
-
     [SerializeField] public GameObject robot;
-    
+
     private NavMeshAgent _agent;
     private EnemyMelee _enemy;
     private Animator _animator;
@@ -18,54 +17,79 @@ public class RobotSphereMovement : MonoBehaviourPunCallbacks
     private List<Transform> _players;
     private int _indexNearestPlayer;
     private bool _playerDetected;
-    
+    private Vector3 _spawnPoint;
+
 
     private void Start()
     {
         _enemy = GetComponent<EnemyMelee>();
         _agent = GetComponent<NavMeshAgent>();
         _animator = GetComponent<Animator>();
-        
+
         _players = _enemy.platform.players;
+        _spawnPoint = transform.position;
+
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            GetComponent<NavMeshAgent>().enabled = false;
+        }
     }
 
     void Update()
     {
+        if (!PhotonNetwork.IsMasterClient) return;
+        
         MovementManager();
         DetectPlayer();
-        _animator.SetFloat("Speed", _agent.velocity.magnitude);
+
+        FloatAnim("Speed", _agent.velocity.magnitude);
     }
 
     private void DetectPlayer()
     {
-        _playerDetected = _enemy.platform.players.Count != 0;
-
-        if (_playerDetected != _animator.GetBool("PlayerDetected"))
+        if (_players.Count == 0)
         {
-            _animator.SetBool("PlayerDetected", _playerDetected);
+            LaunchBoolAnim("PlayerDetected", false);
+            _agent.speed = 5;
+        }
+        else
+        {
+            _agent.speed = 8;
+            RaycastHit hit;
+
+            if (Physics.Raycast(transform.position + new Vector3(0, 1, 0), transform.forward, out hit, 30f))
+            {
+                if (hit.transform.CompareTag("Player"))
+                {
+                    LaunchBoolAnim("PlayerDetected", true);
+                    _agent.isStopped = false;
+                }
+            }
         }
     }
-    
+
     private void MovementManager()
     {
         if (_players.Count != 0)
         {
             _indexNearestPlayer = _enemy.IndexNearestPlayer();
-            
-            if(!_animator.GetBool("PlayerDetected"))
+
+            if (!_animator.GetBool("PlayerDetected"))
             {
                 _agent.isStopped = true;
-                transform.Rotate(0,1,0,Space.Self);
-                _animator.SetBool("IsTurning", true);
+                transform.Rotate(0, 2, 0, Space.Self);
+                LaunchBoolAnim("IsTurning", true);
             }
             else
             {
-                _animator.SetBool("IsTurning", false);
+                LaunchBoolAnim("IsTurning", false);
+                _agent.SetDestination(_players[_indexNearestPlayer].position);
             }
         }
         else
         {
-            if (_agent.remainingDistance < 0.75f && !_hasDestination) StartCoroutine(GetNewDestination());
+            _agent.SetDestination(_spawnPoint);
+            _agent.isStopped = false;
         }
     }
 
@@ -83,32 +107,34 @@ public class RobotSphereMovement : MonoBehaviourPunCallbacks
         Destroy(gameObject);
     }
 
-    IEnumerator GetNewDestination()
-    {
-        _hasDestination = true;
-        yield return new WaitForSeconds(3);
-
-        Vector3 nextDestination = transform.position;
-        nextDestination += Random.Range(5, 15) * new Vector3(Random.Range(-1f, 1), 0f, Random.Range(-1f, 1f)).normalized;
-
-        NavMeshHit hit;
-        if(NavMesh.SamplePosition(nextDestination, out hit, 3, NavMesh.AllAreas))
-        {
-            _agent.SetDestination(hit.position);
-        }
-        _hasDestination = false;
-    }
-    void Approach()
-    {
-        _agent.isStopped = false;
-        _agent.SetDestination(_players[_indexNearestPlayer].position);
-    }
-    
     [PunRPC]
     private void ExplodesRPC()
     {
         Instantiate(explosion, transform).GetComponent<ParticleSystem>().Play();
         robot.SetActive(false);
         Invoke(nameof(Destroy), 1);
+    }
+    
+    // ======================================= Animation RPC ============================================
+    private void LaunchBoolAnim(string anim, bool value)
+    {
+        photonView.RPC("LaunchBoolAnimRPC", RpcTarget.AllBuffered, anim, value);
+    }
+    
+    [PunRPC]
+    private void LaunchBoolAnimRPC(string anim, bool value)
+    {
+        _animator.SetBool(anim, value);
+    }
+    
+    private void FloatAnim(string anim, float value)
+    {
+        photonView.RPC("FloatAnimRPC", RpcTarget.AllBuffered, anim, value);
+    }
+    
+    [PunRPC]
+    private void FloatAnimRPC(string anim, float value)
+    {
+        _animator.SetFloat(anim, value);
     }
 }

@@ -2179,13 +2179,12 @@ GameObject:
   - component: {fileID: 7977888971574830450}
   - component: {fileID: 8321573267239944595}
   - component: {fileID: 4219362303667149698}
-  - component: {fileID: 7708302309280748809}
   - component: {fileID: 7906083502269208112}
   - component: {fileID: 4372247581513169475}
   - component: {fileID: 2969701174479603734}
-  - component: {fileID: 2518734487148904897}
   - component: {fileID: 1446613121897447929}
-  - component: {fileID: 8463145472960659340}
+  - component: {fileID: 965578231303776954}
+  - component: {fileID: 316829325646588684}
   m_Layer: 0
   m_Name: robotSphere
   m_TagString: Enemy
@@ -2203,7 +2202,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5778353215680682181}
@@ -2279,23 +2278,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &7708302309280748809
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5459714989010939381}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0babdf59237e3bf42baa0a15f08423d8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  radiusAttack: 1
-  attacks: []
-  damage: 10
-  platform: {fileID: 0}
-  nextLvl: 
 --- !u!135 &7906083502269208112
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2350,39 +2332,11 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 2518734487148904897}
   - {fileID: 1446613121897447929}
-  - {fileID: 8463145472960659340}
+  - {fileID: 965578231303776954}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &2518734487148904897
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5459714989010939381}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowLayerWeightsInspector: 1
-  ShowParameterInspector: 1
-  m_SynchronizeParameters:
-  - Type: 4
-    SynchronizeType: 1
-    Name: PlayerDetected
-  - Type: 4
-    SynchronizeType: 1
-    Name: IsTurning
-  - Type: 1
-    SynchronizeType: 2
-    Name: Speed
-  m_SynchronizeLayers:
-  - SynchronizeType: 0
-    LayerIndex: 0
 --- !u!114 &1446613121897447929
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2399,7 +2353,7 @@ MonoBehaviour:
   m_SynchronizeAngularVelocity: 1
   m_TeleportEnabled: 1
   m_TeleportIfDistanceGreaterThan: 3
---- !u!114 &8463145472960659340
+--- !u!114 &965578231303776954
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2408,30 +2362,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 5459714989010939381}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8efc6b1d64977384eb3405357896c656, type: 3}
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_PositionModel:
-    SynchronizeEnabled: 1
-    TeleportEnabled: 1
-    TeleportIfDistanceGreaterThan: 3
-    InterpolateOption: 2
-    InterpolateMoveTowardsSpeed: 1
-    InterpolateLerpSpeed: 1
-    ExtrapolateOption: 0
-    ExtrapolateSpeed: 1
-    ExtrapolateIncludingRoundTripTime: 1
-    ExtrapolateNumberOfStoredPositions: 1
-  m_RotationModel:
-    SynchronizeEnabled: 1
-    InterpolateOption: 1
-    InterpolateRotateTowardsSpeed: 180
-    InterpolateLerpSpeed: 5
-  m_ScaleModel:
-    SynchronizeEnabled: 0
-    InterpolateOption: 0
-    InterpolateMoveTowardsSpeed: 1
-    InterpolateLerpSpeed: 0
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 0
+--- !u!114 &316829325646588684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5459714989010939381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0babdf59237e3bf42baa0a15f08423d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radiusAttack: 1
+  attacks: []
+  damage: 10
+  platform: {fileID: 0}
+  nextLvl: 
+  CanAttack: 0
 --- !u!1 &5464646284570111135
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,6 +8,8 @@ TagManager:
   - Enemy
   - GameOverMenu
   - Terrain
+  - FxTemporaire
+  - Platform
   layers:
   - Default
   - TransparentFX

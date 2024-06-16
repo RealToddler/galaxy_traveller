@@ -46,6 +46,8 @@ MonoBehaviour:
   - UpdateItemVisual
   - LaunchIt
   - ExplodesRPC
+  - FloatAnimRPC
+  - LaunchBoolAnimRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

@@ -23,7 +23,7 @@ public class Enemy : MonoBehaviour
     public bool IsHit { get; private set; }
     public int Shots { get; protected set; }
     [HideInInspector]
-    public bool CanAttack=false;
+    public bool CanAttack;
     protected bool AnimationStarted;
 
     private void Awake()

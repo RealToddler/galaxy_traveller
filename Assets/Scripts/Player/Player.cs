@@ -38,12 +38,12 @@ public class Player : MonoBehaviourPunCallbacks
     public float Oxygen { get; private set; }
     public bool IsInAction { get; set; }
     public bool IsAiming { get; set; }
-    public bool HasHit{get;set;}
+    public bool HasHit { get; set; }
 
     public bool IsRespawning;
     public bool IsHit;
     [HideInInspector]
-    public bool CanAttack=false;
+    public bool CanAttack;
     [Header("Attack Distance")]
     [SerializeField] private GameObject _projectile;
     [SerializeField] private Transform _eject;
@@ -59,7 +59,6 @@ public class Player : MonoBehaviourPunCallbacks
         _moveBehaviour = GetComponent<MoveBehaviour>();
         _respawnPoint = transform.position;
         _ui = gameObject.GetComponent<PlayerManager>().ui;
-        _playerAnimator=GetComponent<Animator>();
         _volume = Camera.main!.GetComponentInChildren<PostProcessVolume>();
         _volume.profile.TryGetSettings(out _vignette);
     }
@@ -199,7 +198,7 @@ public class Player : MonoBehaviourPunCallbacks
     // Remove damage to player health
     public void TakeDamage(float damage)
     {
-        CanAttack=false;
+        CanAttack = false;
         if (_isInvincible)
         {
             return;
@@ -285,15 +284,15 @@ public class Player : MonoBehaviourPunCallbacks
     }
     public void ResetKnockback()
     {
-        IsHit=false;
+        IsHit = false;
     }
     private void SetCanAttackTrue()
     {
-        CanAttack=true;
+        CanAttack = true;
     }
     private void SetCanAttackFalse()
     {
-        CanAttack=false;
+        CanAttack = false;
     }
     
     // ==================== Trigger animations synchronisation ====================

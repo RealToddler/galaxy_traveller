@@ -1,9 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using Photon.Pun;
 using UnityEngine;
-using Object = System.Object;
 
 public class PlatformEnemy : MonoBehaviour
 {
@@ -19,8 +17,6 @@ public class PlatformEnemy : MonoBehaviour
     {
         if (obj.gameObject.CompareTag("Player"))
         {
-            //print (obj.GetComponent<Rigidbody>().velocity.y);
-            //if (obj.GetComponent<Rigidbody>().velocity.y<0.1) players.Remove(obj.gameObject.transform);
             Invoke(nameof(JumpDelay),2.5f);
         }
     }
