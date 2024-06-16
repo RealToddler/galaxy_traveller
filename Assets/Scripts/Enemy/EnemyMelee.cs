@@ -5,6 +5,7 @@ public class EnemyMelee : Enemy
     private float detectionAngle = 90;
     protected void Start()
     {
+        if (_rsm!=null) return;
         IsAttacking = false;
         Health = MaxHealth;
         Animator.SetBool("IsShaking",true);

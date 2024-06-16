@@ -25,14 +25,17 @@ public class Enemy : MonoBehaviour
     [HideInInspector]
     public bool CanAttack;
     protected bool AnimationStarted;
+    protected RobotSphereMovement _rsm;
 
     private void Awake()
     {
         Animator = GetComponent<Animator>();
+        _rsm=GetComponent<RobotSphereMovement>();
     }
 
     private void Update()
     {
+        if (_rsm!=null) return;
         if (!IsDead)
         {
             if(Health <= 0)

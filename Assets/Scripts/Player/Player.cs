@@ -184,7 +184,7 @@ public class Player : MonoBehaviourPunCallbacks
         {
             Health += 0.005f;
         }
-        else if (Health < 100)
+        else if (Health is >50 and < 100)
         {
             Health += 0.001f;
         }
