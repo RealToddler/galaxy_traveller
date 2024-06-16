@@ -118,7 +118,7 @@ public class Enemy : MonoBehaviour
         IsHit = false;
     }
 
-    private void SwitchScene()
+    protected void SwitchScene()
     {
         PhotonNetwork.LoadLevel(nextLvl);
     }

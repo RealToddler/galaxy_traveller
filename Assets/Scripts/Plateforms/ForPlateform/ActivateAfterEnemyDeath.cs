@@ -10,9 +10,10 @@ public class ActivateAfterEnnemyDeath : MonoBehaviour
 
     private void Update()
     {
-        if (enemy.Health <= 0)
+        if (enemy.IsDead)
         {
-            platform.gameObject.SetActive(true);
+            print("e");
+            platform.SetActive(true);
         }
     }
 }

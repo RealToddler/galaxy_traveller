@@ -23,6 +23,7 @@ public class EnemyDistance : Enemy
                 Animator.SetBool("IsAttacking",false);
                 Animator.SetBool("Backward",false);
                 IsDead=true;
+                Invoke(nameof(SwitchScene),2);
             }
             else 
             {
