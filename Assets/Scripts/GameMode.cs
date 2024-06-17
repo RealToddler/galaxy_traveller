@@ -10,6 +10,5 @@ public class GameMode : MonoBehaviour
     private void Start()
     {
         DontDestroyOnLoad(this);
-        //ok
     }
 }
