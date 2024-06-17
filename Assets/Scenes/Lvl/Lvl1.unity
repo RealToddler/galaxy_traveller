@@ -2793,6 +2793,7 @@ MonoBehaviour:
   - {fileID: 675243667}
   playerPrefab: {fileID: 4699669800681581755, guid: a747bf47a369f10478627a2c62672915,
     type: 3}
+  timeToCompleteLvl: 10
 --- !u!4 &391851038
 Transform:
   m_ObjectHideFlags: 0

@@ -42,7 +42,7 @@ public class Player : MonoBehaviourPunCallbacks
     public bool IsInAction { get; set; }
     public bool IsAiming { get; set; }
     public bool HasHit { get; set; }
-    public float LvlTime { get; set; } = 10f;
+    private float _lvlTime = 60f;
 
     public bool IsRespawning;
     public bool IsHit;
@@ -67,6 +67,7 @@ public class Player : MonoBehaviourPunCallbacks
         _ui = gameObject.GetComponent<PlayerManager>().ui;
         _volume = Camera.main!.GetComponentInChildren<PostProcessVolume>();
         _volume.profile.TryGetSettings(out _vignette);
+        _lvlTime = GameManager.Instance.timeToCompleteLvl;
         
         CanMove(false);
 
@@ -91,6 +92,12 @@ public class Player : MonoBehaviourPunCallbacks
             {
                 _gameStarted = true;
                 StartCoroutine(nameof(CountDown));
+            }
+
+            if (GameMode.Instance.IsMultiPlayer && _gameStarted && PhotonNetwork.PlayerList.Length == 1)
+            {
+                PhotonNetwork.Disconnect();
+                SceneManager.LoadScene("GameOver");
             }
         }
     }
@@ -176,7 +183,7 @@ public class Player : MonoBehaviourPunCallbacks
     // Remove qty of O2 to player Oxygen
     IEnumerator OxygenManager()
     {
-        var oxPerSec = maxOxygen / LvlTime / 10;
+        var oxPerSec = maxOxygen / _lvlTime / 10;
         
         while (true)
         {
@@ -327,6 +334,7 @@ public class Player : MonoBehaviourPunCallbacks
     // Call the game over menu
     public void ToGameOverScreen()
     {
+        PhotonNetwork.Disconnect();
         SceneManager.LoadScene("GameOver");
     }
     

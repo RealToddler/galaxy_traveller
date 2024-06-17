@@ -14,6 +14,7 @@ using UnityEngine.SceneManagement;
 using Photon.Pun;
 using Photon.Realtime;
 using Unity.VisualScripting;
+using UnityEngine.Serialization;
 
 #pragma warning disable 649
 
@@ -36,6 +37,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     #region Private Fields
     
     [SerializeField] private GameObject playerPrefab;
+    [SerializeField] public float timeToCompleteLvl = 60f;
 
     #endregion
 
