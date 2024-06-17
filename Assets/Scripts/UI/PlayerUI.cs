@@ -15,6 +15,10 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private Text itemsTips;
     [SerializeField] private Text globalTips;
     [SerializeField] private GameObject sight;
+    [SerializeField] public RectTransform bossBarFill;
+    [SerializeField] private GameObject bossBar;
+    [SerializeField] public Text bossName;
+
 
     private Player _player;
     private Inventory _inventory;
@@ -81,15 +85,34 @@ public class PlayerUI : MonoBehaviour
     }
 
     // Refresh Health Bar
-    void RefreshHealthAmount()
+    private void RefreshHealthAmount()
     {
         healthBarFill.localScale = new Vector3(1f, _player.Health/_player.maxHealth, 1f);
     }
     
     // Refresh Oxygen Bar
-    void RefreshOxygenAmount()
+    private void RefreshOxygenAmount()
     {
         oxygenBarFill.localScale = new Vector3(1f, _player.Oxygen/_player.maxOxygen, 1f);
+    }
+    
+    // Refresh Boss Bar
+    public void RefreshBossAmount(float bossHealth, bool activate)
+    {
+        if (activate && !bossBar.gameObject.activeSelf)
+        {
+            bossBar.gameObject.SetActive(true);
+        }
+
+        if (!activate && bossBar.gameObject.activeSelf)
+        {
+            bossBar.gameObject.SetActive(false);
+        }
+        
+        if (activate)
+        {
+            bossBarFill.localScale = new Vector3(1f, bossHealth/100, 1f);
+        }
     }
     
     // Refresh the visual of inventory

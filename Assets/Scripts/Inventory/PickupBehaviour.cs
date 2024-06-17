@@ -1,26 +1,30 @@
-#nullable enable
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using JetBrains.Annotations;
 using Photon.Pun;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 public class PickupBehaviour : MonoBehaviourPun
 {
-    [SerializeField] private MoveBehaviour playerMoveBehaviour;
-    [SerializeField] private Animator playerAnimator;
-    [SerializeField] private Inventory inventory;
+    private MoveBehaviour _moveBehaviour;
+    private Animator _animator;
+    private Inventory _inventory;
+    private Player _player;
     
     private readonly List<Item> _nearItems = new();
-    private Item? _nearestItem;
+    private Item _nearestItem;
     
     private static readonly int Pickup = Animator.StringToHash("Pickup");
 
+    private void Start()
+    {
+        _moveBehaviour = GetComponent<MoveBehaviour>();
+        _animator = GetComponent<Animator>();
+        _inventory = GetComponent<Inventory>();
+        _player = GetComponent<Player>();
+    }
+
     private void Update()
     {
-        if (!photonView.IsMine || GetComponent<Player>().IsInAction)
+        if (!photonView.IsMine || _player.IsInAction)
         {
             return;
         }
@@ -66,10 +70,10 @@ public class PickupBehaviour : MonoBehaviourPun
             
             _nearItems.Remove(_nearestItem);
         }
-        if (Input.GetButtonDown("Release") && !inventory.IsTheCurrSlotFree())
+        if (Input.GetButtonDown("Release") && !_inventory.IsTheCurrSlotFree())
         {
-            inventory.ReleaseItem();
-            inventory.Content[inventory.ItemIndex] = null;
+            _inventory.ReleaseItem();
+            _inventory.Content[_inventory.ItemIndex] = null;
         }
     }
 
@@ -81,13 +85,13 @@ public class PickupBehaviour : MonoBehaviourPun
             return;
         }
         
-        if (!playerMoveBehaviour.canMove)
+        if (!_moveBehaviour.canMove)
         {
             return;
         }
         
-        playerAnimator.SetTrigger(Pickup);
-        playerMoveBehaviour.canMove = false;
+        _animator.SetTrigger(Pickup);
+        _moveBehaviour.canMove = false;
     }
     
     // Add the item to inventory and destroy it
@@ -98,7 +102,7 @@ public class PickupBehaviour : MonoBehaviourPun
             return;
         }
         
-        inventory.AddItem(_nearestItem!.itemData);
+        _inventory.AddItem(_nearestItem!.itemData);
         _nearestItem.CollectItem();
         _nearestItem = null;
     }
@@ -111,6 +115,6 @@ public class PickupBehaviour : MonoBehaviourPun
             return;
         }
         
-        playerMoveBehaviour.canMove = true;
+        _moveBehaviour.canMove = true;
     }
 }

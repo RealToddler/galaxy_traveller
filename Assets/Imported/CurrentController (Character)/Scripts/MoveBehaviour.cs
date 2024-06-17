@@ -48,7 +48,8 @@ public class MoveBehaviour : GenericBehaviour
 	// Update is used to set features regardless the active behaviour.
 	void Update()
 	{
-		Musique();
+		SoundEffect();
+		
 		if (_view.IsMine && !GetComponent<Player>().IsInAction)
 		{
 			// Get jump input.
@@ -64,54 +65,26 @@ public class MoveBehaviour : GenericBehaviour
 			}
 		}
 	}
-
-	private void OnCollisionEnter(Collision other)
+	
+	private void SoundEffect()
 	{
-		if (other.gameObject.CompareTag("platforme") && _jump)
+		if (!IsGrounded() || _speed == 0)
 		{
-			
-			Debug.Log("touch");
+			AudioManager.Instance.Stop("Walk");
+			AudioManager.Instance.Stop("Run");
+			return;
 		}
-	}
-
-
-	public bool run;
-	void Musique()
-	{
-		if (_jump) SoundLibrary.Instance.Stop();
-		else 
+		
+		if (_speed is > 0 and < 2f && !AudioManager.Instance.IsPlaying("Walk"))
 		{
-			if (_speed > 0.99f && _speed < 1.99f && run)
-			{
-				run = false;
-				Debug.Log("marche");
-				SoundLibrary.Instance.Stop();
-				if (!SoundLibrary.Instance.Emilien()) SoundLibrary.Instance.PlaySound("marche");
-			}
-
-			if (_speed > 0.99f && _speed < 1.99f && !run)
-			{
-				run = false;
-				if (!SoundLibrary.Instance.Emilien()) SoundLibrary.Instance.PlaySound("marche");
-			}
-
-			if (_speed >= 2 && !run)
-			{
-				run = true;
-				Debug.Log("run");
-				SoundLibrary.Instance.Stop();
-				if (!SoundLibrary.Instance.Emilien()) SoundLibrary.Instance.Run("courir");
-			}
-
-			if (_speed >= 2 && run)
-			{
-				run = true;
-				if (!SoundLibrary.Instance.Emilien()) SoundLibrary.Instance.Run("courir");
-			}
-
-			if (_speed < 0.5f) SoundLibrary.Instance.Stop();
+			AudioManager.Instance.Play("Walk"); 
+			AudioManager.Instance.Stop("Run");
 		}
-
+		else if (_speed >= 2 && !AudioManager.Instance.IsPlaying("Run"))
+		{
+			AudioManager.Instance.Play("Run");
+			AudioManager.Instance.Stop("Walk");
+		}
 	}
 
 	// LocalFixedUpdate overrides the virtual function of the base class.
@@ -140,6 +113,7 @@ public class MoveBehaviour : GenericBehaviour
 
 	public void Bounce(float bounceForce)
 	{
+		print("Bounce");
 		behaviourManager.LockTempBehaviour(this.behaviourCode);
 		behaviourManager.GetAnim.SetBool(_jumpBool, true);
 		RemoveVerticalVelocity();

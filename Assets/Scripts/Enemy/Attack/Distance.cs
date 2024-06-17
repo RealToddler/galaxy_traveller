@@ -8,26 +8,23 @@ public class Distance : Attack
     [SerializeField] private GameObject _gun;
     [SerializeField] private GameObject _projectile;
     [SerializeField] private Transform _eject;
-    
-
-    
 
     void Start()
     {
-        if (_launcher is EnemyDistance) _launcher=(EnemyDistance)_launcher;
-        else if (_launcher is EnemyMD)  _launcher=(EnemyMD)_launcher;
-        _name="Distance";
-        _damage=_launcher.Damage;
+        if (launcher is EnemyDistance) launcher=(EnemyDistance)launcher;
+        else if (launcher is EnemyMD)  launcher=(EnemyMD)launcher;
+        Name = "Distance";
+        Damage = launcher.damage;
     }
 
     public override void LaunchAttack()
     {
-        if (_launcher.nbshots>0 && _launcher.platform.players.Count!=0 &&  _launcher.platform.players[_launcher.IndexNearestPlayer()].GetComponent<Player>().Health>0)
+        if (launcher.Shots>0 && launcher.platform.players.Count!=0 &&  launcher.platform.players[launcher.IndexNearestPlayer()].GetComponent<Player>().Health>0)
         {
             GameObject curr=Instantiate(_projectile, _eject.position, _eject.rotation);
-            curr.GetComponent<Rigidbody>().velocity=_launcher.transform.forward*50;
+            curr.GetComponent<Rigidbody>().velocity=launcher.transform.forward*50;
             print("distance");
-            SoundLibrary.Instance.PlaySound("fusil");
+            AudioManager.Instance.Play("Gun");
         }        
     }
     

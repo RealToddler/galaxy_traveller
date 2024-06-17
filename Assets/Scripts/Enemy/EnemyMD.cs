@@ -15,7 +15,7 @@ public class EnemyMD : Enemy
     private static readonly int IsShaking = Animator.StringToHash("IsShaking");
     private static readonly int HoldingWeapon = Animator.StringToHash("HoldingWeapon");
     private static readonly int Attacking = Animator.StringToHash("IsAttacking");
-    private static readonly int IsDead = Animator.StringToHash("IsDead");
+    private static readonly int IsDeadAnim = Animator.StringToHash("IsDead");
     private static readonly int AttackDistance = Animator.StringToHash("AttackDistance");
     private static readonly int AttackMelee = Animator.StringToHash("AttackMelee");
     private static readonly int Backward = Animator.StringToHash("Backward");
@@ -33,7 +33,7 @@ public class EnemyMD : Enemy
         {
             if(Health <= 0)
             {
-                Animator.SetTrigger(IsDead);
+                Animator.SetTrigger(IsDeadAnim);
                 Animator.SetBool(Attacking, false);
                 base.IsDead = true;
             }

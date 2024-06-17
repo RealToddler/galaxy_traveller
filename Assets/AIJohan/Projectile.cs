@@ -31,5 +31,6 @@ public class Projectile : MonoBehaviour
     void Start()
     {
         Destroy(gameObject,1f);
+        AudioManager.Instance.Play("Gun");
     }
 }

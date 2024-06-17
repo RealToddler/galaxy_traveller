@@ -23,8 +23,7 @@ public class AttackDistance : Attack
         if (launcher.Shots > 0 && launcher.platform.players.Count != 0 &&  launcher.platform.players[launcher.IndexNearestPlayer()].GetComponent<Player>().Health>0)
         {
             GameObject curr = Instantiate(projectile, eject.position, eject.rotation);
-            curr.GetComponent<Rigidbody>().velocity=launcher.transform.forward * 50;
-            print("distance");
+            curr.GetComponent<Rigidbody>().velocity = launcher.transform.forward * 50;
         }        
     }
     

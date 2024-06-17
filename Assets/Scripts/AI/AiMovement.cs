@@ -88,7 +88,7 @@ public class AiMovement : MonoBehaviour
     void Approach()
     {
         _agent.SetDestination(_players[_indexNearestPlayer].position);
-        if (!SoundLibrary.Instance.Emilien()) SoundLibrary.Instance.PlaySound("marche");
+        // sound walk AI
         _agent.SetDestination(_players[_indexNearestPlayer].position);
     }
 

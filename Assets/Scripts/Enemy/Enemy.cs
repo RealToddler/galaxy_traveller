@@ -1,9 +1,8 @@
-using System;
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviourPunCallbacks
 {
     [Header("Attack's proprieties")]
     [SerializeField] public float radiusAttack;
@@ -40,7 +39,7 @@ public class Enemy : MonoBehaviour
         {
             if(Health <= 0)
             {
-                Animator.SetTrigger("IsDead");
+                UpdateTriggerAnim(Animator.StringToHash("IsDead"));
                 IsDead = true;
                 
                 Invoke(nameof(SwitchScene), 2);
@@ -48,8 +47,8 @@ public class Enemy : MonoBehaviour
             else 
             {
                 IsAttacking = Animator.GetBool("IsAttacking");
-                Animator.SetBool("StopAttackMelee",!IsAttacking);
-                Animator.SetBool("StopAttackDistance",!IsAttacking);
+                Animator.SetBool("StopAttackMelee", !IsAttacking);
+                Animator.SetBool("StopAttackDistance", !IsAttacking);
                 AttackManager();
             }
         }
@@ -63,9 +62,10 @@ public class Enemy : MonoBehaviour
         foreach (var currAttack in attacks)
         { 
             if (currAttack.Name == attackName)
-            { 
+            {
                 Animator.SetBool("IsAttacking",true);
-                Animator.SetBool("Attack"+attackName,true);
+                Animator.SetBool("Attack" + attackName,true);
+                Invoke(nameof(ResetKnockback), 0.9f);
             }
         }
     }
@@ -95,10 +95,10 @@ public class Enemy : MonoBehaviour
     {
         Animator.SetBool("HoldingWeapon",false);
     }
-    public void LooseHealth(float damage)
+    public void LooseHealth(float damages)
     {
         IsHit = true;
-        Health -= damage;
+        Health -= damages;
     }
     protected virtual void FinishAnim()
     {
@@ -109,9 +109,7 @@ public class Enemy : MonoBehaviour
             {
                 StopAttack();
             }
-
         }
-
     }
     protected void ResetKnockback()
     {
@@ -125,6 +123,39 @@ public class Enemy : MonoBehaviour
 
     public void KnockBack()
     {
-        Animator.SetTrigger("Knockback");
+        UpdateTriggerAnim(Animator.StringToHash("Knockback"));
+    }
+    
+    // ======================================= Animation RPC ============================================
+    // protected void UpdateBoolAnim(string anim, bool value)
+    // {
+    //     photonView.RPC("BoolAnimRPC", RpcTarget.AllBuffered, anim, value);
+    // }
+    //
+    // [PunRPC]
+    // private void BoolAnimRPC(string anim, bool value)
+    // {
+    //     Animator.SetBool(anim, value);
+    // }
+    
+    protected void UpdateFloatAnim(string anim, float value)
+    {
+        photonView.RPC("FloatAnimRPC", RpcTarget.AllBuffered, anim, value);
+    }
+    
+    [PunRPC]
+    private void FloatAnimRPC(string anim, float value)
+    {
+        Animator.SetFloat(anim, value);
+    }
+    
+    protected void UpdateTriggerAnim(int anim)
+    {
+        photonView.RPC("TriggerAnimRPC", RpcTarget.AllBuffered, anim);  
+    }
+    [PunRPC]
+    private void TriggerAnimRPC(int anim)
+    {
+        Animator.SetTrigger(anim);
     }
 }

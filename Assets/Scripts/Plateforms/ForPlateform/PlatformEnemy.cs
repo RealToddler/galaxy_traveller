@@ -1,19 +1,48 @@
 using System;
 using System.Collections.Generic;
+using System.Net.Mime;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PlatformEnemy : MonoBehaviour
 {
     public List<Transform> players;
-    private void OnTriggerEnter(Collider obj)
+    private PlayerUI _ui;
+
+    [SerializeField] private bool bossPlatform;
+    [SerializeField] private Enemy enemy;
+    [SerializeField] private string bossName;
+    
+    private void Start()
+    {
+        if (bossPlatform) Invoke(nameof(SetUi), 2);
+    }
+
+    private void SetUi()
+    {
+        _ui = PlayerManager.LocalPlayerInstance.gameObject.GetComponent<PlayerManager>().ui.GetComponent<PlayerUI>();
+        _ui.bossName.text = bossName;
+    }
+    
+    private void OnCollisionEnter(Collision obj)
     {
         if (obj.gameObject.CompareTag("Player"))
         {
             if (!players.Contains(obj.gameObject.transform)) players.Add(obj.gameObject.transform);
         }
     }
-    private void OnTriggerExit (Collider obj)
+    private void OnCollisionStay(Collision obj)
+    {
+        if (obj.gameObject.CompareTag("Player"))
+        {
+            if (!players.Contains(obj.gameObject.transform))
+            {
+                players.Add(obj.gameObject.transform);
+            }
+        }
+    }
+    private void OnCollisionExit (Collision obj)
     {
         if (obj.gameObject.CompareTag("Player"))
         {
@@ -23,6 +52,8 @@ public class PlatformEnemy : MonoBehaviour
     
     void Update()
     {
+        if (bossPlatform && _ui != null) _ui.RefreshBossAmount(enemy.Health, players.Count > 0);
+        
         for(int i = 0; i < players.Count;i++)
         {
             if (players[i].GetComponent<Player>().IsRespawning) 

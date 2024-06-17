@@ -75,7 +75,7 @@ public class Player : MonoBehaviourPunCallbacks
         }
     }
 
-    private async Task ActionManager()
+    private void ActionManager()
     {
         if (Input.GetButtonDown("Action1") && Health > 0 && Oxygen > 0 && !IsHit && !IsInAction && _moveBehaviour.IsGrounded())
         {
@@ -90,16 +90,13 @@ public class Player : MonoBehaviourPunCallbacks
                 _inventory.IsTheCurrSelectedItem("IceSword") || 
                 _inventory.IsTheCurrSelectedItem("FireSword"))
             {
-                LaunchTriggerAnim(_attackMeleeAnim);
-                await Task.Delay(300);
-                SoundLibrary.Instance.PlaySound("epee");
-                HasHit=true;
+                LaunchTriggerAnim(_attackMeleeAnim); // 0.3s
+                HasHit = true;
+                AudioManager.Instance.Play("Sword");
                 Invoke(nameof(SetInActionToFalse),1.2f);
             }
             else if (_inventory.IsTheCurrSelectedItem("Weapon"))
             {
-                await Task.Delay(1000);
-                SoundLibrary.Instance.PlaySound("fusil");
                 LaunchTriggerAnim(_attackDistanceAnim);
                 Invoke(nameof(SetInActionToFalse),1.2f);
             }
@@ -136,7 +133,7 @@ public class Player : MonoBehaviourPunCallbacks
 
     private void HoldingVisualManager()
     {
-        if (_inventory.Content[_inventory.ItemIndex].IsUnityNull())
+        if (_inventory != null && _inventory.Content[_inventory.ItemIndex].IsUnityNull())
         {
             _playerAnimator.SetBool(_holdWeapon,false);
             _playerAnimator.SetBool(_holdPotion,false);
@@ -189,7 +186,7 @@ public class Player : MonoBehaviourPunCallbacks
         {
             Health += 0.005f;
         }
-        else if (Health is >50 and < 100)
+        else if (Health is > 50 and < 100)
         {
             Health += 0.001f;
         }

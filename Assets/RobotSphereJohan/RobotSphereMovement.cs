@@ -98,6 +98,7 @@ public class RobotSphereMovement : MonoBehaviourPunCallbacks
         if (other.gameObject.CompareTag("Player"))
         {
             other.gameObject.GetComponent<Player>().KnockBack(_enemy.damage);
+            AudioManager.Instance.Play("Explosion");
             photonView.RPC("ExplodesRPC", RpcTarget.AllBuffered);
         }
     }
@@ -112,7 +113,7 @@ public class RobotSphereMovement : MonoBehaviourPunCallbacks
     {
         Instantiate(explosion, transform).GetComponent<ParticleSystem>().Play();
         robot.SetActive(false);
-        Invoke(nameof(Destroy), 1);
+        Invoke(nameof(Destroy), 0.5f);
     }
     
     // ======================================= Animation RPC ============================================

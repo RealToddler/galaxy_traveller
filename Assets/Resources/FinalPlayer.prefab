@@ -11828,8 +11828,6 @@ MonoBehaviour:
   _speed: 0
   _speedSeeker: 0
   canMove: 1
-  marche: 0
-  run: 0
 --- !u!114 &6336299545590167445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11859,9 +11857,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70857a0ed5596a0498e5b3f956674ee7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerMoveBehaviour: {fileID: 7948985215580978383}
-  playerAnimator: {fileID: 4956608850192445738}
-  inventory: {fileID: 1100531776088078975}
 --- !u!114 &1100531776088078975
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -2630,7 +2630,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 879780456}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 879780457}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2994eba298d8a0943bd65c0031ab7368, type: 3}
@@ -2809,8 +2809,125 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5581097357557168680, guid: 0906b37af1e639b4891e526c325d277d,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 879780460}
+    - targetCorrespondingSourceObject: {fileID: 5581097357557168680, guid: 0906b37af1e639b4891e526c325d277d,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 879780459}
+    - targetCorrespondingSourceObject: {fileID: 5581097357557168680, guid: 0906b37af1e639b4891e526c325d277d,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 879780458}
   m_SourcePrefab: {fileID: 100100000, guid: 0906b37af1e639b4891e526c325d277d, type: 3}
+--- !u!1 &879780457 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5581097357557168680, guid: 0906b37af1e639b4891e526c325d277d,
+    type: 3}
+  m_PrefabInstance: {fileID: 879780456}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &879780458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 879780457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 1
+    SynchronizeType: 0
+    Name: Speed
+  - Type: 4
+    SynchronizeType: 0
+    Name: IsShaking
+  - Type: 4
+    SynchronizeType: 0
+    Name: HoldingWeapon
+  - Type: 4
+    SynchronizeType: 0
+    Name: IsAttacking
+  - Type: 4
+    SynchronizeType: 0
+    Name: Backward
+  - Type: 4
+    SynchronizeType: 0
+    Name: AttackDistance
+  - Type: 4
+    SynchronizeType: 0
+    Name: AttackMelee
+  - Type: 9
+    SynchronizeType: 0
+    Name: IsDead
+  - Type: 9
+    SynchronizeType: 0
+    Name: Knockback
+  - Type: 4
+    SynchronizeType: 0
+    Name: StopAttackDistance
+  - Type: 4
+    SynchronizeType: 0
+    Name: StopAttackMelee
+  m_SynchronizeLayers:
+  - SynchronizeType: 0
+    LayerIndex: 0
+  - SynchronizeType: 0
+    LayerIndex: 1
+  - SynchronizeType: 0
+    LayerIndex: 2
+  - SynchronizeType: 0
+    LayerIndex: 3
+  - SynchronizeType: 0
+    LayerIndex: 4
+--- !u!114 &879780459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 879780457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
+--- !u!114 &879780460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 879780457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 879780459}
+  - {fileID: 879780458}
+  sceneViewId: 5
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &927997241
 GameObject:
   m_ObjectHideFlags: 0
@@ -4720,7 +4837,7 @@ PrefabInstance:
     - target: {fileID: -5902210711468553676, guid: fb1e81a7cd6ba2443bae1359cb09b1af,
         type: 3}
       propertyPath: sceneViewId
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 325791555533230429, guid: fb1e81a7cd6ba2443bae1359cb09b1af,
         type: 3}
@@ -5874,6 +5991,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   players: []
+  bossPlatform: 0
+  enemy: {fileID: 0}
+  _bossName: 
 --- !u!114 &1954364914
 MonoBehaviour:
   m_ObjectHideFlags: 0
