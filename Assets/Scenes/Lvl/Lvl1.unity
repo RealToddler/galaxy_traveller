@@ -2802,7 +2802,7 @@ Transform:
   m_GameObject: {fileID: 391851036}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 49.5, y: 20, z: -10.46}
+  m_LocalPosition: {x: -51.7, y: 16.98, z: 8.1}
   m_LocalScale: {x: 1.1591, y: 1.1591, z: 1.1591}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4427,7 +4427,7 @@ Transform:
   m_GameObject: {fileID: 675243666}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11.21, y: 34.04, z: 39.96}
+  m_LocalPosition: {x: 0.41, y: 0, z: 2.49}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8084,7 +8084,7 @@ Transform:
   m_GameObject: {fileID: 1112056790}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.12, y: 34.04, z: 39.96}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -20135,35 +20135,10 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1971176932158793373, guid: a747bf47a369f10478627a2c62672915,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 1971176932158793373, guid: a747bf47a369f10478627a2c62672915,
-        type: 3}
-      propertyPath: m_TagString
-      value: Item
-      objectReference: {fileID: 0}
-    - target: {fileID: 2647467873237813242, guid: a747bf47a369f10478627a2c62672915,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 2647467873237813242, guid: a747bf47a369f10478627a2c62672915,
-        type: 3}
-      propertyPath: m_TagString
-      value: Item
-      objectReference: {fileID: 0}
     - target: {fileID: 4699669800681581755, guid: a747bf47a369f10478627a2c62672915,
         type: 3}
       propertyPath: m_Name
       value: FinalPlayer
-      objectReference: {fileID: 0}
-    - target: {fileID: 4699669800681581755, guid: a747bf47a369f10478627a2c62672915,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7879975459685018442, guid: a747bf47a369f10478627a2c62672915,
         type: 3}
@@ -25535,6 +25510,14 @@ MonoBehaviour:
     source: {fileID: 0}
     delay: 0
   - name: SwordAI
+    clip: {fileID: 8300000, guid: 42e339c51c85f4b899a3e093b1982c8e, type: 3}
+    mixer: {fileID: 0}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+    delay: 0.33
+  - name: Musique
     clip: {fileID: 8300000, guid: 42e339c51c85f4b899a3e093b1982c8e, type: 3}
     mixer: {fileID: 0}
     volume: 1

@@ -7,7 +7,6 @@ using Unity.VisualScripting;
 
 public class EnemyMelee : Enemy
 {
-    private float detectionAngle = 90;
     protected void Start()
     {
         if (_rsm!=null) return;

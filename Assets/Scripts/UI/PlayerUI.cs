@@ -18,6 +18,9 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] public RectTransform bossBarFill;
     [SerializeField] private GameObject bossBar;
     [SerializeField] public Text bossName;
+    [SerializeField] public Text countDownText;
+    [SerializeField] public GameObject countDown;
+    [SerializeField] public GameObject waiting;
 
 
     private Player _player;

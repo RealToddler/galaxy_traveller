@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using Photon.Pun;
@@ -40,6 +42,7 @@ public class Player : MonoBehaviourPunCallbacks
     public bool IsInAction { get; set; }
     public bool IsAiming { get; set; }
     public bool HasHit { get; set; }
+    public float LvlTime { get; set; } = 10f;
 
     public bool IsRespawning;
     public bool IsHit;
@@ -48,6 +51,8 @@ public class Player : MonoBehaviourPunCallbacks
     [Header("Attack Distance")]
     [SerializeField] private GameObject _projectile;
     [SerializeField] private Transform _eject;
+
+    private bool _gameStarted;
     
     private void Start()
     {
@@ -62,18 +67,34 @@ public class Player : MonoBehaviourPunCallbacks
         _ui = gameObject.GetComponent<PlayerManager>().ui;
         _volume = Camera.main!.GetComponentInChildren<PostProcessVolume>();
         _volume.profile.TryGetSettings(out _vignette);
+        
+        CanMove(false);
+
+        if (!GameMode.Instance.IsMultiPlayer)
+        {
+            _gameStarted = true;
+            _ui.GetComponent<PlayerUI>().waiting.SetActive(false);
+            StartCoroutine(nameof(CountDown));
+        }
     }
 
     private void Update()
     {
         if (_view.IsMine) 
         {
-            OxygenManager();
             HealthManager();
             ActionManager();
             HoldingVisualManager();
+            
+
+            if (!_gameStarted && GameMode.Instance.IsMultiPlayer && PhotonNetwork.PlayerList.Length == 2)
+            {
+                _gameStarted = true;
+                StartCoroutine(nameof(CountDown));
+            }
         }
     }
+    
 
     private void ActionManager()
     {
@@ -90,7 +111,7 @@ public class Player : MonoBehaviourPunCallbacks
                 _inventory.IsTheCurrSelectedItem("IceSword") || 
                 _inventory.IsTheCurrSelectedItem("FireSword"))
             {
-                LaunchTriggerAnim(_attackMeleeAnim); // 0.3s
+                LaunchTriggerAnim(_attackMeleeAnim);
                 HasHit = true;
                 AudioManager.Instance.Play("Sword");
                 Invoke(nameof(SetInActionToFalse),1.2f);
@@ -133,7 +154,7 @@ public class Player : MonoBehaviourPunCallbacks
 
     private void HoldingVisualManager()
     {
-        if (_inventory != null && _inventory.Content[_inventory.ItemIndex].IsUnityNull())
+        if (_inventory.Content[_inventory.ItemIndex].IsUnityNull())
         {
             _playerAnimator.SetBool(_holdWeapon,false);
             _playerAnimator.SetBool(_holdPotion,false);
@@ -153,27 +174,48 @@ public class Player : MonoBehaviourPunCallbacks
     }
     
     // Remove qty of O2 to player Oxygen
-    private void OxygenManager()
+    IEnumerator OxygenManager()
     {
-        if (Oxygen >= 10)
+        var oxPerSec = maxOxygen / LvlTime / 10;
+        
+        while (true)
         {
-            Oxygen -= 0.004f;
-        }
-        else if (Oxygen is < 10 and > 0) 
-        {
-            Oxygen -= 0.002f;
-            _playerAnimator.speed = 0.8f;
-        } 
-        else 
-        {
-            if (!IsRespawning)
+            if (Oxygen > 0)
             {
-                IsRespawning = true;
-                _moveBehaviour.canMove = false;
-                _playerAnimator.SetFloat(_speedAnim, 0);
+                Oxygen -= oxPerSec;
+            }
+            else if (!IsRespawning)
+            {
+                CanMove(false);
                 LaunchTriggerAnim(_deadO2Anim);
             }
+            
+            if (Oxygen is < 10 and > 0) 
+            {
+                _playerAnimator.speed = 0.8f;
+            }
+
+            yield return new WaitForSeconds(0.1f);
         }
+    }
+    
+    IEnumerator CountDown()
+    {
+        int i = 3;
+        
+        _ui.GetComponent<PlayerUI>().waiting.SetActive(false);
+        _ui.GetComponent<PlayerUI>().countDown.SetActive(true);
+        
+        while (i > 0)
+        {
+            _ui.GetComponent<PlayerUI>().countDownText.text = i.ToString();
+            --i;
+            yield return new WaitForSeconds(1f);
+        }
+        
+        _ui.GetComponent<PlayerUI>().countDown.SetActive(false);
+        StartCoroutine(nameof(OxygenManager));
+        CanMove(true);
     }
 
     private void HealthManager()
@@ -219,8 +261,7 @@ public class Player : MonoBehaviourPunCallbacks
             
             if (!IsRespawning)
             {
-                _moveBehaviour.enabled = false;
-                IsRespawning = true; 
+                CanMove(false);
                 LaunchTriggerAnim(_deadHpAnim);
             }
         }
@@ -248,6 +289,22 @@ public class Player : MonoBehaviourPunCallbacks
     public void Respawn()
     {
         transform.position = _respawnPoint;
+    }
+
+    public void CanMove(bool canMove)
+    {
+        if (!canMove)
+        {
+            IsRespawning = true;
+            _moveBehaviour.canMove = false;
+            _playerAnimator.SetFloat(_speedAnim, 0);
+        }
+        else
+        {
+            IsRespawning = false;
+            _moveBehaviour.canMove = true;
+        }
+        
     }
 
     // ==================== All functions called in actions animations ====================

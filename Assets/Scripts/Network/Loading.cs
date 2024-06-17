@@ -7,7 +7,7 @@ public class Loading : MonoBehaviourPunCallbacks
 {
     private void Start()
     {
-        PhotonNetwork.OfflineMode = !GameObject.Find("GameMode").GetComponent<GameMode>().IsMultiPlayer;
+        PhotonNetwork.OfflineMode = !GameMode.Instance.IsMultiPlayer;
 
         if (PhotonNetwork.OfflineMode)
         {

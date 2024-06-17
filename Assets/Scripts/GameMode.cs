@@ -1,14 +1,12 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameMode : MonoBehaviour
 {
     public bool IsMultiPlayer { get; set; }
+    public static GameMode Instance;
 
     private void Start()
     {
-        DontDestroyOnLoad(this);
+        Instance = this;
     }
 }
