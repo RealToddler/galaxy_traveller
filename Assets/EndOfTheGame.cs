@@ -10,11 +10,12 @@ public class EndOfTheGame : MonoBehaviour
     {
         if (obj.gameObject.CompareTag("Player"))
         {
-            Invoke(nameof(LauncHappyEnd),3);
+            Invoke(nameof(LaunchHappyEnd),3);
         }
     }
-    void LauncHappyEnd()
+    void LaunchHappyEnd()
     {
+        PhotonNetwork.Disconnect();
         SceneManager.LoadScene("HappyEnd");
     }
 }

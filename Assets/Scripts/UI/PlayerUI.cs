@@ -82,7 +82,7 @@ public class PlayerUI : MonoBehaviour
                 currentItem.prefab.name switch 
                 { 
                     "HealthPotion" or "InvincibilityPotion" or "OxygenPotion" => "Click LEFT to drink", 
-                    "MoonSword" => "Click LEFT to attack", 
+                    "MoonSword" or "IceSword" or "FireSword" => "Click LEFT to attack", 
                     _ => ""
                 };
     }

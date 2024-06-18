@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Enemy : MonoBehaviourPunCallbacks
 {
@@ -118,6 +119,7 @@ public class Enemy : MonoBehaviourPunCallbacks
 
     protected void SwitchScene()
     {
+        PhotonNetwork.Disconnect();
         PhotonNetwork.LoadLevel(nextLvl);
     }
 

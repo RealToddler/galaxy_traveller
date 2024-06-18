@@ -36,10 +36,10 @@ public class CWork : MonoBehaviourPunCallbacks
         _currentY -= Input.GetAxis("Mouse Y") * sensitivity; // Mise à jour de la rotation en Y
         
         // Permet rotation totale de la cam pour fly en mode build
-        if (!Debug.isDebugBuild)
-        {
-            _currentY = Mathf.Clamp(_currentY, -10,80); // Limitation de l'angle de rotation en Y
-        }
+        // if (!Debug.isDebugBuild)
+        // {
+        //     _currentY = Mathf.Clamp(_currentY, -10,80); // Limitation de l'angle de rotation en Y
+        // }
         
         // Zoom si player vise
         if (_player.IsAiming && distance > 3.5f)

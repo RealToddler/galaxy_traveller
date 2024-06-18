@@ -28,7 +28,7 @@ public class FlyBehaviour : GenericBehaviour
 	// Update is used to set features regardless the active behaviour.
 	void Update()
 	{
-		if (view.IsMine && Debug.isDebugBuild && !GetComponent<Player>().IsInAction)
+		if (view.IsMine /*&& Debug.isDebugBuild*/ && !GetComponent<Player>().IsInAction)
 		{
 			// Toggle fly by input, only if there is no overriding state or temporary transitions.
 			if (Input.GetButtonDown(flyButton) && !behaviourManager.IsOverriding() 

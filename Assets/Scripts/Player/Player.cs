@@ -18,7 +18,7 @@ public class Player : MonoBehaviourPunCallbacks
     private Vector3 _respawnPoint;
     private bool _noMoreO2;
     private bool _isInvincible;
-    private GameObject _ui;
+    public GameObject ui;
     private PostProcessVolume _volume;
     private Vignette _vignette;
     
@@ -64,7 +64,7 @@ public class Player : MonoBehaviourPunCallbacks
         _playerAnimator = GetComponent<Animator>();
         _moveBehaviour = GetComponent<MoveBehaviour>();
         _respawnPoint = transform.position;
-        _ui = gameObject.GetComponent<PlayerManager>().ui;
+        ui = gameObject.GetComponent<PlayerManager>().ui;
         _volume = Camera.main!.GetComponentInChildren<PostProcessVolume>();
         _volume.profile.TryGetSettings(out _vignette);
         _lvlTime = GameManager.Instance.timeToCompleteLvl;
@@ -74,7 +74,7 @@ public class Player : MonoBehaviourPunCallbacks
         if (!GameMode.Instance.IsMultiPlayer)
         {
             _gameStarted = true;
-            _ui.GetComponent<PlayerUI>().waiting.SetActive(false);
+            ui.GetComponent<PlayerUI>().waiting.SetActive(false);
             StartCoroutine(nameof(CountDown));
         }
     }
@@ -94,7 +94,7 @@ public class Player : MonoBehaviourPunCallbacks
                 StartCoroutine(nameof(CountDown));
             }
 
-            if (GameMode.Instance.IsMultiPlayer && _gameStarted && PhotonNetwork.PlayerList.Length == 1)
+            if (GameMode.Instance.GameOver)
             {
                 PhotonNetwork.Disconnect();
                 SceneManager.LoadScene("GameOver");
@@ -210,17 +210,17 @@ public class Player : MonoBehaviourPunCallbacks
     {
         int i = 3;
         
-        _ui.GetComponent<PlayerUI>().waiting.SetActive(false);
-        _ui.GetComponent<PlayerUI>().countDown.SetActive(true);
+        ui.GetComponent<PlayerUI>().waiting.SetActive(false);
+        ui.GetComponent<PlayerUI>().countDown.SetActive(true);
         
         while (i > 0)
         {
-            _ui.GetComponent<PlayerUI>().countDownText.text = i.ToString();
+            ui.GetComponent<PlayerUI>().countDownText.text = i.ToString();
             --i;
             yield return new WaitForSeconds(1f);
         }
         
-        _ui.GetComponent<PlayerUI>().countDown.SetActive(false);
+        ui.GetComponent<PlayerUI>().countDown.SetActive(false);
         StartCoroutine(nameof(OxygenManager));
         CanMove(true);
     }
@@ -258,7 +258,7 @@ public class Player : MonoBehaviourPunCallbacks
         if (Health - damage > 0)
         {
             Health -= damage;
-            _ui.GetComponent<PlayerUI>().healthBarFill.gameObject.GetComponent<Image>().color = Color.red;
+            ui.GetComponent<PlayerUI>().healthBarFill.gameObject.GetComponent<Image>().color = Color.red;
             Invoke(nameof(BackToGreen), 1);
         }
         else
@@ -282,7 +282,7 @@ public class Player : MonoBehaviourPunCallbacks
 
     public void BackToGreen()
     {
-        _ui.GetComponent<PlayerUI>().healthBarFill.gameObject.GetComponent<Image>().color = new Color(0f, 0.78f, 0.05f, 0.8f);
+        ui.GetComponent<PlayerUI>().healthBarFill.gameObject.GetComponent<Image>().color = new Color(0f, 0.78f, 0.05f, 0.8f);
     }
 
     private void SetInvincibleToFalse()
@@ -335,6 +335,7 @@ public class Player : MonoBehaviourPunCallbacks
     public void ToGameOverScreen()
     {
         PhotonNetwork.Disconnect();
+        GameMode.Instance.GameOver = true;
         SceneManager.LoadScene("GameOver");
     }
     

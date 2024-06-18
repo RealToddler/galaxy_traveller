@@ -113,7 +113,6 @@ public class MoveBehaviour : GenericBehaviour
 
 	public void Bounce(float bounceForce)
 	{
-		print("Bounce");
 		behaviourManager.LockTempBehaviour(this.behaviourCode);
 		behaviourManager.GetAnim.SetBool(_jumpBool, true);
 		RemoveVerticalVelocity();
