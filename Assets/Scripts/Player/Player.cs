@@ -117,6 +117,8 @@ public class Player : MonoBehaviourPunCallbacks
                 }
             }
         }
+        
+        // Debug.DrawLine(Camera.main.transform.position, transform.position + Vector3.up * 2);
     }
 
     public void NextLevel(int lvl)
@@ -155,12 +157,21 @@ public class Player : MonoBehaviourPunCallbacks
                 AudioManager.Instance.Play("Sword");
                 Invoke(nameof(SetInActionToFalse),1.2f);
             }
-            else if (_inventory.IsTheCurrSelectedItem("Weapon"))
+            else if (_inventory.IsTheCurrSelectedItem("Weapon") && _moveBehaviour._speed == 0)
             {
-                LaunchTriggerAnim(_attackDistanceAnim);
-                Invoke(nameof(SetInActionToFalse),1.2f);
+                if (IsAiming)
+                {
+                    LaunchTriggerAnim(_attackDistanceAnim);
+                    Invoke(nameof(SetInActionToFalse),1.2f);
+                }
+                else
+                {
+                    IsInAction = false;
+                }
             }
-            else
+            else if (_inventory.IsTheCurrSelectedItem("HealthPotion") ||
+                  _inventory.IsTheCurrSelectedItem("InvincibilityPotion") ||
+                  _inventory.IsTheCurrSelectedItem("OxygenPotion"))
             {
                 if (_inventory.IsTheCurrSelectedItem("HealthPotion"))
                 {
@@ -350,9 +361,8 @@ public class Player : MonoBehaviourPunCallbacks
     
     public void SendAttackDistance()
     {
-        Debug.Log("Attack Distance sent");
-        GameObject curr=Instantiate(_projectile, _eject.position, _eject.rotation);
-        curr.GetComponent<Rigidbody>().velocity=transform.forward*50;    
+        GameObject curr = Instantiate(_projectile, _eject.position, _eject.rotation);
+        curr.GetComponent<Rigidbody>().velocity = (transform.position + Vector3.up * 2 - Camera.main.transform.position) * 50;
     }
     
     public void RespawnAfterDeathHp()

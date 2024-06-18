@@ -21,6 +21,7 @@ public class BulletTrail : MonoBehaviour
         lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
         lineRenderer.startColor = Color.red;
         lineRenderer.endColor = new Color(255, 255, 0, 0);
+        positions[1] = _spawnpoint;
     }
 
     void Update()
@@ -29,7 +30,6 @@ public class BulletTrail : MonoBehaviour
         if (delay>0.02)
         {
             positions[0] = transform.position;
-            positions[1] = _spawnpoint;
             lineRenderer.SetPositions(positions);
         }
     }

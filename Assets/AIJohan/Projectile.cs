@@ -27,6 +27,10 @@ public class Projectile : MonoBehaviour
             
             Destroy(gameObject);
         }
+        else if (obj.gameObject.CompareTag("Cible"))
+        {
+            obj.gameObject.GetComponent<Cible>().ChangeColor();
+        }
     }
     void Start()
     {

@@ -68,7 +68,7 @@ public class MoveBehaviour : GenericBehaviour
 	
 	private void SoundEffect()
 	{
-		if (!IsGrounded() || _speed == 0)
+		if (!IsGrounded() || _speed == 0 || !canMove)
 		{
 			AudioManager.Instance.Stop("Walk");
 			AudioManager.Instance.Stop("Run");

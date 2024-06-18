@@ -159,6 +159,7 @@ public class PlayerUI : MonoBehaviour
     {
         pauseMenu.gameObject.SetActive(!pauseMenu.activeSelf);
         _player.IsInAction = pauseMenu.activeSelf;
+        _player.CanMove(!pauseMenu.activeSelf);
         Cursor.visible = pauseMenu.activeSelf;
     }
 
