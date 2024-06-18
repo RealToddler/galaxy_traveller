@@ -1,3 +1,4 @@
+using Photon.Pun;
 using UnityEngine;
 
 public class EnemyMD : Enemy
@@ -29,13 +30,13 @@ public class EnemyMD : Enemy
     }
     void Update()
     {
-        if (!base.IsDead)
+        if (!IsDead)
         {
             if(Health <= 0)
             {
-                Animator.SetTrigger(IsDeadAnim);
+                UpdateTriggerAnim(IsDeadAnim);
                 Animator.SetBool(Attacking, false);
-                base.IsDead = true;
+                IsDead = true;
             }
             else 
             {
@@ -153,5 +154,15 @@ public class EnemyMD : Enemy
             StopAttack();
             Animator.SetBool(HoldingWeapon,true);
         }
+    }
+    
+    protected new void UpdateTriggerAnim(int anim)
+    {
+        photonView.RPC("TriggerAnimRPC", RpcTarget.AllBuffered, anim);  
+    }
+    [PunRPC]
+    private void TriggerAnimRPC(int anim)
+    {
+        Animator.SetTrigger(anim);
     }
 }

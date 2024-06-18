@@ -9,15 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Menus/Screens.unity
     guid: c9343f116e87bf441ab1420b2b7b425f
   - enabled: 1
-    path: Assets/Scenes/Menus/Menus.unity
-    guid: bf03d9b1c5e8004479fa2d1833e4e8fe
-  - enabled: 1
-    path: Assets/Scenes/Menus/Loading.unity
-    guid: 4f2f85d30eb332c4a82ce18ff92fee95
-  - enabled: 1
-    path: Assets/Scenes/Menus/Lobby.unity
-    guid: 81461a161c3802d44890e961d2ee272c
-  - enabled: 1
     path: Assets/Scenes/Lvl/Lvl1.unity
     guid: 3e6f3ccdf1f876740b7aaa1318096d33
   - enabled: 1
@@ -26,6 +17,15 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Lvl/Lvl3.unity
     guid: 1c2f807dad1a1c04d9538218bc203df9
+  - enabled: 1
+    path: Assets/Scenes/Menus/Menus.unity
+    guid: bf03d9b1c5e8004479fa2d1833e4e8fe
+  - enabled: 1
+    path: Assets/Scenes/Menus/Loading.unity
+    guid: 4f2f85d30eb332c4a82ce18ff92fee95
+  - enabled: 1
+    path: Assets/Scenes/Menus/Lobby.unity
+    guid: 81461a161c3802d44890e961d2ee272c
   - enabled: 1
     path: Assets/Scenes/Menus/GameOver.unity
     guid: 6137204b1eea1bd4e890749de4eaadc3

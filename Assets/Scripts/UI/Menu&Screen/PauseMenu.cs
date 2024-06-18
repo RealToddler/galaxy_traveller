@@ -15,7 +15,7 @@ public class PauseMenu : BasicMenu
 
     public void BackToLobby()
     {
-        PhotonNetwork.LeaveRoom();
+        PhotonNetwork.Disconnect();
         SceneManager.LoadScene("Lobby");
     }
 }

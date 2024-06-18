@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Linq;
 using System.Threading.Tasks;
@@ -42,7 +43,8 @@ public class Player : MonoBehaviourPunCallbacks
     public bool IsInAction { get; set; }
     public bool IsAiming { get; set; }
     public bool HasHit { get; set; }
-    private float _lvlTime = 60f;
+    private float _lvlTime;
+    private int _lvl = 1;
 
     public bool IsRespawning;
     public bool IsHit;
@@ -52,7 +54,7 @@ public class Player : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject _projectile;
     [SerializeField] private Transform _eject;
 
-    private bool _gameStarted;
+    public bool gameStarted;
     
     private void Start()
     {
@@ -67,16 +69,17 @@ public class Player : MonoBehaviourPunCallbacks
         ui = gameObject.GetComponent<PlayerManager>().ui;
         _volume = Camera.main!.GetComponentInChildren<PostProcessVolume>();
         _volume.profile.TryGetSettings(out _vignette);
-        _lvlTime = GameManager.Instance.timeToCompleteLvl;
         
         CanMove(false);
+        
+        ResetOxy();
+    }
 
-        if (!GameMode.Instance.IsMultiPlayer)
-        {
-            _gameStarted = true;
-            ui.GetComponent<PlayerUI>().waiting.SetActive(false);
-            StartCoroutine(nameof(CountDown));
-        }
+    private void ResetOxy()
+    {
+        _lvlTime = GameManager.Instance.timeToCompleteLvl[_lvl-1];
+        Oxygen = 100;
+        _lvl++;
     }
 
     private void Update()
@@ -86,11 +89,17 @@ public class Player : MonoBehaviourPunCallbacks
             HealthManager();
             ActionManager();
             HoldingVisualManager();
-            
 
-            if (!_gameStarted && GameMode.Instance.IsMultiPlayer && PhotonNetwork.PlayerList.Length == 2)
+            if (!gameStarted && GameMode.Instance.IsMultiPlayer && PhotonNetwork.PlayerList.Length == 2)
             {
-                _gameStarted = true;
+                gameStarted = true;
+                StartCoroutine(nameof(CountDown));
+            }
+            
+            if (!gameStarted && !GameMode.Instance.IsMultiPlayer)
+            {
+                gameStarted = true;
+                ui.GetComponent<PlayerUI>().waiting.SetActive(false);
                 StartCoroutine(nameof(CountDown));
             }
 
@@ -99,7 +108,41 @@ public class Player : MonoBehaviourPunCallbacks
                 PhotonNetwork.Disconnect();
                 SceneManager.LoadScene("GameOver");
             }
+
+            if (Debug.isDebugBuild)
+            {
+                // if (Input.GetKeyDown(KeyCode.Alpha1))
+                // {
+                //     gameStarted = false;
+                //     ResetOxy();
+                //     PhotonNetwork.LoadLevel(1);
+                // }
+                if (Input.GetKeyDown(KeyCode.Alpha2))
+                {
+                    NextLevel(2);
+                }
+                // if (Input.GetKeyDown(KeyCode.Alpha3))
+                // {
+                //     gameStarted = false;
+                //     ResetOxy();
+                //     PhotonNetwork.LoadLevel(3); 
+                // }
+            }
         }
+    }
+
+    public void NextLevel(int lvl)
+    {
+        CanMove(false);
+        gameStarted = false;
+        ResetOxy();
+        PhotonNetwork.LoadLevel(lvl);
+        if (lvl == 2) Spawn(1.6f + PhotonNetwork.PlayerList.Length, 20, 0.6f + PhotonNetwork.PlayerList.Length);
+        if (lvl == 3) Spawn(PhotonNetwork.PlayerList.Length, 205, PhotonNetwork.PlayerList.Length);
+    }
+    private void Spawn(float x, float y, float z)
+    {
+        transform.position = new Vector3(x, y, z);
     }
     
 

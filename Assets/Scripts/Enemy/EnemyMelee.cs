@@ -1,15 +1,11 @@
 using Photon.Pun;
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Unity.VisualScripting;
 
 public class EnemyMelee : Enemy
 {
     protected void Start()
     {
-        if (_rsm!=null) return;
+        if (_rsm != null) return;
         IsAttacking = false;
         Health = MaxHealth;
         Animator.SetBool("IsShaking",true);
@@ -17,12 +13,12 @@ public class EnemyMelee : Enemy
     
     private void SetCanAttackTrue()
     {
-        CanAttack=true;
+        CanAttack = true;
         AudioManager.Instance.Play("SwordAI");
     }
     private void SetCanAttackFalse()
     {
-        CanAttack=false;
+        CanAttack = false;
     }
     public override void StopAttack()
     {
@@ -47,5 +43,15 @@ public class EnemyMelee : Enemy
         {
             StopAttack();
         }
+    }
+    
+    protected new void UpdateTriggerAnim(int anim)
+    {
+        photonView.RPC("TriggerAnimRPC", RpcTarget.AllBuffered, anim);  
+    }
+    [PunRPC]
+    private void TriggerAnimRPC(int anim)
+    {
+        Animator.SetTrigger(anim);
     }
 }

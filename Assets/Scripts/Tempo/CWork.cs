@@ -1,7 +1,5 @@
 using UnityEngine;
 using Photon.Pun;
-using UnityEngine.Serialization;
-
 public class CWork : MonoBehaviourPunCallbacks
 {
     public float sensitivity = 1f; // Sensibilité de la souris
@@ -27,10 +25,17 @@ public class CWork : MonoBehaviourPunCallbacks
         _player = GetComponent<Player>();
     }
 
+    public void SetMainCam()
+    {
+        _cameraTransform = Camera.main!.transform;
+    }
+
     private void Update()
     {
         if (!photonView.IsMine || _player.IsInAction)
             return;
+        
+        _cameraTransform = Camera.main!.transform;
 
         _currentX += Input.GetAxis("Mouse X") * sensitivity; // Mise à jour de la rotation en X
         _currentY -= Input.GetAxis("Mouse Y") * sensitivity; // Mise à jour de la rotation en Y

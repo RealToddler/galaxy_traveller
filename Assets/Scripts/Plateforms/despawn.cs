@@ -33,10 +33,6 @@ public class despawn : MonoBehaviour
         Despawn(b);
     }
     
-
-    
-    
-    
     private async void Despawn(int c)
     {
         if (list[c].activeSelf)
@@ -47,9 +43,5 @@ public class despawn : MonoBehaviour
             await Task.Delay(4000);
             Despawn(c);
         }
-
-
     }
-
-    
 }

@@ -8,6 +8,7 @@
 // <author>developer@exitgames.com</author>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -31,13 +32,13 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public static GameManager Instance;
     public Transform[] spawnPoints;
+    public List<float> timeToCompleteLvl = new() {350, 180, 180};
     
     #endregion
 
     #region Private Fields
     
     [SerializeField] private GameObject playerPrefab;
-    [SerializeField] public float timeToCompleteLvl = 60f;
 
     #endregion
 

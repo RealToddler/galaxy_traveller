@@ -38,6 +38,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
             GameObject uiGo = Instantiate(playerUiPrefab);
             ui = uiGo;
             uiGo.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
+            DontDestroyOnLoad(ui);
         }
 
 #if UNITY_5_4_OR_NEWER
@@ -93,11 +94,8 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
         // check if we are outside the Arena and if it's the case, spawn around the center of the arena in a safe zone
         if (!Physics.Raycast(transform.position, -Vector3.up, 5f))
         {
-            transform.position = new Vector3(0, 20, 0);
+            transform.position = GameManager.Instance.spawnPoints[PhotonNetwork.PlayerList.Length - 1].position;
         }
-
-        GameObject _uiGo = Instantiate(this.playerUiPrefab);
-        _uiGo.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
     }
 
     #endregion

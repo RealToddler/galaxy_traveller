@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -19,7 +20,7 @@ public class EnemyDistance : Enemy
         {
             if(Health<=0)
             {
-                Animator.SetTrigger("IsDead");
+                UpdateTriggerAnim(Animator.StringToHash("IsDead"));
                 Animator.SetBool("IsAttacking",false);
                 Animator.SetBool("Backward",false);
                 IsDead=true;
@@ -83,4 +84,13 @@ public class EnemyDistance : Enemy
         else if (platform.players.Count==0)StopAttack();
     }
     
+    protected new void UpdateTriggerAnim(int anim)
+    {
+        photonView.RPC("TriggerAnimRPC", RpcTarget.AllBuffered, anim);  
+    }
+    [PunRPC]
+    private void TriggerAnimRPC(int anim)
+    {
+        Animator.SetTrigger(anim);
+    }
 }

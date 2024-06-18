@@ -12,7 +12,7 @@ public class Enemy : MonoBehaviourPunCallbacks
     
     [Header("Other")]
     [SerializeField] public PlatformEnemy platform;
-    [SerializeField] private string nextLvl;
+    [SerializeField] private int nextLvl;
     
     public bool IsDead { get; protected set; }
     protected Animator Animator;
@@ -35,7 +35,7 @@ public class Enemy : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        if (_rsm!=null) return;
+        if (_rsm != null) return;
         if (!IsDead)
         {
             if(Health <= 0)
@@ -119,8 +119,7 @@ public class Enemy : MonoBehaviourPunCallbacks
 
     protected void SwitchScene()
     {
-        PhotonNetwork.Disconnect();
-        PhotonNetwork.LoadLevel(nextLvl);
+        PlayerManager.LocalPlayerInstance.gameObject.GetComponent<Player>().NextLevel(nextLvl);
     }
 
     public void KnockBack()
