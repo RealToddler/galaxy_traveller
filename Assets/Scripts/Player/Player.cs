@@ -111,22 +111,10 @@ public class Player : MonoBehaviourPunCallbacks
 
             if (Debug.isDebugBuild)
             {
-                // if (Input.GetKeyDown(KeyCode.Alpha1))
-                // {
-                //     gameStarted = false;
-                //     ResetOxy();
-                //     PhotonNetwork.LoadLevel(1);
-                // }
                 if (Input.GetKeyDown(KeyCode.Alpha2))
                 {
                     NextLevel(2);
                 }
-                // if (Input.GetKeyDown(KeyCode.Alpha3))
-                // {
-                //     gameStarted = false;
-                //     ResetOxy();
-                //     PhotonNetwork.LoadLevel(3); 
-                // }
             }
         }
     }
@@ -139,6 +127,7 @@ public class Player : MonoBehaviourPunCallbacks
         PhotonNetwork.LoadLevel(lvl);
         if (lvl == 2) Spawn(1.6f + PhotonNetwork.PlayerList.Length, 20, 0.6f + PhotonNetwork.PlayerList.Length);
         if (lvl == 3) Spawn(PhotonNetwork.PlayerList.Length, 205, PhotonNetwork.PlayerList.Length);
+        _respawnPoint = transform.position;
     }
     private void Spawn(float x, float y, float z)
     {
