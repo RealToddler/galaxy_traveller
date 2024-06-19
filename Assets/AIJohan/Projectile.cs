@@ -1,40 +1,64 @@
+using System;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    void OnCollisionEnter(Collision obj)
+    private LineRenderer lineRenderer;
+    private Vector3[] positions = new Vector3[2];
+    private float timeOfInstantiation;
+    private Vector3 _spawnpoint;
+
+    void Start()
     {
-        if (obj.gameObject.CompareTag("Player"))
+        Destroy(gameObject,1f);
+        AudioManager.Instance.Play("Gun");
+        
+        _spawnpoint = transform.position; 
+        timeOfInstantiation = Time.time;
+        lineRenderer = gameObject.AddComponent<LineRenderer>();
+        lineRenderer.startWidth = 0.05f;
+        lineRenderer.endWidth = 0;
+        lineRenderer.positionCount = 2;
+        lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
+        lineRenderer.startColor = Color.red;
+        lineRenderer.endColor = new Color(255, 255, 0, 0);
+        positions[1] = _spawnpoint;
+    }
+
+    void Update()
+    {
+        if (Physics.Linecast(_spawnpoint, transform.position, out RaycastHit hit))
         {
-            Destroy(gameObject);
-            Player player= obj.collider.gameObject.GetComponent<Player>();
-            if (!player.IsHit) 
+            if (hit.collider.gameObject.CompareTag("Player"))
             {
-                player.KnockBack(20);
-            }
-        }
-        else if (obj.gameObject.CompareTag("Enemy"))
-        {
-            Enemy enemy=obj.collider.gameObject.GetComponentInParent<Enemy>();
-            if (enemy != null)
-            {
-                if (!enemy.IsHit) 
+                Player player= hit.collider.gameObject.GetComponent<Player>();
+                if (!player.IsHit) 
                 {
-                    enemy.LooseHealth(60);
-                    enemy.KnockBack();
+                    player.KnockBack(20);
+                }
+            }
+            else if (hit.collider.gameObject.CompareTag("Enemy"))
+            {
+                Enemy enemy = hit.collider.gameObject.GetComponentInParent<Enemy>();
+                if (enemy != null)
+                {
+                    if (!enemy.IsHit) 
+                    {
+                        enemy.LooseHealth(60);
+                        enemy.KnockBack();
+                    }
                 }
             }
             
             Destroy(gameObject);
         }
-        else if (obj.gameObject.CompareTag("Cible"))
+        
+        // Train
+        float delay = Time.time - timeOfInstantiation;
+        if (delay>0.02)
         {
-            obj.gameObject.GetComponent<Cible>().ChangeColor();
+            positions[0] = transform.position;
+            lineRenderer.SetPositions(positions);
         }
-    }
-    void Start()
-    {
-        Destroy(gameObject,1f);
-        AudioManager.Instance.Play("Gun");
     }
 }

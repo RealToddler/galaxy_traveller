@@ -117,8 +117,6 @@ public class Player : MonoBehaviourPunCallbacks
                 }
             }
         }
-        
-        // Debug.DrawLine(Camera.main.transform.position, transform.position + Vector3.up * 2);
     }
 
     public void NextLevel(int lvl)
@@ -127,7 +125,7 @@ public class Player : MonoBehaviourPunCallbacks
         gameStarted = false;
         ResetOxy();
         PhotonNetwork.LoadLevel(lvl);
-        if (lvl == 2) Spawn(1.6f + PhotonNetwork.PlayerList.Length, 20, 0.6f + PhotonNetwork.PlayerList.Length);
+        if (lvl == 2) Spawn(12 + PhotonNetwork.PlayerList.Length, 20, 7 + PhotonNetwork.PlayerList.Length);
         if (lvl == 3) Spawn(PhotonNetwork.PlayerList.Length, 205, PhotonNetwork.PlayerList.Length);
         _respawnPoint = transform.position;
     }
@@ -155,7 +153,7 @@ public class Player : MonoBehaviourPunCallbacks
                 LaunchTriggerAnim(_attackMeleeAnim);
                 HasHit = true;
                 AudioManager.Instance.Play("Sword");
-                Invoke(nameof(SetInActionToFalse),1.2f);
+                Invoke(nameof(SetInActionToFalse),1f);
             }
             else if (_inventory.IsTheCurrSelectedItem("Weapon") && _moveBehaviour._speed == 0)
             {
@@ -384,7 +382,7 @@ public class Player : MonoBehaviourPunCallbacks
     public void SetInActionToFalse()
     {
         IsInAction = false;
-        HasHit=false;
+        HasHit = false;
         _playerAnimator.SetLayerWeight(6,1);
     }
 

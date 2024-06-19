@@ -36,22 +36,13 @@ public class Enemy : MonoBehaviourPunCallbacks
     private void Update()
     {
         if (_rsm != null) return;
+        
         if (!IsDead)
         {
-            if(Health <= 0)
-            {
-                UpdateTriggerAnim(Animator.StringToHash("IsDead"));
-                IsDead = true;
-                
-                Invoke(nameof(SwitchScene), 2);
-            }
-            else 
-            {
-                IsAttacking = Animator.GetBool("IsAttacking");
-                Animator.SetBool("StopAttackMelee", !IsAttacking);
-                Animator.SetBool("StopAttackDistance", !IsAttacking);
-                AttackManager();
-            }
+            IsAttacking = Animator.GetBool("IsAttacking");
+            Animator.SetBool("StopAttackMelee", !IsAttacking);
+            Animator.SetBool("StopAttackDistance", !IsAttacking);
+            AttackManager();
         }
     }
 
@@ -96,11 +87,26 @@ public class Enemy : MonoBehaviourPunCallbacks
     {
         Animator.SetBool("HoldingWeapon",false);
     }
+    
     public void LooseHealth(float damages)
     {
-        IsHit = true;
-        Health -= damages;
+        if (Health - damages > 0)
+        {
+            Health -= damages;
+            IsHit = true;
+        }
+        else
+        {
+            Health = 0;
+            if (_rsm != null) return;
+            UpdateTriggerAnim(Animator.StringToHash("IsDead"));
+            IsDead = true;
+            Invoke(nameof(SwitchScene), 4);
+        }
+        
+        UpdateHealth(Health);
     }
+    
     protected virtual void FinishAnim()
     {
         if (platform.players.Count != 0)
@@ -128,17 +134,6 @@ public class Enemy : MonoBehaviourPunCallbacks
     }
     
     // ======================================= Animation RPC ============================================
-    // protected void UpdateBoolAnim(string anim, bool value)
-    // {
-    //     photonView.RPC("BoolAnimRPC", RpcTarget.AllBuffered, anim, value);
-    // }
-    //
-    // [PunRPC]
-    // private void BoolAnimRPC(string anim, bool value)
-    // {
-    //     Animator.SetBool(anim, value);
-    // }
-    
     protected void UpdateFloatAnim(string anim, float value)
     {
         photonView.RPC("FloatAnimRPC", RpcTarget.AllBuffered, anim, value);
@@ -158,5 +153,15 @@ public class Enemy : MonoBehaviourPunCallbacks
     private void TriggerAnimRPC(int anim)
     {
         Animator.SetTrigger(anim);
+    }
+
+    private void UpdateHealth(float health)
+    {
+        photonView.RPC(nameof(UpdateHealthRPC), RpcTarget.AllBuffered, health);  
+    }
+    [PunRPC]
+    private void UpdateHealthRPC(float health)
+    {
+        Health = health;
     }
 }

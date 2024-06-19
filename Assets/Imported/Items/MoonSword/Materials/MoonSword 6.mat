@@ -9,9 +9,13 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: MoonSword 6
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
-  m_Parent: {fileID: 2100000, guid: 5454bc0fc89abd4499b8b01139580ec7, type: 2}
+  m_Parent: {fileID: 2100000, guid: 5685c8835e9a76a4fb26b4868cbf11e4, type: 2}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - _EMISSION
+  - _METALLICGLOSSMAP
+  - _NORMALMAP
+  - _PARALLAXMAP
   m_InvalidKeywords: []
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0

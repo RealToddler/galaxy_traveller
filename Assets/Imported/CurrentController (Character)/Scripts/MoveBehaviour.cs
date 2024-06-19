@@ -179,8 +179,6 @@ public class MoveBehaviour : GenericBehaviour
 		{
 			return;
 		}
-		GetComponent<Animator>().SetBool("Attack",false);
-		GetComponent<Player>().IsInAction=false;
 
 		// On ground, obey gravity.
 		if (behaviourManager.IsGrounded())

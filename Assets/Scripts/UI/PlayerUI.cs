@@ -83,6 +83,7 @@ public class PlayerUI : MonoBehaviour
                 { 
                     "HealthPotion" or "InvincibilityPotion" or "OxygenPotion" => "Click LEFT to drink", 
                     "MoonSword" or "IceSword" or "FireSword" => "Click LEFT to attack", 
+                    "Weapon" => "Click LEFT to shoot",
                     _ => ""
                 };
     }

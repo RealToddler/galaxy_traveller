@@ -12,7 +12,6 @@ public class ActivateAfterEnnemyDeath : MonoBehaviour
     {
         if (enemy.IsDead)
         {
-            print("e");
             platform.SetActive(true);
         }
     }

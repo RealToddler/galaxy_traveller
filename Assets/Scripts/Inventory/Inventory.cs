@@ -3,7 +3,7 @@ using Photon.Pun;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Inventory : MonoBehaviourPunCallbacks
+public class Inventory : MonoBehaviourPunCallbacks, IPunObservable
 {
     public ItemData[] Content { get; private set; }
     public static int InventorySize => 4;
@@ -95,5 +95,10 @@ public class Inventory : MonoBehaviourPunCallbacks
         var position = _player.transform.position;
         PhotonNetwork.Instantiate(Content[ItemIndex].name, new Vector3(position.x, position.y+1, position.z-1), 
             Content[ItemIndex].prefab.transform.rotation);
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        
     }
 }

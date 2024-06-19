@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Net.Mime;
 using Photon.Pun;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class PlatformEnemy : MonoBehaviour
 {
@@ -52,7 +50,19 @@ public class PlatformEnemy : MonoBehaviour
     
     void Update()
     {
-        if (bossPlatform && _ui != null) _ui.RefreshBossAmount(enemy.Health, players.Count > 0);
+        if (bossPlatform && _ui != null)
+        {
+            try
+            {
+                float h = enemy.Health;
+                if (bossPlatform && _ui != null) _ui.RefreshBossAmount(enemy.Health, players.Count > 0);
+                print(enemy.Health);
+            }
+            catch
+            {
+                // ignored
+            }
+        }
         
         for(int i = 0; i < players.Count;i++)
         {
