@@ -155,7 +155,7 @@ public class Enemy : MonoBehaviourPunCallbacks
         Animator.SetTrigger(anim);
     }
 
-    private void UpdateHealth(float health)
+    protected void UpdateHealth(float health)
     {
         photonView.RPC(nameof(UpdateHealthRPC), RpcTarget.AllBuffered, health);  
     }
