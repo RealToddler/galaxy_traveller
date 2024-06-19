@@ -93,4 +93,15 @@ public class EnemyDistance : Enemy
     {
         Animator.SetTrigger(anim);
     }
+    
+    private new void UpdateHealth(float health)
+    {
+        photonView.RPC(nameof(UpdateHealthRPC), RpcTarget.AllBuffered, health);  
+    }
+    [PunRPC]
+    private void UpdateHealthRPC(float health)
+    {
+        print(health);
+        Health = health;
+    }
 }

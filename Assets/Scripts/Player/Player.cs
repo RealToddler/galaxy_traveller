@@ -263,6 +263,7 @@ public class Player : MonoBehaviourPunCallbacks
         }
         
         ui.GetComponent<PlayerUI>().countDown.SetActive(false);
+        StopCoroutine(nameof(OxygenManager));
         StartCoroutine(nameof(OxygenManager));
         CanMove(true);
     }

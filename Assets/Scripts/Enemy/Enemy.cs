@@ -43,7 +43,11 @@ public class Enemy : MonoBehaviourPunCallbacks
             Animator.SetBool("StopAttackMelee", !IsAttacking);
             Animator.SetBool("StopAttackDistance", !IsAttacking);
             AttackManager();
-            if (Health == 0) Invoke(nameof(SwitchScene), 4);
+            if (Health == 0)
+            {
+                IsDead = true;
+                Invoke(nameof(SwitchScene), 4);
+            }
         }
     }
 
@@ -99,6 +103,7 @@ public class Enemy : MonoBehaviourPunCallbacks
         else
         {
             Health = 0;
+            IsDead = true;
             if (_rsm != null) return;
             UpdateTriggerAnim(Animator.StringToHash("IsDead"));
             IsDead = true;
