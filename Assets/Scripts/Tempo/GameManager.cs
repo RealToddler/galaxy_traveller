@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public static GameManager Instance;
     public Transform[] spawnPoints;
-    public List<float> timeToCompleteLvl = new() {350, 180, 180};
+    public List<float> timeToCompleteLvl = new() {350, 350, 350};
     
     #endregion
 

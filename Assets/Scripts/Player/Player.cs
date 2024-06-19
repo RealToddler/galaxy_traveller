@@ -339,6 +339,7 @@ public class Player : MonoBehaviourPunCallbacks
     public void Respawn()
     {
         transform.position = _respawnPoint;
+        _moveBehaviour.canMove = true;
     }
 
     public void CanMove(bool canMove)
