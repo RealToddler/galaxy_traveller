@@ -27,6 +27,7 @@ public class PlatformEnemy : MonoBehaviour
     {
         if (obj.gameObject.CompareTag("Player"))
         {
+            if (!_ui.bossBar.activeSelf && bossPlatform) _ui.bossBar.SetActive(true);
             if (!players.Contains(obj.gameObject.transform)) players.Add(obj.gameObject.transform);
         }
     }
@@ -50,18 +51,9 @@ public class PlatformEnemy : MonoBehaviour
     
     void Update()
     {
-        if (bossPlatform && _ui != null)
+        if (bossPlatform && _ui.bossBar.activeSelf)
         {
-            try
-            {
-                float h = enemy.Health;
-                if (bossPlatform && _ui != null) _ui.RefreshBossAmount(enemy.Health, players.Count > 0);
-                print(enemy.Health);
-            }
-            catch
-            {
-                // ignored
-            }
+            _ui.bossBarFill.localScale = new Vector3(1f, enemy.Health / 100, 1f);
         }
         
         for(int i = 0; i < players.Count;i++)

@@ -44,14 +44,4 @@ public class EnemyMelee : Enemy
             StopAttack();
         }
     }
-    
-    protected new void UpdateTriggerAnim(int anim)
-    {
-        photonView.RPC("TriggerAnimRPC", RpcTarget.AllBuffered, anim);  
-    }
-    [PunRPC]
-    private void TriggerAnimRPC(int anim)
-    {
-        Animator.SetTrigger(anim);
-    }
 }

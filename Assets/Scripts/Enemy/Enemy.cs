@@ -162,6 +162,7 @@ public class Enemy : MonoBehaviourPunCallbacks
     [PunRPC]
     private void UpdateHealthRPC(float health)
     {
+        print(health);
         Health = health;
     }
 }
