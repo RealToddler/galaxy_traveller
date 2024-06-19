@@ -124,8 +124,8 @@ public class Player : MonoBehaviourPunCallbacks
     {
         CanMove(false);
         gameStarted = false;
-        ResetOxy();
         PhotonNetwork.LoadLevel(lvl);
+        ResetOxy();
         if (lvl == 2) Spawn(12 + PhotonNetwork.PlayerList.Length, 20, 7 + PhotonNetwork.PlayerList.Length);
         if (lvl == 3) Spawn(PhotonNetwork.PlayerList.Length, 205, PhotonNetwork.PlayerList.Length);
         _respawnPoint = transform.position;
