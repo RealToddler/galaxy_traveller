@@ -43,6 +43,7 @@ public class Enemy : MonoBehaviourPunCallbacks
             Animator.SetBool("StopAttackMelee", !IsAttacking);
             Animator.SetBool("StopAttackDistance", !IsAttacking);
             AttackManager();
+            if (Health == 0) Invoke(nameof(SwitchScene), 4);
         }
     }
 
