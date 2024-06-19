@@ -80,6 +80,7 @@ public class Player : MonoBehaviourPunCallbacks
         _lvlTime = GameManager.Instance.timeToCompleteLvl[_lvl-1];
         Oxygen = 100;
         _lvl++;
+        ui.GetComponent<PlayerUI>().bossBar.SetActive(false);
     }
 
     private void Update()

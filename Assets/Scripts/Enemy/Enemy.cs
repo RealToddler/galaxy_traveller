@@ -147,7 +147,7 @@ public class Enemy : MonoBehaviourPunCallbacks
     
     protected void UpdateTriggerAnim(int anim)
     {
-        photonView.RPC("TriggerAnimRPC", RpcTarget.AllBuffered, anim);  
+        photonView.RPC(nameof(TriggerAnimRPC), RpcTarget.AllBuffered, anim);  
     }
     [PunRPC]
     private void TriggerAnimRPC(int anim)
