@@ -1,2 +1,2 @@
 # galaxy_traveller
-S2 Project - Promo 2028
+S2 Project @ EPITA - Promo 2028
